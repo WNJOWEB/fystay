@@ -74,25 +74,59 @@ export function DateRangeField({
       </button>
 
       {open && (
-        <div
-          role="dialog"
-          aria-label="Choose check-in and check-out dates"
-          className="absolute left-1/2 top-full z-[60] mt-2 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-x-auto text-foreground rounded-2xl border border-border-subtle bg-surface p-3 shadow-[var(--shadow-popover)]"
-        >
-          <DayPicker
-            mode="range"
-            min={minNights}
-            max={maxNights ?? undefined}
-            selected={range}
-            onSelect={(next) => {
-              onChange(next);
-              if (next?.from && next?.to) setOpen(false);
-            }}
-            disabled={disabledRanges}
-            numberOfMonths={1}
-            startMonth={new Date()}
-          />
-        </div>
+        <>
+          {/* A phone: the calendar rises from the bottom as a sheet over a dimmed page, so
+              nothing about the booking form is hidden behind it. From sm it is a popover. */}
+          <div aria-hidden className="fixed inset-0 z-[60] bg-black/40 sm:hidden" onClick={() => setOpen(false)} />
+          <div
+            role="dialog"
+            aria-label="Choose check-in and check-out dates"
+            className="fixed inset-x-0 bottom-0 z-[70] max-h-[90svh] overflow-y-auto rounded-t-2xl border-t border-border-subtle bg-surface p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] text-foreground shadow-[var(--shadow-popover)] sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-full sm:z-[60] sm:mt-2 sm:max-h-none sm:w-max sm:max-w-[calc(100vw-2rem)] sm:-translate-x-1/2 sm:overflow-x-auto sm:rounded-2xl sm:border sm:p-3 sm:pb-3"
+          >
+            <div className="mb-2 sm:hidden">
+              <p className="text-base font-semibold">Choose your dates</p>
+              <p className="text-sm text-stone-600">
+                {range?.from && !range.to
+                  ? "Now choose your check-out day."
+                  : minNights > 1
+                    ? `${minNights}-night minimum stay.`
+                    : "Choose your check-in, then check-out."}
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <DayPicker
+                mode="range"
+                min={minNights}
+                max={maxNights ?? undefined}
+                selected={range}
+                onSelect={(next) => {
+                  onChange(next);
+                  if (next?.from && next?.to) setOpen(false);
+                }}
+                disabled={disabledRanges}
+                numberOfMonths={1}
+                startMonth={new Date()}
+              />
+            </div>
+            <div className="mt-3 flex items-center justify-between gap-3 sm:hidden">
+              <button
+                type="button"
+                onClick={() => onChange(undefined)}
+                disabled={!range?.from}
+                className="focus-ring h-11 rounded-xl px-4 text-sm font-semibold text-brand-700 underline disabled:text-stone-400 disabled:no-underline"
+              >
+                Clear dates
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="focus-ring h-11 rounded-xl bg-brand-700 px-6 text-sm font-semibold text-white hover:bg-brand-800"
+              >
+                {range?.from && range.to ? "Done" : "Close"}
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

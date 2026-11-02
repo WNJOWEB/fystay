@@ -380,30 +380,27 @@ export function ListingShowcase({
       )}
 
       {/* The way in. On a phone the card at the top is the booking; here, a bigger screen has the full panel. */}
-      <section id="book" className="scroll-mt-20 bg-brand-900 text-white">
+      <section id="book" className="scroll-mt-20 bg-brand-50 text-foreground">
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 px-6 py-10 sm:py-14 lg:grid-cols-5 lg:gap-14">
           <div className="lg:col-span-2">
             <h2 className="font-serif text-[1.7rem] font-bold leading-[1.1] sm:text-[2.2rem]">
               {bookTitle ??
                 `Book with the people who look after ${content.title}`}
             </h2>
-            <p className="mt-3 text-white/80">
+            <p className="mt-3 text-stone-700">
               See the full price before you pay anything. Questions first? Ask
               the owners directly.
             </p>
             {contactHref && (
               <Link
                 href={contactHref}
-                className="focus-ring mt-5 inline-flex h-12 items-center gap-2 rounded-xl border border-white/40 px-6 text-base font-semibold text-white hover:bg-white/10"
+                className="focus-ring mt-5 inline-flex h-12 items-center gap-2 rounded-xl border border-brand-300 px-6 text-base font-semibold text-brand-800 hover:bg-brand-100"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden />
                 Message the owners
               </Link>
             )}
           </div>
-          {/* text-foreground: this section is white-on-brown, and anything in the
-              booking panel without its own text colour (the calendar popup,
-              menus) would otherwise inherit white onto its cream background. */}
           <div
             className={cn(
               "text-foreground lg:col-span-3",
