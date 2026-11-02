@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { HERO_SLIDES, type HeroSlideKey } from "@/lib/heroSlides";
 import type { HeroStay } from "@/lib/heroStays";
@@ -167,8 +167,12 @@ function HeroStays({ stays }: { stays: HeroStay[] }) {
 
   return (
     <>
-      <div className="absolute inset-0 overflow-hidden max-sm:[mask-image:none] [mask-image:linear-gradient(to_top,transparent_0,#000_90px)] lg:[mask-image:linear-gradient(to_top,transparent_0,#000_180px)]">
-        <div className="absolute inset-0 bg-ink">
+      {/* The stage: the photo lit in the middle, the edges and foot in shadow,
+          a warm beam falling from above and a slow push-in - so the stay is
+          the one thing in the light. All of it is light, not content: the
+          "Promoted" label below says what this is. */}
+      <div className="absolute inset-0 overflow-hidden bg-black">
+        <div className="absolute inset-0">
           {stays.map((s, i) => (
             <picture key={s.promotionId}>
               <source media="(max-width: 639px)" srcSet={s.phonePhoto} />
@@ -179,7 +183,7 @@ function HeroStays({ stays }: { stays: HeroStay[] }) {
                 fetchPriority={i === 0 ? "high" : "low"}
                 className={cn(
                   "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-in-out motion-reduce:transition-none",
-                  i === index ? "opacity-100" : "opacity-0",
+                  i === index ? "animate-[hero-stage-zoom_16s_ease-out_forwards] opacity-100 motion-reduce:animate-none" : "opacity-0",
                 )}
               />
             </picture>
@@ -192,34 +196,37 @@ function HeroStays({ stays }: { stays: HeroStay[] }) {
           onClick={() => track(stay.promotionId, "click")}
           className="absolute inset-0"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent sm:bg-[linear-gradient(90deg,rgba(240,238,230,0.86)_0%,rgba(240,238,230,0.55)_38%,rgba(240,238,230,0)_62%)]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_40%,transparent_0%,rgba(0,0,0,0.3)_60%,rgba(0,0,0,0.85)_100%)]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:bg-[linear-gradient(90deg,rgba(0,0,0,0.7)_0%,rgba(0,0,0,0.25)_48%,rgba(0,0,0,0)_75%)]" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 animate-[hero-beam_7s_ease-in-out_infinite] bg-[conic-gradient(from_180deg_at_50%_-10%,rgba(255,232,170,0.55)_0deg,rgba(255,232,170,0)_34deg,rgba(255,232,170,0)_326deg,rgba(255,232,170,0.55)_360deg)] mix-blend-screen [mask-image:linear-gradient(to_bottom,#000_0%,transparent_80%)] motion-reduce:animate-none"
+        />
       </div>
 
-      <div className="pointer-events-none relative z-10 mx-auto w-full max-w-6xl px-6 pt-7 max-sm:mt-auto max-sm:px-5 max-sm:pb-5 sm:pt-12 lg:pt-20">
+      <div className="pointer-events-none relative z-10 mx-auto w-full max-w-6xl px-5 pt-7 max-sm:mt-auto max-sm:pb-5 sm:px-6 sm:pt-12 lg:pt-20">
         <Link
           key={stay.promotionId}
           href={href}
           onClick={() => track(stay.promotionId, "click")}
-          className="focus-ring pointer-events-auto block max-w-[18rem] rounded-lg max-sm:max-w-none animate-[hero-copy-in_700ms_ease-out] motion-reduce:animate-none min-[400px]:max-w-[19.5rem] sm:max-w-md lg:max-w-xl"
+          className="focus-ring pointer-events-auto block max-w-none rounded-lg animate-[hero-copy-in_700ms_ease-out] motion-reduce:animate-none sm:max-w-md lg:max-w-xl"
         >
           <h1>
-            <span className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 max-sm:w-fit max-sm:rounded-full max-sm:bg-white/90 max-sm:px-3 max-sm:py-1 max-sm:text-brand-800 sm:text-xs">
-              <span aria-hidden className="h-[2px] w-8 rounded-full bg-brand-600 max-sm:hidden" />
+            <span className="flex w-fit items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-800 shadow-[0_0_24px_rgba(255,226,160,0.45)] sm:text-xs">
+              <Sparkles className="h-3.5 w-3.5 text-brand-600" aria-hidden />
               Spotlight stay
               <span aria-hidden className="text-brand-700/60">·</span>
               {/* The paid-placement label, quiet but always there. */}
               <span className="font-medium">Promoted</span>
             </span>
-            <span className="mt-2.5 block line-clamp-3 text-[2.05rem] font-bold leading-[1.04] tracking-[-0.01em] text-foreground max-sm:text-white max-sm:[text-shadow:0_1px_14px_rgba(0,0,0,0.4)] min-[400px]:text-[2.3rem] sm:mt-3 sm:text-[2.85rem] lg:text-[3.6rem]">
+            <span className="mt-3 block line-clamp-3 font-serif text-[2.4rem] font-bold leading-[1.04] tracking-[-0.01em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)] sm:text-[2.85rem] lg:text-[3.8rem]">
               {stay.title}
             </span>
           </h1>
-          <span className="mt-3 inline-flex items-center gap-1 text-base font-semibold text-brand-700 max-sm:font-normal max-sm:text-white/90 sm:mt-5">
+          <span className="mt-2 block text-base text-white/90 sm:mt-3 sm:text-lg">
             {stay.city} · From {formatPrice(stay.priceFromCents)} a night
-            <ArrowRight className="h-3.5 w-3.5 max-sm:hidden" aria-hidden />
           </span>
-          {/* Phones: a solid button over the photo; from sm the line above is the link. */}
-          <span className="mt-4 flex h-12 w-fit items-center gap-2 rounded-xl bg-white px-6 text-base font-semibold text-brand-800 shadow-md sm:hidden">
+          <span className="mt-4 flex h-12 w-fit animate-[hero-glow_3.5s_ease-in-out_infinite] items-center gap-2 rounded-xl bg-white px-6 text-base font-semibold text-brand-800 shadow-md motion-reduce:animate-none sm:mt-5">
             View this stay <ArrowRight className="h-4 w-4" aria-hidden />
           </span>
         </Link>
@@ -241,7 +248,7 @@ function HeroStays({ stays }: { stays: HeroStay[] }) {
                   aria-hidden
                   className={cn(
                     "block h-1.5 rounded-full transition-all duration-300",
-                    i === index ? "w-5 bg-brand-600 max-sm:bg-white" : "w-1.5 bg-foreground/45 max-sm:bg-white/60",
+                    i === index ? "w-5 bg-white" : "w-1.5 bg-white/55",
                   )}
                 />
               </button>
