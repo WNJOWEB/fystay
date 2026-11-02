@@ -11,50 +11,21 @@ import { reportSpotlightEvent } from "@/components/SpotlightTracker";
 
 const SLIDE_MS = 6500;
 
-/** Which lighting the Spotlight stay's stage has: "now" is live; a-c are design options (the mock-up page). */
-export type StageStyle = "now" | "a" | "b" | "c";
-
 const BEAM = "pointer-events-none absolute inset-0 mix-blend-screen motion-reduce:animate-none";
 
-/** The light on the stage: its vignette, beams and any dressing (all decoration, hidden from assistive tech). */
-function StageLight({ stage }: { stage: StageStyle }) {
-  if (stage === "a") {
-    // Stronger, wider beam, a pool of light where the stay stands, a darker house.
-    return (
-      <div aria-hidden>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,transparent_0%,rgba(0,0,0,0.4)_55%,rgba(0,0,0,0.92)_100%)]" />
-        <div className={`${BEAM} animate-[hero-beam_6s_ease-in-out_infinite] bg-[conic-gradient(from_180deg_at_50%_-12%,rgba(255,236,185,0.85)_0deg,rgba(255,236,185,0)_30deg,rgba(255,236,185,0)_330deg,rgba(255,236,185,0.85)_360deg)] [mask-image:linear-gradient(to_bottom,#000_0%,rgba(0,0,0,0.5)_55%,transparent_88%)]`} />
-        <div className={`${BEAM} bg-[radial-gradient(ellipse_60%_34%_at_50%_58%,rgba(255,240,205,0.4),transparent_72%)]`} />
-      </div>
-    );
-  }
-  if (stage === "b") {
-    // The theatre itself: velvet curtains either side and a gold frame.
-    return (
-      <div aria-hidden>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_42%,transparent_0%,rgba(0,0,0,0.3)_65%,rgba(0,0,0,0.8)_100%)]" />
-        <div className={`${BEAM} animate-[hero-beam_7s_ease-in-out_infinite] bg-[conic-gradient(from_180deg_at_50%_-10%,rgba(255,232,170,0.6)_0deg,rgba(255,232,170,0)_30deg,rgba(255,232,170,0)_330deg,rgba(255,232,170,0.6)_360deg)] [mask-image:linear-gradient(to_bottom,#000_0%,transparent_82%)]`} />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-[13%] bg-[linear-gradient(90deg,#4a1208_0%,#7a2412_55%,rgba(122,36,18,0)_100%)] shadow-[8px_0_30px_rgba(0,0,0,0.5)] [background-size:100%_100%]" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-[13%] bg-[linear-gradient(270deg,#4a1208_0%,#7a2412_55%,rgba(122,36,18,0)_100%)] shadow-[-8px_0_30px_rgba(0,0,0,0.5)]" />
-        <div className="pointer-events-none absolute inset-2.5 rounded-xl border border-amber-200/60 shadow-[0_0_24px_rgba(255,226,160,0.25)_inset]" />
-      </div>
-    );
-  }
-  if (stage === "c") {
-    // Two follow-spots crossing on the stay, swaying slowly.
-    return (
-      <div aria-hidden className="overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_60%,rgba(0,0,0,0.9)_100%)]" />
-        <div className={`${BEAM} origin-[0%_-5%] animate-[hero-sway_9s_ease-in-out_infinite] bg-[conic-gradient(from_150deg_at_0%_-5%,rgba(255,236,185,0)_0deg,rgba(255,236,185,0.65)_14deg,rgba(255,236,185,0)_28deg)] [mask-image:linear-gradient(to_bottom,#000_0%,transparent_90%)]`} />
-        <div className={`${BEAM} origin-[100%_-5%] animate-[hero-sway_11s_ease-in-out_infinite_reverse] bg-[conic-gradient(from_182deg_at_100%_-5%,rgba(255,236,185,0)_0deg,rgba(255,236,185,0.65)_14deg,rgba(255,236,185,0)_28deg)] [mask-image:linear-gradient(to_bottom,#000_0%,transparent_90%)]`} />
-        <div className={`${BEAM} bg-[radial-gradient(ellipse_55%_32%_at_50%_60%,rgba(255,240,205,0.35),transparent_72%)]`} />
-      </div>
-    );
-  }
+/**
+ * The light on the Spotlight stay's stage (all decoration, hidden from
+ * assistive tech): a dark house, a wide warm beam that breathes and sways
+ * slowly from above, and a pool of light where the stay stands.
+ */
+function StageLight() {
   return (
     <div aria-hidden>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_40%,transparent_0%,rgba(0,0,0,0.3)_60%,rgba(0,0,0,0.85)_100%)]" />
-      <div className={`${BEAM} animate-[hero-beam_7s_ease-in-out_infinite] bg-[conic-gradient(from_180deg_at_50%_-10%,rgba(255,232,170,0.55)_0deg,rgba(255,232,170,0)_34deg,rgba(255,232,170,0)_326deg,rgba(255,232,170,0.55)_360deg)] [mask-image:linear-gradient(to_bottom,#000_0%,transparent_80%)]`} />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,transparent_0%,rgba(0,0,0,0.4)_55%,rgba(0,0,0,0.92)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 origin-[50%_-12%] animate-[hero-sway_10s_ease-in-out_infinite] motion-reduce:animate-none">
+        <div className={`${BEAM} animate-[hero-beam_6s_ease-in-out_infinite] bg-[conic-gradient(from_180deg_at_50%_-12%,rgba(255,236,185,0.85)_0deg,rgba(255,236,185,0)_30deg,rgba(255,236,185,0)_330deg,rgba(255,236,185,0.85)_360deg)] [mask-image:linear-gradient(to_bottom,#000_0%,rgba(0,0,0,0.5)_55%,transparent_88%)]`} />
+      </div>
+      <div className={`${BEAM} bg-[radial-gradient(ellipse_60%_34%_at_50%_58%,rgba(255,240,205,0.4),transparent_72%)]`} />
     </div>
   );
 }
@@ -76,10 +47,10 @@ function track(promotionId: string, type: "impression" | "click") {
  * choosing one stops the rotation, so anyone who wants it still can have it
  * still (WCAG 2.2.2). One place: no rotation and no dots.
  */
-export function HeroSlides({ slideKeys, stays = [], stage = "now" }: { slideKeys: HeroSlideKey[]; stays?: HeroStay[]; stage?: StageStyle }) {
+export function HeroSlides({ slideKeys, stays = [] }: { slideKeys: HeroSlideKey[]; stays?: HeroStay[] }) {
   // Paid Spotlight stays, when there are any with a hero-worthy photo, take
   // the hero (labelled Promoted); otherwise it's the places below.
-  if (stays.length > 0) return <HeroStays stays={stays} stage={stage} />;
+  if (stays.length > 0) return <HeroStays stays={stays} />;
   return <HeroPlaces slideKeys={slideKeys} />;
 }
 
@@ -188,7 +159,7 @@ function HeroPlaces({ slideKeys }: { slideKeys: HeroSlideKey[] }) {
  * Rotates and pauses like the places hero; each stay's host gets the same
  * view and click counts as a Spotlight card (src/lib/spotlightStats.ts).
  */
-function HeroStays({ stays, stage }: { stays: HeroStay[]; stage: StageStyle }) {
+function HeroStays({ stays }: { stays: HeroStay[] }) {
   const [index, setIndex] = useState(0);
   const [stopped, setStopped] = useState(false);
 
@@ -244,7 +215,7 @@ function HeroStays({ stays, stage }: { stays: HeroStay[]; stage: StageStyle }) {
           onClick={() => track(stay.promotionId, "click")}
           className="absolute inset-0"
         />
-        <StageLight stage={stage} />
+        <StageLight />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent sm:bg-[linear-gradient(90deg,rgba(0,0,0,0.7)_0%,rgba(0,0,0,0.25)_48%,rgba(0,0,0,0)_75%)]" />
       </div>
 

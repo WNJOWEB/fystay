@@ -558,10 +558,10 @@ html .rdp-root {
 @keyframes hero-sway {
   0%,
   100% {
-    transform: rotate(-4deg);
+    transform: rotate(-3deg);
   }
   50% {
-    transform: rotate(4deg);
+    transform: rotate(3deg);
   }
 }
 @keyframes hero-glow {
