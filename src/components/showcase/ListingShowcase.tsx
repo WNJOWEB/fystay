@@ -401,9 +401,12 @@ export function ListingShowcase({
               </Link>
             )}
           </div>
+          {/* text-foreground: this section is white-on-brown, and anything in the
+              booking panel without its own text colour (the calendar popup,
+              menus) would otherwise inherit white onto its cream background. */}
           <div
             className={cn(
-              "lg:col-span-3",
+              "text-foreground lg:col-span-3",
               !bookingOnPhone && "hidden sm:block",
             )}
           >
