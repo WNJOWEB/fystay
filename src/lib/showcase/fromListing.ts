@@ -22,17 +22,6 @@ type ListingForShowcase = {
   bathrooms: number;
 };
 
-/** The first sentence of the host's description, kept short enough to sit under a photo. */
-export function taglineFrom(description: string, max = 110): string {
-  const flat = description.replace(/\s+/g, " ").trim();
-  if (!flat) return "";
-  const sentence = /^.*?[.!?](?=\s|$)/.exec(flat)?.[0] ?? flat;
-  if (sentence.length <= max) return sentence;
-  const cut = sentence.slice(0, max);
-  return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), 40)).replace(/[,;:\s-]+$/, "")}…`;
-}
-
-
 /**
  * The page's content for any listing, from what the host has already given:
  * the photos (the first is the hero, the rest the gallery), the name, the
@@ -46,7 +35,8 @@ export function showcaseFromListing(listing: ListingForShowcase): ShowcaseConten
   return {
     title: listing.title,
     place: `${PROPERTY_TYPE_LABEL[listing.propertyType]} · ${listing.city}, ${listing.country}`,
-    headline: { before: taglineFrom(listing.description) || listing.title, accent: "", after: "" },
+    // No description-derived line over the hero photo (owner, 2 Nov): the page shows the name and place only.
+    headline: { before: "", accent: "", after: "" },
     intro: "",
     hero: gallery[0],
     carousel: gallery.slice(0, CAROUSEL_PHOTOS),

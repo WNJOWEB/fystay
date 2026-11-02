@@ -1,19 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { showcaseFromListing, taglineFrom } from "./fromListing";
-
-describe("taglineFrom", () => {
-  it("takes the first sentence", () => {
-    expect(taglineFrom("A bright flat by the sea. Sleeps four, with a balcony.")).toBe("A bright flat by the sea.");
-  });
-  it("shortens a very long first sentence on a word", () => {
-    const tagline = taglineFrom(`${"A lovely home with a great deal to recommend it ".repeat(6)}.`, 80);
-    expect(tagline.length).toBeLessThanOrEqual(81);
-    expect(tagline.endsWith("…")).toBe(true);
-  });
-  it("is empty for no description", () => {
-    expect(taglineFrom("  ")).toBe("");
-  });
-});
+import { showcaseFromListing } from "./fromListing";
 
 describe("showcaseFromListing", () => {
   const listing = {
@@ -45,7 +31,7 @@ describe("showcaseFromListing", () => {
     const content = showcaseFromListing(listing);
     expect(content.price).toMatchObject({ fromCents: 12000, weekendCents: 14000, minNights: 2 });
     expect(content.facts.map((fact) => `${fact.label} ${fact.value}`)).toEqual(["Sleeps 4", "Bedrooms 2", "Bathrooms 1", "Beds 3"]);
-    expect(content.headline.before).toBe("A bright flat by the sea.");
+    expect(content.headline).toEqual({ before: "", accent: "", after: "" });
     expect(content.place).toContain("Blackpool");
   });
 });

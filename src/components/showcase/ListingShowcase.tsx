@@ -109,7 +109,7 @@ export function ListingShowcase({
   /** More of the page - description, host, map, reviews - between the facts and the booking panel. */
   children?: ReactNode;
 }) {
-  const { price } = content;
+  const { headline, price } = content;
   const priceLabel = `From ${formatPrice(price.fromCents)} a night`;
 
   return (
@@ -130,6 +130,10 @@ export function ListingShowcase({
           title={{
             name: content.title,
             place: content.place,
+            tagline:
+              [headline.before, headline.accent, headline.after]
+                .join("")
+                .trim() || undefined,
           }}
           corner={corner}
           allSizes={!heroWide}
@@ -171,6 +175,18 @@ export function ListingShowcase({
                 />
                 {content.place}
               </p>
+              {(headline.before || headline.accent) && (
+                <h2 className="mt-5 font-serif text-[2.6rem] font-bold leading-[1.06] tracking-[-0.01em] text-foreground lg:text-[3.4rem]">
+                  {headline.before}
+                  <span className="text-brand-600">{headline.accent}</span>
+                  {headline.after}
+                </h2>
+              )}
+              {content.intro && (
+                <p className="mt-5 max-w-lg text-lg leading-relaxed text-stone-800">
+                  {content.intro}
+                </p>
+              )}
               <div
                 id="hero-cta"
                 className="mt-7 flex flex-wrap items-center gap-3"
