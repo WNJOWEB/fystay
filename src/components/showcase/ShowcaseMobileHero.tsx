@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 import Image from "next/image";
-import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { isOptimizableImage } from "@/lib/image";
 import type { ShowcasePhoto } from "@/lib/showcase/types";
@@ -38,6 +37,8 @@ export function ShowcaseMobileHero({
   const trackRef = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // A mouse resting on the photos holds them (they move on again when it leaves); a touch or a dot tap stops them for good.
+  const [hovering, setHovering] = useState(false);
 
   const scrollTo = useCallback((i: number) => {
     const track = trackRef.current;
@@ -62,6 +63,7 @@ export function ShowcaseMobileHero({
   useEffect(() => {
     if (
       paused ||
+      hovering ||
       photos.length < 2 ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     )
@@ -79,7 +81,7 @@ export function ShowcaseMobileHero({
       scrollTo(next);
     }, SLIDE_MS);
     return () => window.clearInterval(timer);
-  }, [paused, photos.length, scrollTo]);
+  }, [paused, hovering, photos.length, scrollTo]);
 
   const current = photos[Math.min(index, photos.length - 1)];
 
@@ -98,6 +100,8 @@ export function ShowcaseMobileHero({
         <ul
           ref={trackRef}
           onTouchStart={() => setPaused(true)}
+          onPointerEnter={(e) => e.pointerType === "mouse" && setHovering(true)}
+          onPointerLeave={(e) => e.pointerType === "mouse" && setHovering(false)}
           className={cn(
             "flex aspect-[6/7] w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
             allSizes && "sm:aspect-[16/10] sm:rounded-2xl",
@@ -195,18 +199,6 @@ export function ShowcaseMobileHero({
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={() => setPaused((p) => !p)}
-              aria-label={paused ? "Play the photos" : "Pause the photos"}
-              className="focus-ring rounded-full p-1 text-white motion-reduce:hidden"
-            >
-              {paused ? (
-                <Play className="h-3.5 w-3.5" aria-hidden />
-              ) : (
-                <Pause className="h-3.5 w-3.5" aria-hidden />
-              )}
-            </button>
           </div>
         </div>
       </div>

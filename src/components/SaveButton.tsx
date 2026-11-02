@@ -68,6 +68,8 @@ export function SaveButton({
   // Guards against a second click firing a request while one is already in
   // flight, without blocking the instant visual toggle on the first click.
   const pendingRef = useRef(false);
+  // Counts the guest's own saves, so each one replays the heart's pop and burst.
+  const [burst, setBurst] = useState(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   function closePrompt() {
@@ -120,6 +122,11 @@ export function SaveButton({
     // the background, and roll back only if the request actually fails.
     const optimisticSaved = !saved;
     setSaved(optimisticSaved);
+    if (optimisticSaved) {
+      setBurst((n) => n + 1);
+      // A light tap on phones that support it.
+      navigator.vibrate?.(12);
+    }
     pendingRef.current = true;
 
     // keepalive: the heart has already flipped, so the save must still land
@@ -169,12 +176,32 @@ export function SaveButton({
           className,
         )}
       >
-        <Heart
-          className={cn(
-            "h-5 w-5 transition-transform",
-            saved ? "scale-110 fill-red-500 text-red-500" : "text-stone-600",
+        <span className="relative flex items-center justify-center">
+          {/* The burst: a ring and a ring of dots, replayed on each new save. */}
+          {burst > 0 && saved && (
+            <span key={burst} aria-hidden className="pointer-events-none absolute inset-0">
+              <span className="heart-ring absolute inset-0 rounded-full border-2 border-red-400" />
+              {[0, 60, 120, 180, 240, 300].map((angle, i) => (
+                <span
+                  key={angle}
+                  className={cn(
+                    "heart-dot absolute left-1/2 top-1/2 -ml-[2.5px] -mt-[2.5px] h-[5px] w-[5px] rounded-full",
+                    i % 2 === 0 ? "bg-red-500" : "bg-amber-400",
+                  )}
+                  style={{ "--a": `${angle}deg` } as React.CSSProperties}
+                />
+              ))}
+            </span>
           )}
-        />
+          <Heart
+            key={saved ? burst : "off"}
+            className={cn(
+              "h-5 w-5 transition-colors duration-200",
+              saved ? "fill-red-500 text-red-500" : "text-stone-600",
+              saved && burst > 0 && "heart-pop",
+            )}
+          />
+        </span>
       </button>
 
       {promptFor !== null && (

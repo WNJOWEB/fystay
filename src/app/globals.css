@@ -478,6 +478,58 @@ body {
   }
 }
 
+/* The save heart (SaveButton): a pop, an expanding ring and a ring of dots when a stay is saved. */
+@keyframes heart-pop {
+  0% {
+    transform: scale(0.55);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+@keyframes heart-ring {
+  from {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+@keyframes heart-dot {
+  from {
+    transform: rotate(var(--a)) translateY(-8px) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--a)) translateY(-24px) scale(0.3);
+    opacity: 0;
+  }
+}
+.heart-pop {
+  animation: heart-pop 520ms cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+.heart-ring {
+  animation: heart-ring 520ms ease-out both;
+}
+.heart-dot {
+  animation: heart-dot 560ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .heart-pop,
+  .heart-ring,
+  .heart-dot {
+    animation: none;
+  }
+}
+
 /* Loading skeletons (Skeleton.tsx, used by every route's loading.tsx): a
    slow, understated shimmer across the site's own warm surface tones,
    rather than Tailwind's default animate-pulse (a flat opacity blink that
