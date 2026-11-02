@@ -46,15 +46,17 @@ function rotate<T>(items: T[]): T[] {
 }
 
 /**
- * The homepage's main carousel, directly under the search: live Spotlight
- * placements first (paid - each card labelled "Promoted", as UK rules on
- * paid placement require, with its views and clicks counted for the host),
- * then the most popular real stays (see rankByPopularity). Only real,
+ * The homepage's "Popular stays" row, under the search: the most popular
+ * real stays (see rankByPopularity). Paid Spotlight stays take the hero
+ * (src/lib/heroStays.ts); one that couldn't (its photo isn't big and wide
+ * enough) leads this row instead, as a card labelled "Promoted" (as UK rules
+ * on paid placement require), with its views and clicks counted for the
+ * host. Only real,
  * published, bookable stays with their real prices and verified reviews.
  * Before any stay is live the section isn't shown at all - never an
  * invented property or a placeholder row.
  */
-export async function SpotlightStays() {
+export async function SpotlightStays({ inHeroListingIds = [] }: { inHeroListingIds?: string[] }) {
   const now = new Date();
   const [session, promotions, listings] = await Promise.all([
     auth().catch(() => null),
@@ -80,13 +82,14 @@ export async function SpotlightStays() {
       }),
   ]);
 
-  const promoted = rotate(promotions);
+  const inHero = new Set(inHeroListingIds);
+  const promoted = rotate(promotions.filter((promotion) => !inHero.has(promotion.listing.id)));
   const promotedIds = new Set(promoted.map((promotion) => promotion.listing.id));
   // Stays with photos lead (in popularity order), so the row opens on real
   // photography; a stay without one still appears, after them.
   const ranked = rankByPopularity(listings);
   const popular = [...ranked.filter((l) => l.photos.length > 0), ...ranked.filter((l) => l.photos.length === 0)]
-    .filter((listing) => !promotedIds.has(listing.id))
+    .filter((listing) => !promotedIds.has(listing.id) && !inHero.has(listing.id))
     .slice(0, Math.max(0, MAX_STAYS - promoted.length));
   const shownIds = [...promotedIds, ...popular.map((listing) => listing.id)];
 
@@ -106,9 +109,9 @@ export async function SpotlightStays() {
   if (shownIds.length === 0) return null;
 
   return (
-    <section className="mt-10 sm:mt-14" aria-labelledby="spotlight-heading">
-      <EditorialHeader id="spotlight-heading" name="Spotlight stays" link={{ href: "/search", label: "View all" }} />
-      <LargeCardRail label="Spotlight stays" fullBleed autoAdvanceMs={SPOTLIGHT_ADVANCE_MS}>
+    <section className="mt-10 sm:mt-14" aria-labelledby="popular-heading">
+      <EditorialHeader id="popular-heading" name="Popular stays" link={{ href: "/search", label: "View all" }} />
+      <LargeCardRail label="Popular stays" fullBleed autoAdvanceMs={SPOTLIGHT_ADVANCE_MS}>
         {[
               ...promoted.map(({ id, listing }) => (
                 <SpotlightTracker key={listing.id} promotionId={id}>
@@ -117,6 +120,7 @@ export async function SpotlightStays() {
                     isSaved={savedListingIds.has(listing.id)}
                     isLoggedIn={isLoggedIn}
                     size="large"
+                    frame="editorial"
                     promoted
                     cta="View stay"
                   />
@@ -129,6 +133,7 @@ export async function SpotlightStays() {
                   isSaved={savedListingIds.has(listing.id)}
                   isLoggedIn={isLoggedIn}
                   size="large"
+                  frame="editorial"
                   cta="View stay"
                 />
               )),

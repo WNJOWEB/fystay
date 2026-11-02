@@ -1,10 +1,12 @@
 # Spotlight stays (paid featuring)
 
-Hosts pay FYStay to feature a listing in **Spotlight stays**, the first listings
-row on the homepage. Code: `src/lib/listingPromotions.ts` (rules),
+Hosts pay FYStay to feature a listing in **Spotlight stays**: the homepage hero
+(up to 3, lit "stage" layout, `src/lib/heroStays.ts` + `HeroBanner.tsx`; needs a
+photo at least 1600px wide and landscape). A paid stay whose photo is too small
+or upright leads the "Popular stays" row instead, labelled Promoted. Code: `src/lib/listingPromotions.ts` (rules),
 `/api/host/promotions` (purchase), the Stripe webhook (activation),
 `/host/promote` (host page), `/admin/promotions` (admin), and
-`src/components/SpotlightStays.tsx` (homepage row).
+`src/components/SpotlightStays.tsx` (the "Popular stays" row).
 
 ## Rules
 

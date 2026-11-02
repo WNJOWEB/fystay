@@ -217,8 +217,7 @@ export const LARGE_CARD_SLOT_CLASS = "w-[60vw] max-w-[340px] shrink-0 sm:w-[44vw
 export function LargeCardRailSkeleton() {
   const slot = (key: number) => (
     <div key={key} className={LARGE_CARD_SLOT_CLASS}>
-      {/* Only the Spotlight row loads with this placeholder, so it takes the stay cards' arch. */}
-      <div className={cn("skeleton-shimmer w-full", ARCH_SHAPE_CLASS)} />
+      <div className={cn("skeleton-shimmer w-full", LARGE_CARD_IMAGE_CLASS)} />
       <div className="skeleton-shimmer mt-4 h-5 w-2/3 rounded-full" />
       <div className="skeleton-shimmer mt-2 h-4 w-1/2 rounded-full" />
     </div>

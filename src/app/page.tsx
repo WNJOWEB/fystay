@@ -146,7 +146,7 @@ export default async function Home() {
           {/* The main attractions: Spotlight stays (paid placements, labelled,
               then guests' favourites) and genuine last-minute deals. */}
           <Suspense fallback={<RailSkeleton />}>
-            <SpotlightStays />
+            <SpotlightStays inHeroListingIds={heroStays.map((stay) => stay.listingId)} />
           </Suspense>
           <Suspense fallback={null}>
             <LastMinuteDeals />
