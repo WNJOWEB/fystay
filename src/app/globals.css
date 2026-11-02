@@ -470,7 +470,7 @@ body {
   }
 }
 .animate-card-photo-fade {
-  animation: card-photo-fade 600ms ease-in-out both;
+  animation: card-photo-fade 1000ms ease-in-out both;
 }
 @media (prefers-reduced-motion: reduce) {
   .animate-card-photo-fade {

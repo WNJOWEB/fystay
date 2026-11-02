@@ -3,26 +3,32 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   firstRotationDelay,
+  HOVER_FIRST_DELAY_MS,
   INTERACTION_PAUSE_MS,
   ROTATION_INTERVAL_MS,
   wrapIndex,
 } from "@/lib/imageRotation";
 
 /**
- * Gentle automatic rotation through a set of images (a property card's
- * photos), shared by every card that shows more than one photo.
+ * Gentle rotation through a set of images (a property card's photos),
+ * shared by every card that shows more than one photo.
  *
- * It only runs while all of these hold:
+ * On a device with a mouse, a card's photos move only while the pointer is
+ * over it: a slow crossfade to the next photo shortly after the pointer
+ * rests there, then every few seconds, and it stops when the pointer
+ * leaves. On a touch screen, which can't hover, cards drift on by
+ * themselves every 6s from a per-card offset (see firstRotationDelay) so
+ * they change one after another.
+ *
+ * Either way it only runs while all of these hold:
  * - the element is at least half on screen (IntersectionObserver), so
  *   off-screen cards cost nothing;
  * - the tab is visible;
- * - no mouse is hovering over it and nothing inside it has focus, so a
- *   guest can look at the current photo without it changing;
+ * - nothing inside it has keyboard focus, so a guest can look at the
+ *   current photo without it changing;
  * - the visitor hasn't asked for reduced motion.
  *
- * Every 5s on hover-capable devices and 6s on touch, starting from a
- * per-card offset (see firstRotationDelay) so cards change one after
- * another. Any touch on the card, or a manual change through goTo (arrows,
+ * Any touch on the card, or a manual change through goTo (arrows,
  * swipes), pauses it for INTERACTION_PAUSE_MS.
  *
  * Returns `previous`, the image shown before the current one, so the
@@ -34,6 +40,7 @@ export function useAutoRotate<T extends HTMLElement>({ count, seed }: { count: n
   const [{ index, previous }, setState] = useState({ index: 0, previous: -1 });
   const [visible, setVisible] = useState(false);
   const [held, setHeld] = useState(false);
+  const [hovered, setHovered] = useState(false);
   // Bumped to re-arm the timer when it fires during a pause (a touch can
   // start one after the timer was already scheduled).
   const [wake, setWake] = useState(0);
@@ -45,7 +52,8 @@ export function useAutoRotate<T extends HTMLElement>({ count, seed }: { count: n
   const pageVisible = useSyncExternalStore(subscribeToVisibility, getPageVisible, () => false);
 
   const interval = canHover ? ROTATION_INTERVAL_MS.hover : ROTATION_INTERVAL_MS.touch;
-  const active = count > 1 && !reducedMotion && pageVisible && visible;
+  // With a mouse, hovering is what starts it; on touch it runs while on screen.
+  const active = count > 1 && !reducedMotion && pageVisible && visible && (!canHover || hovered);
 
   useEffect(() => {
     if (!node || count < 2) return;
@@ -68,7 +76,7 @@ export function useAutoRotate<T extends HTMLElement>({ count, seed }: { count: n
 
   useEffect(() => {
     if (!active || held) return;
-    const base = started.current ? interval : firstRotationDelay(seed, interval);
+    const base = started.current ? interval : canHover ? HOVER_FIRST_DELAY_MS : firstRotationDelay(seed, interval);
     const delay = Math.max(base, pausedUntil.current - Date.now());
     const timer = window.setTimeout(() => {
       if (Date.now() < pausedUntil.current) {
@@ -79,7 +87,7 @@ export function useAutoRotate<T extends HTMLElement>({ count, seed }: { count: n
       show(index + 1);
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [active, held, interval, index, seed, show, wake]);
+  }, [active, held, interval, index, seed, show, wake, canHover]);
 
   /** A guest-driven change (arrow or swipe): show that image and hold off the automatic one for a while. */
   const goTo = useCallback(
@@ -93,10 +101,13 @@ export function useAutoRotate<T extends HTMLElement>({ count, seed }: { count: n
 
   const handlers = {
     onPointerEnter: (e: React.PointerEvent) => {
-      if (e.pointerType === "mouse") setHeld(true);
+      if (e.pointerType === "mouse") setHovered(true);
     },
     onPointerLeave: (e: React.PointerEvent) => {
-      if (e.pointerType === "mouse") setHeld(false);
+      if (e.pointerType !== "mouse") return;
+      setHovered(false);
+      // The next hover starts afresh with the short first delay.
+      started.current = false;
     },
     onFocus: () => setHeld(true),
     onBlur: (e: React.FocusEvent) => {

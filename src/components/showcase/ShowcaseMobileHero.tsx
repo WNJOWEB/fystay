@@ -116,6 +116,8 @@ export function ShowcaseMobileHero({
                 fill
                 unoptimized={!isOptimizableImage(p.src)}
                 priority={i === 0}
+                loading={i < 3 ? "eager" : "lazy"}
+                decoding="async"
                 sizes="100vw"
                 className={cn("object-cover", p.position)}
               />

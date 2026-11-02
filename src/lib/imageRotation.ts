@@ -3,8 +3,15 @@
  * functions so the stagger and wrap-around can be unit-tested without a DOM.
  */
 
-/** Pointer devices that can hover (desktop) rotate every 5s; touch devices more gently, every 6s. */
-export const ROTATION_INTERVAL_MS = { hover: 5000, touch: 6000 } as const;
+/**
+ * Pointer devices that can hover (desktop) move to the next photo every 2.6s,
+ * but only while the pointer is over the card; touch devices, which can't
+ * hover, drift on by themselves more gently, every 6s.
+ */
+export const ROTATION_INTERVAL_MS = { hover: 2600, touch: 6000 } as const;
+
+/** How long the pointer rests on a card before its first photo change. */
+export const HOVER_FIRST_DELAY_MS = 900;
 
 /** How long a card stays paused after someone swipes, taps an arrow or touches it. */
 export const INTERACTION_PAUSE_MS = 10_000;

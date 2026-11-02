@@ -1,7 +1,8 @@
 "use client";
 
 import { isOptimizableImage } from "@/lib/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { PhotoSwiper } from "@/components/showcase/PhotoSwiper";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -21,7 +22,6 @@ export function ShowcaseGalleryStrip({
   /** Photos before this index are already on show above (the hero). */ startAt?: number;
 }) {
   const [open, setOpen] = useState<number | null>(null);
-  const touchStartX = useRef<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const step = useCallback(
     (by: number) =>
@@ -114,39 +114,12 @@ export function ShowcaseGalleryStrip({
           >
             <X className="h-5 w-5" aria-hidden />
           </button>
-          {/* Swipe along the photos on a touch screen. */}
+          {/* Drag along the photos: the strip follows your finger (PhotoSwiper). */}
           <div
-            className="relative h-[70svh] w-full max-w-4xl touch-none"
+            className="relative h-[70svh] w-full max-w-4xl"
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
-            onTouchEnd={(e) => {
-              if (touchStartX.current === null) return;
-              const delta = e.changedTouches[0].clientX - touchStartX.current;
-              touchStartX.current = null;
-              if (delta <= -50) step(1);
-              else if (delta >= 50) step(-1);
-            }}
-            onPointerDown={(e) => {
-              if (e.pointerType === "mouse") touchStartX.current = e.clientX;
-            }}
-            onPointerUp={(e) => {
-              if (e.pointerType !== "mouse" || touchStartX.current === null)
-                return;
-              const delta = e.clientX - touchStartX.current;
-              touchStartX.current = null;
-              if (delta <= -50) step(1);
-              else if (delta >= 50) step(-1);
-            }}
           >
-            <Image
-              src={photos[open].src}
-              alt={photos[open].alt}
-              fill
-              draggable={false}
-              unoptimized={!isOptimizableImage(photos[open].src)}
-              sizes="(min-width: 1024px) 896px, 100vw"
-              className="select-none object-contain"
-            />
+            <PhotoSwiper photos={photos} index={open} onStep={step} />
           </div>
           <p
             className="max-w-2xl text-center text-sm text-white/85"
