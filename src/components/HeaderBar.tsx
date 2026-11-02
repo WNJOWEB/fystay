@@ -123,7 +123,7 @@ export function HeaderBar({ account }: { account: ReactNode }) {
           never waits for them. */}
       {bookingPill ? (
         <>
-          <BookingPill className="flex-1 lg:hidden" />
+          {/* Below lg the page's own bottom bar (MobileBookingBar) does this job, so no pill here. */}
           <div className="pointer-events-none absolute inset-0 hidden items-center justify-center lg:flex">
             <BookingPill className="pointer-events-auto max-w-md" />
           </div>
