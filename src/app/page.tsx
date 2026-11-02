@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { SearchBar } from "@/components/SearchBar";
+import { HomeSearchBar } from "@/components/HomeSearchBar";
 import { HeroSlides } from "@/components/HeroBanner";
 import { loadHeroStays } from "@/lib/heroStays";
 import { LargeCardRailSkeleton } from "@/components/LargeCard";
@@ -131,9 +131,11 @@ export default async function Home() {
             than the wrapper allows for (the Preview banner, larger text): it
             rises over the hero instead, and scrolls away normally. */}
         <div className="sticky bottom-[calc(var(--fixed-bottom-bar-height,0px)+env(safe-area-inset-bottom))] z-10 mx-auto w-full max-w-6xl px-4 pb-4 sm:px-6 lg:relative lg:bottom-auto lg:pb-0">
-          <div id={PAGE_SEARCH_ID} className="-mt-14 sm:-mt-20 lg:-mt-[112px]">
+          {/* With a Spotlight stay as the hero, a phone gets a slim search
+              bar under the photo instead of the card rising over it. */}
+          <div id={PAGE_SEARCH_ID} className={heroStays.length > 0 ? "mt-3 sm:-mt-20 lg:-mt-[112px]" : "-mt-14 sm:-mt-20 lg:-mt-[112px]"}>
             <Suspense>
-              <SearchBar liveUpdate={false} className="max-w-none shadow-[var(--shadow-popover)]" />
+              <HomeSearchBar slimOnPhone={heroStays.length > 0} />
             </Suspense>
           </div>
         </div>

@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { SearchBar } from "@/components/SearchBar";
+import { HomeSearchBar } from "@/components/HomeSearchBar";
 import { HeroSlides } from "@/components/HeroBanner";
 import { PAGE_SEARCH_ID } from "@/lib/searchSummary";
 import type { HeroStay } from "@/lib/heroStays";
 import { LODGE_ON_THE_LAKE_SHOWCASE } from "@/lib/showcase/lodgeOnTheLake";
-import { PhoneHeroVariant, type PhoneStyle } from "./PhoneHeroVariants";
 
 // A design preview, not the live homepage: kept out of search results.
 export const metadata: Metadata = {
@@ -24,6 +23,8 @@ const PREVIEW_STAY: HeroStay = {
   city: "Carnforth",
   priceFromCents: lodge.price.fromCents,
   photo: lodge.hero.src,
+  // The lodge's sharpest portrait photo: a phone's hero is portrait.
+  phonePhoto: lodge.carousel[0].src,
   href: "/showcase/lodge-on-the-lake",
 };
 
@@ -34,28 +35,21 @@ const PREVIEW_STAY: HeroStay = {
  * live homepage shows a stay here only once it is published and has a live
  * Spotlight placement (see src/lib/heroStays.ts).
  */
-export default async function HomepageHeroPreview({ searchParams }: { searchParams: Promise<{ style?: string }> }) {
-  // ?style=a|b|c shows a phone layout option in place of the current one.
-  const { style } = await searchParams;
-  const phoneStyle = (["a", "b", "c"] as const).find((option) => option === style) as PhoneStyle | undefined;
-  const search = (
-    <Suspense>
-      <SearchBar liveUpdate={false} className="max-w-none shadow-[var(--shadow-popover)]" />
-    </Suspense>
-  );
+export default function HomepageHeroPreview() {
   return (
     <>
       <p role="status" className="bg-brand-50 px-6 py-2 text-center text-sm text-brand-900">
         Mock-up of the homepage with Lodge on the Lake as the Spotlight stay. Not live.
       </p>
-      {phoneStyle && <PhoneHeroVariant style={phoneStyle} fullSearch={search} />}
-      <div className={`flex min-h-[calc(100svh-77px-var(--fixed-bottom-bar-height,0px))] flex-col lg:block lg:min-h-0 ${phoneStyle ? "max-sm:hidden" : ""}`}>
+      <div className="flex min-h-[calc(100svh-77px-var(--fixed-bottom-bar-height,0px))] flex-col lg:block lg:min-h-0">
         <section className="relative isolate flex min-h-[230px] w-full flex-1 flex-col lg:h-[64svh] lg:max-h-[660px] lg:min-h-[520px] lg:flex-none">
           <HeroSlides slideKeys={[]} stays={[PREVIEW_STAY]} />
         </section>
         <div className="sticky bottom-[calc(var(--fixed-bottom-bar-height,0px)+env(safe-area-inset-bottom))] z-10 mx-auto w-full max-w-6xl px-4 pb-4 sm:px-6 lg:relative lg:bottom-auto lg:pb-0">
-          <div id={PAGE_SEARCH_ID} className="-mt-14 sm:-mt-20 lg:-mt-[112px]">
-            {search}
+          <div id={PAGE_SEARCH_ID} className="mt-3 sm:-mt-20 lg:-mt-[112px]">
+            <Suspense>
+              <HomeSearchBar slimOnPhone />
+            </Suspense>
           </div>
         </div>
       </div>

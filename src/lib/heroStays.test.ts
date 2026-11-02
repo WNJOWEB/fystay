@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isHeroPhoto } from "./heroStays";
+import { isHeroPhoto, isPhonePhoto } from "./heroStays";
 
 describe("isHeroPhoto", () => {
   it("takes a large landscape photo", () => {
@@ -11,5 +11,16 @@ describe("isHeroPhoto", () => {
   it("refuses a large portrait or near-square photo", () => {
     expect(isHeroPhoto({ width: 2000, height: 3000 })).toBe(false);
     expect(isHeroPhoto({ width: 2000, height: 1800 })).toBe(false);
+  });
+});
+
+describe("isPhonePhoto", () => {
+  it("takes a large portrait photo", () => {
+    expect(isPhonePhoto({ width: 2000, height: 3000 })).toBe(true);
+  });
+  it("refuses landscape, near-square and small photos", () => {
+    expect(isPhonePhoto({ width: 3000, height: 2000 })).toBe(false);
+    expect(isPhonePhoto({ width: 2000, height: 2000 })).toBe(false);
+    expect(isPhonePhoto({ width: 600, height: 900 })).toBe(false);
   });
 });

@@ -23,9 +23,18 @@ export type HeroStay = {
   city: string;
   priceFromCents: number;
   photo: string;
+  /** The photo a phone shows: a sharp portrait one when the listing has it, else `photo`. */
+  phonePhoto: string;
   /** Where the hero links to, if not the listing page (a design preview). */
   href?: string;
 };
+
+const MIN_PHONE_HEIGHT = 1200;
+
+/** Tall enough, and upright enough, to fill a phone's screen without being stretched. */
+export function isPhonePhoto(size: { width: number; height: number }): boolean {
+  return size.height >= MIN_PHONE_HEIGHT && size.height / size.width >= 1.1;
+}
 
 export function isHeroPhoto(size: { width: number; height: number }): boolean {
   return size.width >= MIN_HERO_WIDTH && size.width / size.height >= MIN_HERO_RATIO;
@@ -86,6 +95,15 @@ export async function heroPhotoOf(photos: string[]): Promise<string | null> {
   return null;
 }
 
+/** The listing's first sharp portrait photo for a phone (only its first few are tried), else the wide one. */
+export async function phonePhotoOf(photos: string[], fallback: string): Promise<string> {
+  for (const photo of photos.slice(0, 6)) {
+    const size = await cachedPhotoSize(photo);
+    if (size && isPhonePhoto(size)) return photo;
+  }
+  return fallback;
+}
+
 /** Live Spotlight placements that qualify for the hero, in random order so every paying host gets turns, at most HERO_STAY_SLOTS. */
 export async function loadHeroStays(now: Date = new Date()): Promise<HeroStay[]> {
   try {
@@ -116,6 +134,7 @@ export async function loadHeroStays(now: Date = new Date()): Promise<HeroStay[]>
         city: listing.city,
         priceFromCents: listing.pricePerNightCents,
         photo,
+        phonePhoto: await phonePhotoOf(listing.photos, photo),
       });
     }
     return stays;
