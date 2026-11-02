@@ -555,6 +555,15 @@ html .rdp-root {
     opacity: 1;
   }
 }
+@keyframes hero-sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
 @keyframes hero-glow {
   0%,
   100% {
