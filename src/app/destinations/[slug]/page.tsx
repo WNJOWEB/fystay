@@ -39,12 +39,6 @@ function findDestination(slug: string): FyldeCoastDestination | undefined {
   return FYLDE_COAST_DESTINATIONS.find((destination) => destination.slug === slug);
 }
 
-function parseDateParam(value: string | string[] | undefined): Date | null {
-  if (typeof value !== "string") return null;
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
 // One real, indexable page per town instead of everything funnelling
 // through the noindexed /search?city= results page - the exact gap
 // destinations.ts was written to fill (see its doc comment), so a search
@@ -93,8 +87,6 @@ export default async function DestinationPage({
       : Promise.resolve({ weather: null, places: [], editorial: [], events: [] }),
   ]);
 
-  const checkIn = parseDateParam(resolvedSearchParams.checkIn);
-  const checkOut = parseDateParam(resolvedSearchParams.checkOut);
   const heroContent = TOWN_HERO_CONTENT[destination.slug];
 
   const breadcrumbJsonLd = {
@@ -153,8 +145,6 @@ export default async function DestinationPage({
         destination={destination}
         fromListing={fromListing}
         conciergeSources={conciergeSources}
-        checkIn={checkIn}
-        checkOut={checkOut}
       />
     </div>
   );
