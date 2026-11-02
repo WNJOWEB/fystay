@@ -109,7 +109,7 @@ test.describe("photo gallery lightbox", () => {
       await expect(dialog).toBeVisible();
       await expect(dialog.locator("span").first()).toHaveText("2 / 4");
 
-      const swipeZone = dialog.locator(".touch-none");
+      const swipeZone = dialog.locator(".touch-pan-y");
       const box = (await swipeZone.boundingBox())!;
       const y = box.y + box.height / 2;
 

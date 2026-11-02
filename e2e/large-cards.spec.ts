@@ -9,7 +9,7 @@ try {
   // no .env file, so assume the environment already has DATABASE_URL set
 }
 
-const RAILS = ["Spotlight stays", "Last Minute Deals"];
+const RAILS = ["Popular stays", "Last Minute Deals"];
 
 function rail(page: Page, label: string) {
   // The carousel itself - a homepage row's <section> can share its name.
@@ -33,9 +33,9 @@ test.describe("phone", () => {
 
   test("each rail shows its cards at phone size (Spotlight's wider, every rail with the next card peeking), without widening the page", async ({ page }) => {
     await page.goto("/");
-    // Spotlight always has the seeded stays; Last-minute deals only appears
+    // Popular stays always has the seeded stays; Last-minute deals only appears
     // when there is a real deal (a section with nothing to show is left out).
-    await expect(rail(page, "Spotlight stays")).toHaveCount(1);
+    await expect(rail(page, "Popular stays")).toHaveCount(1);
     for (const label of RAILS) {
       if ((await rail(page, label).count()) === 0) continue;
       await rail(page, label).scrollIntoViewIfNeeded();
@@ -44,7 +44,7 @@ test.describe("phone", () => {
       expect(first.right).toBeLessThanOrEqual(390);
       // Spotlight (paid placements): cards nearly the screen's full width
       // (12px either side), with a sliver of the next one peeking in.
-      if (label === "Spotlight stays") {
+      if (label === "Popular stays") {
         expect(first.left, "Spotlight: card starts 12px from the edge").toBeCloseTo(12, 0);
         expect(first.width, "Spotlight: the screen less 28px").toBeCloseTo(390 - 28, 0);
         expect(second.left, "Spotlight: next card peeks in").toBeLessThan(390);

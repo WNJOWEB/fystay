@@ -269,8 +269,13 @@ export default async function HotelDetailPage({
             provider, not fixed content about the hotel", reinforced by the
             "Live pricing" badge and id="hotel-deals" (the mobile sticky
             bar's scroll target). */}
-        <aside id="hotel-deals" className="flex flex-col gap-4">
-          <Card className="lg:sticky lg:top-24">
+        {/* The whole column sticks together (not just the deals card), so the
+            card never slides over the optional transfer card below it. */}
+        <aside
+          id="hotel-deals"
+          className="flex flex-col gap-4 lg:sticky lg:top-24 lg:max-h-[calc(100svh-7rem)] lg:self-start lg:overflow-y-auto"
+        >
+          <Card>
             <CardHeader className="pb-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <CardTitle className="flex items-center gap-2">

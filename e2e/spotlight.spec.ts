@@ -30,7 +30,7 @@ async function featureListing(page: Page, nth: number): Promise<string> {
 }
 
 function spotlight(page: Page) {
-  return page.locator("section", { has: page.getByRole("heading", { name: "Spotlight stays" }) });
+  return page.locator("section", { has: page.getByRole("heading", { name: "Popular stays" }) });
 }
 
 // Spotlight auto-advances; hold it still so the first card stays put.
