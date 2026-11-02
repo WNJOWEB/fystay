@@ -19,8 +19,13 @@
 name: Production database backup
 
 on:
-  schedule:
-    - cron: "17 3 * * *" # 03:17 UTC daily
+  # PAUSED by the owner (2 Nov 2026): every nightly run since 17 Oct failed, and
+  # there is no real customer data yet, so backups wait until launch. Restore
+  # the schedule below once the backup secrets are fixed and a manual run
+  # succeeds - this MUST be live before the first real signup, booking or
+  # payment (docs/launch/master-checklist.md, launch blockers).
+  # schedule:
+  #   - cron: "17 3 * * *" # 03:17 UTC daily
   workflow_dispatch:
 
 permissions:

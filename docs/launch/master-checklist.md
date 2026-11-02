@@ -44,6 +44,8 @@ Related: [handover](handover.md) · [Stripe and email setup](stripe-and-email-se
 
 ## LAUNCH BLOCKERS (outstanding, rechecked 16 Oct)
 
+**2 Nov, owner decision: nightly Production backups are PAUSED until launch.** All 17 nightly runs since 17 Oct failed (the backup step stops within a second, probably missing or wrong `backup` environment secrets). The schedule is switched off so it stops emailing failures. **Launch blocker: restore the schedule and get a green manual run, with a file in the `prod-backups` bucket, before the first real signup, booking or payment.** Supabase Free has no backups of its own.
+
 16 Oct, read-only: health ok (status, database, config); Production database has 0 listings, 0 bookings, 5 users. Open PRs waiting on the owner: #7 (blocker 1), #9 (Spotlight), #52 (nightly backup: needs the read-only login and two secrets, see its runbook), #53 (smart pricing: migration + solicitor first).
 
 | # | Blocker | Owner action |
