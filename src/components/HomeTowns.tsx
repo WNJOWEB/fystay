@@ -70,7 +70,7 @@ export function HomeTowns() {
                       <p className="font-serif text-base font-bold leading-tight text-white min-[400px]:text-lg lg:text-2xl">
                         {destination.name}
                       </p>
-                      <p className="mt-1 text-[9.5px] font-medium uppercase leading-snug tracking-[0.08em] text-white/90 min-[400px]:text-[10px] lg:text-xs">
+                      <p className="mt-1 text-[11px] font-medium uppercase leading-snug tracking-[0.08em] text-white/90 min-[400px]:text-[11px] lg:text-xs">
                         {TOWN_TAGLINES[destination.slug]}
                       </p>
                     </div>

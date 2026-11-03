@@ -128,7 +128,7 @@ export default async function HostCalendarPage({ searchParams }: { searchParams:
                   key={d.toISOString()}
                   className={cn("py-2 text-center", weekend && "bg-surface-muted/50", isToday && "bg-brand-50")}
                 >
-                  <div className="text-[10px] font-medium uppercase text-stone-500">{weekday.format(d)}</div>
+                  <div className="text-[11px] font-medium uppercase text-stone-500">{weekday.format(d)}</div>
                   <div className={cn("text-sm font-semibold", isToday ? "text-brand-700" : "text-foreground")}>
                     {d.getUTCDate()}
                   </div>
@@ -166,7 +166,7 @@ export default async function HostCalendarPage({ searchParams }: { searchParams:
                     <div
                       key={d.toISOString()}
                       className={cn(
-                        "flex min-h-12 items-end justify-center pb-1 text-[10px] text-stone-500",
+                        "flex min-h-12 items-end justify-center pb-1 text-[11px] text-stone-500",
                         weekend && "bg-surface-muted/40",
                         isToday && "bg-brand-50/70",
                       )}

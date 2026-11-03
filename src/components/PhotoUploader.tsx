@@ -95,7 +95,7 @@ export function PhotoUploader({
               unoptimized={!isOptimizableImage(url)}
             />
             {i === 0 && (
-              <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
+              <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[11px] font-medium text-white">
                 Cover
               </span>
             )}

@@ -231,7 +231,7 @@ export function ListingShowcase({
                 <dd className="mt-1 font-serif text-base leading-tight text-foreground sm:text-xl">
                   {fact.value}
                 </dd>
-                <dt className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+                <dt className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
                   {fact.label}
                 </dt>
               </div>

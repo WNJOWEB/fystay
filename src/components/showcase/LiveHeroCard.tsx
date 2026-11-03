@@ -23,7 +23,7 @@ export function LiveHeroCard({
     <div className="rounded-3xl border border-border-subtle bg-surface p-4 text-foreground shadow-[var(--shadow-popover)]">
       <div className="flex items-center justify-between gap-3">
         <p>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
             From
           </span>
           <span className="font-serif text-[1.7rem] leading-none text-brand-800">

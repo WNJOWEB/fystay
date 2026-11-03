@@ -279,7 +279,7 @@ export default async function HostEarningsPage({
                   <div className="flex items-baseline justify-between gap-3 text-sm">
                     <span className="truncate text-foreground">
                       {i === 0 && perListing.length > 1 && (
-                        <span className="mr-1.5 rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-900">
+                        <span className="mr-1.5 rounded-full bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold uppercase text-amber-900">
                           Top
                         </span>
                       )}

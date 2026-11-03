@@ -161,7 +161,7 @@ export function AdminNav({ active }: { active: AdminHref }) {
         </Link>
         {ADMIN_GROUPS.map((group) => (
           <div key={group.title}>
-            <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-stone-500">{group.title}</p>
+            <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500">{group.title}</p>
             <div className="mt-1 flex flex-wrap gap-1.5">
               {group.links.map((link) => (
                 <Link

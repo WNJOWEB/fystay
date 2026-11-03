@@ -377,14 +377,14 @@ export function ListingCard({
           >
             {listing.title}
           </p>
-          <p className="mt-1 flex items-center gap-1 text-[13px] text-stone-500">
+          <p className="mt-1 flex items-center gap-1 text-sm text-stone-500">
             <Users className="h-3.5 w-3.5 shrink-0" aria-hidden />
             Sleeps {listing.maxGuests}
             <span aria-hidden>·</span>
             {listing.bedrooms} bedroom{listing.bedrooms === 1 ? "" : "s"}
           </p>
           {deal && (deal.kind === "price_drop" || showLastMinutePrice) && (
-            <p className="mt-1 text-[13px] font-medium text-brand-700">
+            <p className="mt-1 text-sm font-medium text-brand-700">
               {deal.kind === "last_minute"
                 ? `Last-minute: check in within ${deal.windowDays} day${deal.windowDays === 1 ? "" : "s"}`
                 : "Price recently lowered"}

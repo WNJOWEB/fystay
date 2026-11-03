@@ -33,7 +33,7 @@ function PreviewBookingPanel() {
           <div key={label} className="flex items-center gap-2.5 rounded-xl border border-border-subtle px-3 py-2.5">
             <CalendarDays className="h-4 w-4 text-brand-600" aria-hidden />
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500">{label}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">{label}</p>
               <p className="text-sm text-stone-500">Add date</p>
             </div>
           </div>

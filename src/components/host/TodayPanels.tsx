@@ -224,7 +224,7 @@ export function ComingUp({ stays, className }: { stays: StayCard[]; className?: 
                 className="focus-ring -mx-2 flex items-center gap-3 rounded-xl px-2 py-2.5 hover:bg-surface-muted/60"
               >
                 <span className="flex w-12 shrink-0 flex-col items-center rounded-lg bg-surface-muted py-1 text-center">
-                  <span className="text-[10px] font-semibold uppercase text-stone-500">
+                  <span className="text-[11px] font-semibold uppercase text-stone-500">
                     {shortDay.format(s.checkIn).split(" ")[0]}
                   </span>
                   <span className="text-lg font-semibold leading-none text-foreground">{s.checkIn.getUTCDate()}</span>

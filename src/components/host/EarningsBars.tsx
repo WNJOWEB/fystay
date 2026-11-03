@@ -101,7 +101,7 @@ export function EarningsBars({
           <span
             key={bar.label}
             className={cn(
-              "flex-1 text-center text-[10px] leading-none",
+              "flex-1 text-center text-[11px] leading-none",
               bar.current ? "font-semibold text-foreground" : "text-stone-500",
             )}
           >
