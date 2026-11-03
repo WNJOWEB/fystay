@@ -14,6 +14,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { DEFAULT_SHARE_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { hostCommissionText } from "@/lib/pricingPolicy";
+import { HostEarningsCalculator } from "@/components/HostEarningsCalculator";
 import { smartPricingMode } from "@/lib/smartPricingMode";
 
 const title = "List Your Holiday Let in Lancashire & the North West";
@@ -30,11 +31,11 @@ export const metadata: Metadata = {
 
 /**
  * Each reason is written as a direct, factual statement about how FYStay
- * itself works - never a claim about a competitor's fees, algorithm, or
- * conversion rate, since none of that is something this app could actually
- * support. The contrast with a large global platform is left implicit in
- * what FYStay deliberately doesn't do (no worldwide catalogue, no relay
- * between host and guest), not asserted as a fact about anyone else.
+ * itself works - never a claim about a competitor's algorithm or conversion
+ * rate, since none of that is something this app could support. The one
+ * comparison made is on fees (the "What you keep" section): each site's own
+ * published rate, linked and dated (src/lib/competitorFees.ts), applied to
+ * the same stay.
  */
 const REASONS = [
   {
@@ -67,6 +68,14 @@ const REASONS = [
     description:
       `You set your own nightly rate, with cleaning included - guests pay exactly that, with no booking fees added. FYStay's only charge is a commission of ${hostCommissionText(smartPricingMode())} on each booking, taken before your payout. No card fees, no subscription.`,
   },
+];
+
+const GOOD_TO_KNOW = [
+  "Guests pay your price. No booking fee is added on top.",
+  "Your share is paid to your bank 89 days after the guest pays, through Stripe.",
+  "You connect a Stripe account before guests can book.",
+  "You choose your cancellation policy.",
+  "Keeping the property safe and legal (gas, fire, electrics) is your responsibility.",
 ];
 
 const STEPS = [
@@ -163,7 +172,31 @@ export default async function BecomeAHostPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="scroll-mt-20 border-y border-border-subtle bg-surface-muted">
+      <section id="what-you-keep" className="scroll-mt-20 border-t border-border-subtle bg-surface-muted">
+        <div className="mx-auto grid w-full max-w-5xl gap-8 px-6 py-14 lg:grid-cols-2 lg:items-start">
+          <div>
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">What you keep</h2>
+            <p className="mt-1 text-sm text-stone-500">
+              FYStay takes {hostCommissionText(smartPricingMode())} of each booking. Nothing else.
+            </p>
+            <h3 className="mt-6 text-sm font-semibold text-foreground">Good to know</h3>
+            <ul className="mt-2 flex flex-col gap-2 text-sm text-stone-700">
+              {GOOD_TO_KNOW.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+            <Link href="/host-guide" className="mt-4 inline-block text-sm font-medium text-brand-700 hover:underline">
+              Read the host guide →
+            </Link>
+          </div>
+          <HostEarningsCalculator />
+        </div>
+      </section>
+
+      <section id="how-it-works" className="scroll-mt-20 border-t border-border-subtle">
         <div className="mx-auto max-w-3xl px-6 py-14">
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">How listing works</h2>
           <p className="mt-1 text-sm text-stone-500">
