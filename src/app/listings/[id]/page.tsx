@@ -370,6 +370,7 @@ export default async function ListingDetailPage({
   const hostCard = (
     <div className="mt-8">
       <HostCard
+        hostId={listing.hostId}
         hostName={listing.host.name}
         hostImage={listing.host.image}
         hostingSinceYear={listing.host.createdAt.getFullYear()}

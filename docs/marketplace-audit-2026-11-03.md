@@ -31,7 +31,7 @@ Effort: S = a day or less, M = a few days, L = a week or more. When: **Pre-launc
 | Content | Real listings with real photos (and the Lodge on the Lake as the showpiece) | The product is the listings | - | Pre-launch |
 | Content | Town topic pages are thin (about 3 hand-written entries per category) | Most will stay out of search until written up | M per town | First month |
 | Trust | Host public profile page (photo, about, all their stays, response time) | Airbnb and Booking.com both show who you are booking from; it is the big advantage for a personal marketplace | M | First month |
-| Trust | Honest badges: "Identity verified" exists; add "Responds within X" and, later, "Top rated" computed from real reviews only | Social proof without invented claims | S | First month |
+| Trust | Honest badges: correction (3 Nov) - "Identity verified", "Great Host", response rate and "Usually replies within..." already exist on every listing, computed from real data. Nothing to add | - | - | Done |
 | Guest | Notification settings (what emails and texts to receive) | Expected on every account page | S-M | First month |
 | Guest | Several named wishlists, shareable | Trip planning with a partner or friends | M | Quarter |
 | Guest | Saved searches and price or availability alerts | Brings people back | M | Quarter |
@@ -90,7 +90,7 @@ Effort: host navigation M (about 2 days), admin navigation S-M (1 day), account 
 - [ ] 6-10 real listings with real photography and honest descriptions, the Lodge on the Lake first.
 - [ ] A "Why list with FYStay" page: how bookings and payouts work, what a host earns on a sample booking, what guests see, how to get started in five steps. Quote competitor fees only after checking their current published rates.
 - [ ] The host sign-up and first-listing flow tested start to finish on a phone by someone who has never used it.
-- [ ] Host profile pages, so a guest sees a real person.
+- [x] Host profile pages, so a guest sees a real person (built 3 Nov, Preview): /hosts/<id> with photo, badges, response stats, their stays and recent reviews; nothing private. A host bio needs a new database field (a Production migration, so waits for approval); kept noindex while pages are thin.
 - [ ] No placeholder text, dead links, empty rows or broken layouts on any public page (full pass on phone and desktop).
 - [ ] Real emails checked: confirmation, host notice, reminder, review request, cancellation.
 - [ ] Legal entity details published once the company is confirmed (PR #7 stays unmerged until then).
@@ -120,7 +120,7 @@ Also fixed on the way (found by a new test): the cookie notice covered the host'
 
 **Weeks 3-6 (first month after launch)**
 - [x] Account page grouped into four sections with a sticky jump bar (built 3 Nov, Preview; kept as one page so Google linking, identity return and email confirmation still work). Still to do: Notification settings
-- [ ] Host public profile page; "responds within" badge
+- [x] Host public profile page (built 3 Nov). The response badges already existed. Still to do: an optional host bio (needs a database migration)
 - [ ] Message templates and quick replies
 - [ ] Admin monitoring view for failed emails and webhooks
 - [ ] Review-request email tested end to end
