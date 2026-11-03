@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Award, BadgeCheck, MessageCircle, Zap } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
@@ -19,6 +20,7 @@ import { formatResponseTime } from "@/lib/hostStats";
  * honestly compute or confirm it.
  */
 export function HostCard({
+  hostId,
   hostName,
   hostImage,
   hostingSinceYear,
@@ -31,6 +33,8 @@ export function HostCard({
   isLoggedIn,
   isOwnListing,
 }: {
+  /** Links the name and photo to the host's public profile page. */
+  hostId?: string;
   hostName: string;
   hostImage?: string | null;
   hostingSinceYear: number;
@@ -46,11 +50,23 @@ export function HostCard({
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-border-subtle p-5 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-4">
-        <Avatar name={hostName} src={hostImage} size={56} className="ring-2 ring-brand-50" />
+        {hostId ? (
+          <Link href={`/hosts/${hostId}`} aria-label={`${hostName}'s profile`} className="focus-ring rounded-full">
+            <Avatar name={hostName} src={hostImage} size={56} className="ring-2 ring-brand-50" />
+          </Link>
+        ) : (
+          <Avatar name={hostName} src={hostImage} size={56} className="ring-2 ring-brand-50" />
+        )}
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-stone-500">Hosted by</p>
           <p className="flex items-center gap-2 text-lg font-semibold text-foreground">
-            {hostName}
+            {hostId ? (
+              <Link href={`/hosts/${hostId}`} className="focus-ring rounded hover:underline">
+                {hostName}
+              </Link>
+            ) : (
+              hostName
+            )}
             {isGreatHost && (
               <Badge variant="brand" className="gap-1">
                 <Award className="h-3 w-3" aria-hidden />
