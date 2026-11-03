@@ -49,6 +49,7 @@ async function getHandler(request: Request) {
       status: "CONFIRMED",
       paymentStatus: "PAID",
       arrivalReminderSentAt: null,
+      guest: { emailArrivalReminders: true },
       checkIn: { gte: now, lte: addDays(now, ARRIVAL_REMINDER_WINDOW_DAYS) },
     },
     include: { listing: { include: { host: true } } },
@@ -96,6 +97,7 @@ async function getHandler(request: Request) {
     where: {
       status: { in: ["CONFIRMED", "COMPLETED"] },
       reviewRequestSentAt: null,
+      guest: { emailReviewRequests: true },
       review: null,
       checkOut: { lte: addDays(now, -REVIEW_REQUEST_DELAY_DAYS) },
     },
@@ -142,7 +144,12 @@ async function getHandler(request: Request) {
   const transferOffering = await getActiveOfferingByCategory("AIRPORT_TRANSFER");
   if (transferOffering) {
     const transferCandidates = await prisma.booking.findMany({
-      where: { status: "CONFIRMED", paymentStatus: "PAID", transferUpsellEmailSentAt: null },
+      where: {
+        status: "CONFIRMED",
+        paymentStatus: "PAID",
+        transferUpsellEmailSentAt: null,
+        guest: { emailTripOffers: true },
+      },
       include: { listing: { include: { host: true } } },
     });
 

@@ -157,6 +157,15 @@ model User {
   emailVerifiedAt DateTime?
   role            Role      @default(GUEST)
   image           String?
+  // A host's short "about me", shown on their public host page (/hosts/<id>).
+  // Plain text, 500 characters at most; null until they write one.
+  hostBio         String?
+  // Optional emails the person can switch off (Account > Notifications).
+  // Booking confirmations, receipts, cancellations, payment and security
+  // emails are always sent - those are part of the booking itself.
+  emailArrivalReminders Boolean @default(true)
+  emailReviewRequests   Boolean @default(true)
+  emailTripOffers       Boolean @default(true)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 

@@ -4,13 +4,19 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitedResponse } from "@/lib/rateLimit";
 import { withApiErrorHandling } from "@/lib/apiError";
+import { HOST_BIO_MAX } from "@/lib/hostBio";
 
-const updateProfileSchema = z.object({
-  name: z.string().trim().min(1, "Enter your name").max(100),
-});
+
+const updateProfileSchema = z
+  .object({
+    name: z.string().trim().min(1, "Enter your name").max(100).optional(),
+    // A host's public "about me". Empty clears it.
+    bio: z.string().trim().max(HOST_BIO_MAX, `Keep it to ${HOST_BIO_MAX} characters or fewer`).optional(),
+  })
+  .refine((value) => value.name !== undefined || value.bio !== undefined, { message: "Nothing to update" });
 
 /**
- * Display name only - this deliberately does not touch email (its own
+ * Display name and a host's public bio only - this deliberately does not touch email (its own
  * verified change flow, see /api/account/email/request) or phone (owned
  * end to end by the Twilio verification flow in /api/account/phone/*,
  * which sets it together with phoneVerifiedAt - a generic profile PATCH
@@ -36,9 +42,16 @@ async function patchHandler(request: Request) {
     return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
   }
 
+  if (parsed.data.bio !== undefined && session.user.role !== "HOST") {
+    return NextResponse.json({ error: "Only hosts have a public bio." }, { status: 403 });
+  }
+
   await prisma.user.update({
     where: { id: session.user.id },
-    data: { name: parsed.data.name },
+    data: {
+      ...(parsed.data.name !== undefined && { name: parsed.data.name }),
+      ...(parsed.data.bio !== undefined && { hostBio: parsed.data.bio || null }),
+    },
   });
 
   return NextResponse.json({ ok: true });

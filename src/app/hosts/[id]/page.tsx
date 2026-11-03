@@ -79,6 +79,8 @@ export default async function HostProfilePage({ params }: { params: Promise<Para
         </div>
       </header>
 
+      {profile.bio && <p className="mt-5 max-w-2xl whitespace-pre-line text-stone-700">{profile.bio}</p>}
+
       <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3 border-y border-border-subtle py-4 text-sm">
         <div>
           <dt className="text-xs text-stone-500">Hosting since</dt>

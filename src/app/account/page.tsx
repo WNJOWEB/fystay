@@ -17,6 +17,8 @@ import { SecuritySessionsCard } from "@/components/SecuritySessionsCard";
 import { TwoFactorCard } from "@/components/TwoFactorCard";
 import { SignInMethodsCard, type ConnectedIdentity } from "@/components/SignInMethodsCard";
 import { enabledSocialProviders } from "@/lib/authProviders";
+import { HostBioCard } from "@/components/HostBioCard";
+import { NotificationSettingsCard } from "@/components/NotificationSettingsCard";
 import { isOAuthProvider } from "@/lib/oauthProviders";
 import { isTwoFactorConfigured } from "@/lib/twoFactorCrypto";
 
@@ -24,6 +26,7 @@ export const metadata: Metadata = { title: "Account", robots: { index: false } }
 
 const SECTIONS = [
   { id: "personal", label: "Personal" },
+  { id: "notifications", label: "Notifications" },
   { id: "verification", label: "Verification" },
   { id: "security", label: "Security" },
   { id: "privacy", label: "Privacy" },
@@ -57,6 +60,10 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
       name: true,
       email: true,
       image: true,
+      hostBio: true,
+      emailArrivalReminders: true,
+      emailReviewRequests: true,
+      emailTripOffers: true,
       phone: true,
       phoneVerifiedAt: true,
       identityVerificationStatus: true,
@@ -123,7 +130,18 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
 
       <AccountSection id="personal" title="Personal details">
         <ProfileCard initialName={user.name} email={user.email} image={user.image} />
+        {session.user.role === "HOST" && <HostBioCard initialBio={user.hostBio ?? ""} hostId={session.user.id} />}
         {hasPassword && <EmailChangeCard currentEmail={user.email} />}
+      </AccountSection>
+
+      <AccountSection id="notifications" title="Notifications">
+        <NotificationSettingsCard
+          initial={{
+            emailArrivalReminders: user.emailArrivalReminders,
+            emailReviewRequests: user.emailReviewRequests,
+            emailTripOffers: user.emailTripOffers,
+          }}
+        />
       </AccountSection>
 
       <AccountSection id="verification" title="Verification">

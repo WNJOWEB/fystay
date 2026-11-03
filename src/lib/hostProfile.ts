@@ -8,6 +8,7 @@ export type HostPublicProfile = {
   id: string;
   name: string;
   image: string | null;
+  bio: string | null;
   hostingSinceYear: number;
   isIdentityVerified: boolean;
   isGreatHost: boolean;
@@ -45,7 +46,7 @@ const firstName = (name: string) => name.trim().split(/\s+/)[0] || "Guest";
 export async function loadHostPublicProfile(hostId: string): Promise<HostPublicProfile | null> {
   const host = await prisma.user.findUnique({
     where: { id: hostId },
-    select: { id: true, name: true, image: true, role: true, createdAt: true, deletedAt: true, suspendedAt: true, identityVerificationStatus: true },
+    select: { id: true, name: true, image: true, hostBio: true, role: true, createdAt: true, deletedAt: true, suspendedAt: true, identityVerificationStatus: true },
   });
   if (!host || host.role !== "HOST" || host.deletedAt || host.suspendedAt) return null;
 
@@ -98,6 +99,7 @@ export async function loadHostPublicProfile(hostId: string): Promise<HostPublicP
     id: host.id,
     name: host.name,
     image: host.image,
+    bio: host.hostBio?.trim() || null,
     hostingSinceYear: host.createdAt.getFullYear(),
     isIdentityVerified: host.identityVerificationStatus === "VERIFIED",
     isGreatHost: isGreatHost({ completedBookings, averageRating: reviewStats._avg.rating, responseRate }),
