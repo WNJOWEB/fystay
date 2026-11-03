@@ -122,6 +122,22 @@ test.describe("checkout and payment", () => {
     }
   });
 
+  test("paying needs the cancellation policy accepted, and nothing is processed without it", async ({ page }) => {
+    const booking = await createPendingBooking(310);
+    try {
+      await login(page, "guest@fystay.dev", "guestpass123");
+      const without = await page.request.post("/api/checkout", {
+        data: { bookingId: booking.id, guestName: "Jamie Guest", guestEmail: "guest@fystay.dev", guestPhone: "07700 000000" },
+      });
+      expect(without.status()).toBe(400);
+      expect((await without.json()).error).toMatch(/cancellation policy/i);
+      const unchanged = await prisma.booking.findUniqueOrThrow({ where: { id: booking.id } });
+      expect(unchanged.status).toBe("PENDING");
+    } finally {
+      await prisma.booking.delete({ where: { id: booking.id } });
+    }
+  });
+
   test("a duplicate payment attempt on an already-processed booking is rejected", async ({
     page,
   }) => {
@@ -130,7 +146,7 @@ test.describe("checkout and payment", () => {
       await login(page, "guest@fystay.dev", "guestpass123");
 
       const first = await page.request.post("/api/checkout", {
-        data: { bookingId: booking.id, guestName: "Jamie Guest", guestEmail: "guest@fystay.dev", guestPhone: "07700 000000" },
+        data: { bookingId: booking.id, guestName: "Jamie Guest", guestEmail: "guest@fystay.dev", guestPhone: "07700 000000", acceptedCancellationPolicy: true },
       });
       expect(first.ok()).toBe(true);
       const firstData = await first.json();
@@ -138,7 +154,7 @@ test.describe("checkout and payment", () => {
 
       // Re-submitting (double-click, a second tab) must not process payment twice.
       const second = await page.request.post("/api/checkout", {
-        data: { bookingId: booking.id, guestName: "Jamie Guest", guestEmail: "guest@fystay.dev", guestPhone: "07700 000000" },
+        data: { bookingId: booking.id, guestName: "Jamie Guest", guestEmail: "guest@fystay.dev", guestPhone: "07700 000000", acceptedCancellationPolicy: true },
       });
       expect(second.status()).toBe(409);
       const secondData = await second.json();
@@ -170,6 +186,7 @@ test.describe("checkout and payment", () => {
         guestName: "Jamie Guest",
         guestEmail: "guest@fystay.dev",
         guestPhone: "07700 123456",
+        acceptedCancellationPolicy: true,
       },
     });
     const { url } = await payRes.json();

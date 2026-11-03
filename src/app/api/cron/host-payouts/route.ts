@@ -7,8 +7,8 @@ import { getStripeClient } from "@/lib/stripe";
 import { runHostPayouts } from "@/lib/hostPayouts";
 
 /**
- * Daily: pays each host's released money out to their bank - 89 days after
- * the guest paid, just inside Stripe's 90-day limit (see src/lib/hostPayouts.ts).
+ * Daily: pays each host's released money out to their bank - the day after
+ * the guest checks in (see src/lib/hostPayouts.ts for the release rules).
  */
 async function getHandler(request: Request) {
   if (!isAuthorizedCronRequest(request)) {

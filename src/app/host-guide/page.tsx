@@ -25,12 +25,12 @@ const STEPS = [
   {
     title: "3. Choose a cancellation policy",
     description:
-      "Pick Flexible, Moderate, Strict, Non-refundable (a full refund only within 24 hours of paying), or set your own Custom refund percentage and cutoff. This is shown to guests before they book, and drives every refund calculation automatically.",
+      "Pick Flexible, Moderate, Strict, Non-refundable (a full refund only within 24 hours of paying), No refund (nothing back once booked), or set your own Custom refund percentage and cutoff. This is shown to guests before they book, and drives every refund calculation automatically.",
   },
   {
     title: "4. Connect payouts and get paid",
     description:
-      `Connect a Stripe account from Payouts in your host dashboard - guests can't pay for a stay until it's set up. When a guest pays, your share - the stay price after any weekly or monthly discount you offer, less FYStay's commission (${hostCommissionText(smartPricingMode())}; a FYStay promo code or credit the guest uses is paid for by FYStay, not you) - goes to your Stripe account straight away and is held there. FYStay pays it into your bank 89 days (about 3 months) after the guest paid, the longest Stripe allows money to be held - for most bookings that's well after the stay; for a stay booked more than about 3 months ahead, it's before. It usually reaches your bank within 1-2 working days; a new account's first payout can take a little longer while Stripe checks it. If a booking is cancelled and the guest gets a refund under your cancellation policy, the same proportion of your share is taken back.`,
+      `Connect a Stripe account from Payouts in your host dashboard - guests can't pay for a stay until it's set up. When a guest pays, your share - the stay price after any weekly or monthly discount you offer, less FYStay's commission (${hostCommissionText(smartPricingMode())}; a FYStay promo code or credit the guest uses is paid for by FYStay, not you) - goes to your Stripe account straight away and is held there until the day after your guest checks in, when FYStay pays it into your bank (for a stay booked more than about 3 months ahead, a little earlier, as Stripe doesn't allow money to be held longer). It usually reaches your bank within 1-2 working days; a new account's first payout can take a little longer while Stripe checks it. If a booking is cancelled and the guest gets a refund under your cancellation policy, the same proportion of your share is taken back.`,
   },
   {
     title: "5. Publish and manage availability",

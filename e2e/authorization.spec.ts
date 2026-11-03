@@ -124,7 +124,7 @@ test.describe("authorization by direct URL", () => {
     expect([403, 404]).toContain(read.status());
     const cancel = await page.request.post(`/api/bookings/${otherBookingId}/cancel`);
     expect([403, 404]).toContain(cancel.status());
-    const pay = await page.request.post("/api/checkout", { data: { bookingId: otherBookingId } });
+    const pay = await page.request.post("/api/checkout", { data: { bookingId: otherBookingId, acceptedCancellationPolicy: true } });
     expect([403, 404]).toContain(pay.status());
 
     const unchanged = await prisma.booking.findUniqueOrThrow({ where: { id: otherBookingId } });

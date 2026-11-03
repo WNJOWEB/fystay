@@ -134,7 +134,8 @@ export default async function CheckoutPage({
               defaultEmail={booking.guestEmail ?? session.user.email ?? ""}
               defaultPhone={knownPhone}
               guests={booking.guests}
-              totalPriceCents={booking.totalPriceCents}
+                            totalPriceCents={booking.totalPriceCents}
+              cancellationPolicy={{ label: cancellationPolicy.label, description: cancellationPolicy.description }}
             />
           </div>
           <div className="lg:col-span-2">

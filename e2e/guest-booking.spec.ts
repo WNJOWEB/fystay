@@ -103,6 +103,10 @@ test("guest can log in, book a listing, and see it in their trips", async ({ pag
   await expect(page.getByRole("heading", { name: "Confirm and pay" })).toBeVisible();
   // Name/email are prefilled from the account; only phone is missing.
   await page.fill("#guestPhone", "07700 900123");
+  // Paying needs the stay's cancellation policy accepted first.
+  await page.getByRole("button", { name: /Pay securely/ }).first().click();
+  await expect(page.getByText("Please tick the box to accept the cancellation policy.")).toBeVisible();
+  await page.getByRole("checkbox", { name: /I accept this stay's cancellation policy/ }).check();
   await Promise.all([
     page.waitForResponse((r) => r.url().includes("/api/checkout") && r.request().method() === "POST"),
     page.getByRole("button", { name: /Pay securely/ }).first().click(),

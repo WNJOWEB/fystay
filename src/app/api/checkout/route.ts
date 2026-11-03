@@ -16,6 +16,7 @@ import { BASE_URL } from "@/lib/baseUrl";
 import { releaseUnpaidBooking } from "@/lib/bookingLifecycle";
 import { getOrCreateStripeCustomer } from "@/lib/stripeCustomer";
 import { withListingAvailabilityLock } from "@/lib/availabilityLock";
+import { bookingCancellationTerms, resolveCancellationPolicy } from "@/lib/cancellationPolicy";
 
 /**
  * Just over Stripe's 30-minute minimum Checkout Session lifetime - the
@@ -38,8 +39,12 @@ const checkoutSchema = z.object({
     .trim()
     .min(1, "Please enter a phone number.")
     .max(50, "Phone number is too long.")
-    .refine(isPlausiblePhone, "Please enter a valid phone number, e.g. 07700 900123.")
+        .refine(isPlausiblePhone, "Please enter a valid phone number, e.g. 07700 900123.")
     .optional(),
+  // The guest ticked "I accept this stay's cancellation policy" - required,
+  // and recorded on the payment (see the metadata below) as evidence if the
+  // charge is ever disputed.
+  acceptedCancellationPolicy: z.literal(true, { error: "Please confirm you accept the cancellation policy." }),
 });
 
 async function postHandler(request: Request) {
@@ -271,21 +276,40 @@ async function postHandler(request: Request) {
         ]
       : undefined;
 
+    const acceptedPolicy = resolveCancellationPolicy(bookingCancellationTerms(booking));
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
-    payment_method_types: ["card"],
+        payment_method_types: ["card"],
+    // Ask the card's bank to check the guest is who they say (3D Secure) on
+    // every payment it supports, not only when it insists. A payment the
+    // cardholder authenticated this way generally can't later be disputed
+    // as "I didn't make this payment" - the bank, not FYStay or the host,
+    // carries that fraud risk.
+    payment_method_options: { card: { request_three_d_secure: "any" } },
+    // The policy, in words, above the Pay button on Stripe's own page.
+    custom_text: {
+      submit: { message: `${acceptedPolicy.label}: ${acceptedPolicy.description} By paying you accept this cancellation policy.` },
+    },
     // The guest's own Stripe customer (created once, then reused).
     customer: await getOrCreateStripeCustomer(stripe, prisma, booking.guestId),
     line_items: lineItems,
     ...(discounts && { discounts }),
-    metadata: { bookingId: booking.id },
+        metadata: { bookingId: booking.id },
     // About Stripe's shortest allowed lifetime, instead of its 24-hour default, so
     // an abandoned payment page can't be completed long after the date hold
     // ended. The webhook re-checks availability as the final safeguard.
     expires_at: Math.floor(Date.now() / 1000) + CHECKOUT_SESSION_TTL_SECONDS,
     success_url: `${confirmationUrl}?success=1`,
     cancel_url: `${baseUrl}/checkout/${booking.id}?cancelled=1`,
-    payment_intent_data: destinationChargeData(booking.listing.host.stripeConnectAccountId!, applicationFeeCents),
+        payment_intent_data: {
+      ...destinationChargeData(booking.listing.host.stripeConnectAccountId!, applicationFeeCents),
+      // What the guest agreed to, and when, kept on the payment itself.
+      metadata: {
+        bookingId: booking.id,
+        cancellationPolicy: acceptedPolicy.label,
+        cancellationPolicyAcceptedAt: new Date().toISOString(),
+      },
+    },
   });
 
   // Conditional on stripeSessionId still being what we read (unset, or an

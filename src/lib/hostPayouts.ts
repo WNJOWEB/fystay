@@ -1,33 +1,48 @@
 import type Stripe from "stripe";
-import type { Prisma, PrismaClient } from "@prisma/client";
+import type { DisputeStatus, Prisma, PrismaClient } from "@prisma/client";
 import { isConnectReady } from "@/lib/stripeConnect";
 import { reportError } from "@/lib/observability";
 
 /**
- * When a host's share reaches their bank (owner's decision, 16 and 17 Oct:
- * as late as is allowed, to protect FYStay against cancellations, no-shows,
- * complaints and chargebacks).
+ * When a host's share reaches their bank (owner's decision, 3 Nov 2026: the
+ * industry standard - about a day after the guest checks in, once they have
+ * arrived and the stay is under way; Airbnb pays about 24 hours after
+ * check-in, Booking.com after the stay. This replaces the 16-17 Oct choice of
+ * holding everything for the maximum 89 days).
  *
  * The guest's payment is still a destination charge, so the host's share
  * lands in their Stripe balance when the guest pays, and a refund still
  * reverses it from there. What changes is the payout to the bank: host
  * accounts are on manual payouts, and the daily host-payouts cron pays out
  * only what no unreleased booking still needs. A booking's share is released
- * 89 days after the guest paid: Stripe pays manually held funds in the UK out
- * itself after 90 days, so this is the latest FYStay can hold them. For most
- * bookings that is well after check-out; a booking made more than about 3
- * months ahead is paid out before its stay.
+ * the day after check-in (the check-in date is stored as midnight UTC, and
+ * the cron runs at 11:00 UTC), and never less than a day after the guest paid
+ * - so a same-day booking, or one inside the 24-hour free-cancellation
+ * window, is still held while that refund can happen.
+ *
+ * Two safety rules: a booking with an open chargeback stays held, and no
+ * share is held beyond 89 days after payment, because Stripe pays manually
+ * held funds in the UK out itself after 90 days (a stay booked more than
+ * about 3 months ahead is therefore paid out before it starts).
  */
+export const PAYOUT_DELAY_HOURS = 24;
 export const MAX_HOLD_DAYS = 89;
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+const HOUR_MS = 60 * 60 * 1000;
+const DAY_MS = 24 * HOUR_MS;
 
-export function hostPayoutReleaseAt(booking: { paidAt: Date }): Date {
-  return new Date(booking.paidAt.getTime() + MAX_HOLD_DAYS * DAY_MS);
+export function hostPayoutReleaseAt(booking: { paidAt: Date; checkIn: Date }): Date {
+  const afterCheckIn = booking.checkIn.getTime() + PAYOUT_DELAY_HOURS * HOUR_MS;
+  const afterPayment = booking.paidAt.getTime() + PAYOUT_DELAY_HOURS * HOUR_MS;
+  const cap = booking.paidAt.getTime() + MAX_HOLD_DAYS * DAY_MS;
+  return new Date(Math.min(Math.max(afterCheckIn, afterPayment), cap));
 }
 
 type HeldBooking = {
   paidAt: Date | null;
+  checkIn: Date;
+  /** A chargeback on this booking is still open. */
+  hasOpenDispute?: boolean;
   totalPriceCents: number;
   applicationFeeCents: number | null;
   changeRequests: { applicationFeeCents: number | null }[];
@@ -40,7 +55,11 @@ type HeldBooking = {
  */
 export function heldHostShareCents(bookings: HeldBooking[], now: Date): number {
   return bookings.reduce((sum, booking) => {
-    if (!booking.paidAt || hostPayoutReleaseAt({ paidAt: booking.paidAt }) <= now) return sum;
+    if (!booking.paidAt) return sum;
+    const releaseAt = hostPayoutReleaseAt({ paidAt: booking.paidAt, checkIn: booking.checkIn });
+    const capAt = booking.paidAt.getTime() + MAX_HOLD_DAYS * DAY_MS;
+    // Released once its time has come - unless a chargeback is open, which holds it until Stripe's own limit.
+    if (releaseAt <= now && !(booking.hasOpenDispute && now.getTime() < capAt)) return sum;
     const fees =
       (booking.applicationFeeCents ?? 0) +
       booking.changeRequests.reduce((total, change) => total + (change.applicationFeeCents ?? 0), 0);
@@ -58,6 +77,9 @@ export function heldBookingsWhere(hostId: string): Prisma.BookingWhereInput {
     paymentStatus: { in: ["PAID", "PARTIALLY_REFUNDED"] },
   };
 }
+
+/** A chargeback that has not been decided yet. */
+const OPEN_DISPUTE_STATUSES: DisputeStatus[] = ["WARNING_NEEDS_RESPONSE", "WARNING_UNDER_REVIEW", "NEEDS_RESPONSE", "UNDER_REVIEW"];
 
 export const MANUAL_PAYOUTS: Stripe.BalanceSettingsUpdateParams = {
   payments: { payouts: { schedule: { interval: "manual" } } },
@@ -93,12 +115,17 @@ export async function runHostPayouts(stripe: Stripe, db: PrismaClient, now = new
         where: heldBookingsWhere(host.id),
         select: {
           paidAt: true,
+          checkIn: true,
           totalPriceCents: true,
           applicationFeeCents: true,
           changeRequests: { where: { paidAt: { not: null } }, select: { applicationFeeCents: true } },
+          disputes: { where: { status: { in: OPEN_DISPUTE_STATUSES } }, select: { id: true }, take: 1 },
         },
       });
-      const heldCents = heldHostShareCents(bookings, now);
+      const heldCents = heldHostShareCents(
+        bookings.map(({ disputes, ...booking }) => ({ ...booking, hasOpenDispute: disputes.length > 0 })),
+        now,
+      );
       const balance = await stripe.balance.retrieve({}, { stripeAccount: accountId });
       const availableCents = balance.available.find((entry) => entry.currency === "gbp")?.amount ?? 0;
       const amount = availableCents - heldCents;

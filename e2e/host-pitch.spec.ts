@@ -18,5 +18,5 @@ test("the List your place page shows what a host keeps, with each site's fee, so
   await expect(section.getByRole("link", { name: "Booking.com" })).toHaveAttribute("href", /booking\.com/);
   await expect(section.getByText(/published by each site on \d+ \w+ \d{4}/)).toBeVisible();
   // Payout timing is stated, not hidden.
-  await expect(section.getByText(/89 days after the guest pays/)).toBeVisible();
+  await expect(section.getByText(/the day after your guest checks in/)).toBeVisible();
 });

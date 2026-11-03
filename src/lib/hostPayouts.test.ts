@@ -9,25 +9,41 @@ vi.mock("@/lib/stripe", () => ({ getStripeClient: () => null }));
 const day = (iso: string) => new Date(`${iso}T00:00:00Z`);
 
 describe("hostPayoutReleaseAt", () => {
-  it("releases 89 days after payment, just inside Stripe's 90-day limit", () => {
-    expect(hostPayoutReleaseAt({ paidAt: day("2026-10-16") })).toEqual(day("2027-01-13"));
+  it("releases the day after check-in", () => {
+    expect(hostPayoutReleaseAt({ paidAt: day("2026-10-16"), checkIn: day("2026-11-17") })).toEqual(day("2026-11-18"));
+  });
+
+  it("holds a same-day booking for a day after it was paid, so a 24-hour refund can still come out of it", () => {
+    const paidAt = new Date("2026-11-17T14:00:00Z");
+    expect(hostPayoutReleaseAt({ paidAt, checkIn: day("2026-11-17") })).toEqual(new Date("2026-11-18T14:00:00Z"));
+  });
+
+  it("never holds money beyond 89 days after payment, Stripe's own limit (a stay booked far ahead is paid before it starts)", () => {
+    expect(hostPayoutReleaseAt({ paidAt: day("2026-10-16"), checkIn: day("2027-06-01") })).toEqual(day("2027-01-13"));
   });
 });
 
 describe("heldHostShareCents", () => {
   const booking = {
     paidAt: day("2026-10-16"),
+    checkIn: day("2026-11-17"),
     totalPriceCents: 50_000,
     applicationFeeCents: 5_000,
     changeRequests: [{ applicationFeeCents: 1_000 }],
   };
 
-  it("holds the host's share of an unreleased stay, net of FYStay's fees", () => {
-    expect(heldHostShareCents([booking], day("2027-01-12"))).toBe(44_000);
+  it("holds the host's share until the day after check-in, net of FYStay's fees", () => {
+    expect(heldHostShareCents([booking], day("2026-11-17"))).toBe(44_000);
   });
 
   it("holds nothing once the stay is released", () => {
-    expect(heldHostShareCents([booking], day("2027-01-13"))).toBe(0);
+    expect(heldHostShareCents([booking], day("2026-11-18"))).toBe(0);
+  });
+
+  it("keeps a booking with an open chargeback held after its release, until Stripe's own 90-day limit", () => {
+    const disputed = { ...booking, hasOpenDispute: true };
+    expect(heldHostShareCents([disputed], day("2026-12-01"))).toBe(44_000);
+    expect(heldHostShareCents([disputed], day("2027-01-13"))).toBe(0);
   });
 
   it("ignores unpaid bookings", () => {
@@ -54,7 +70,7 @@ describe("runHostPayouts", () => {
       },
       booking: {
         findMany: vi.fn().mockResolvedValue([
-          { paidAt: day("2026-10-16"), totalPriceCents: 50_000, applicationFeeCents: 5_000, changeRequests: [] },
+          { paidAt: day("2026-10-16"), checkIn: day("2026-11-17"), totalPriceCents: 50_000, applicationFeeCents: 5_000, changeRequests: [], disputes: [] },
         ]),
       },
     };
@@ -70,6 +86,13 @@ describe("runHostPayouts", () => {
       { stripeAccount: "acct_1", idempotencyKey: "host-payout:acct_1:2026-10-20:15000" },
     );
     expect(results).toEqual([{ accountId: "acct_1", paidOutCents: 15_000, heldCents: 45_000 }]);
+  });
+
+  it("pays out a released stay the day after check-in", async () => {
+    const { stripe, db } = setup();
+    const results = await runHostPayouts(stripe as unknown as Stripe, db as unknown as PrismaClient, day("2026-11-18"));
+    expect(stripe.payouts.create).toHaveBeenCalledWith(expect.objectContaining({ amount: 60_000 }), expect.anything());
+    expect(results[0]).toMatchObject({ paidOutCents: 60_000, heldCents: 0 });
   });
 
   it("pays nothing while the balance is all held", async () => {

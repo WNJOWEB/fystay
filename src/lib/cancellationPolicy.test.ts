@@ -230,3 +230,28 @@ describe("Non-refundable with a 24-hour window after payment", () => {
     });
   });
 });
+
+describe("No refund", () => {
+  it("is a custom policy that refunds 0%, with its own label", () => {
+    const policy = resolveCancellationPolicy({ cancellationPolicy: "CUSTOM", customCancellationRefundPercent: 0, customCancellationCutoffDays: 14 });
+    expect(policy.label).toBe("No refund");
+    expect(policy.fullRefundHoursAfterPayment).toBeUndefined();
+  });
+
+  it("refunds nothing, whenever the guest cancels - even straight after paying", () => {
+    const policy = resolveCancellationPolicy({ cancellationPolicy: "CUSTOM", customCancellationRefundPercent: 0 });
+    const checkIn = new Date("2026-12-20T00:00:00Z");
+    const paidAt = new Date("2026-11-03T10:00:00Z");
+    for (const now of [new Date("2026-11-03T10:30:00Z"), new Date("2026-11-20T00:00:00Z"), new Date("2026-12-19T23:00:00Z")]) {
+      expect(computeCancellationRefund({ policy, amountPaidCents: 50_000, checkIn, now, paidAt })).toEqual({
+        refundPercent: 0,
+        refundCents: 0,
+        nonRefundableCents: 50_000,
+      });
+    }
+  });
+
+  it("leaves a real custom percentage as Custom", () => {
+    expect(resolveCancellationPolicy({ cancellationPolicy: "CUSTOM", customCancellationRefundPercent: 25 }).label).toBe("Custom");
+  });
+});

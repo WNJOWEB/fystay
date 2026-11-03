@@ -22,20 +22,25 @@ export function CheckoutForm({
   defaultName,
   defaultEmail,
   defaultPhone,
-  guests,
+    guests,
   totalPriceCents,
+  cancellationPolicy,
 }: {
   bookingId: string;
   defaultName: string;
   defaultEmail: string;
   defaultPhone: string;
-  guests: number;
+    guests: number;
   totalPriceCents: number;
+  /** The policy this stay is booked under, which the guest must accept before paying. */
+  cancellationPolicy: { label: string; description: string };
 }) {
   const [name, setName] = useState(defaultName);
   const [email, setEmail] = useState(defaultEmail);
   const [phone, setPhone] = useState(defaultPhone);
   const [error, setError] = useState<string | null>(null);
+    const [accepted, setAccepted] = useState(false);
+  const [policyError, setPolicyError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const mobileBarRef = useRef<HTMLDivElement>(null);
@@ -54,6 +59,11 @@ export function CheckoutForm({
       return;
     }
 
+        if (!accepted) {
+      setPolicyError(true);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("/api/checkout", {
@@ -63,7 +73,8 @@ export function CheckoutForm({
           bookingId,
           guestName: name.trim(),
           guestEmail: email.trim(),
-          guestPhone: phone.trim(),
+                    guestPhone: phone.trim(),
+          acceptedCancellationPolicy: true,
         }),
       });
       const data = await res.json();
@@ -149,7 +160,34 @@ export function CheckoutForm({
         </CardContent>
       </Card>
 
-      <Button type="submit" loading={loading} size="lg" className="mt-6 hidden w-full lg:flex">
+            <div className="mt-6 rounded-xl border border-border-subtle bg-surface p-4">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-stone-700">
+          <input
+            id="acceptCancellationPolicy"
+            type="checkbox"
+            checked={accepted}
+            onChange={(e) => {
+              setAccepted(e.target.checked);
+              if (e.target.checked) setPolicyError(false);
+            }}
+            aria-invalid={policyError}
+            aria-describedby={policyError ? "cancellation-policy-error" : undefined}
+            className="mt-0.5 h-5 w-5 shrink-0 rounded border-border-subtle accent-brand-700"
+          />
+          <span>
+            I accept this stay&apos;s cancellation policy:{" "}
+            <span className="font-semibold text-foreground">{cancellationPolicy.label}.</span>{" "}
+            {cancellationPolicy.description}
+          </span>
+        </label>
+        {policyError && (
+          <p id="cancellation-policy-error" role="alert" className="mt-2 text-sm text-red-600">
+            Please tick the box to accept the cancellation policy.
+          </p>
+        )}
+      </div>
+
+      <Button type="submit" loading={loading} size="lg" className="mt-4 hidden w-full lg:flex">
         Pay securely {formatPrice(totalPriceCents)}
       </Button>
       {/* Stripe's page offers the guest's own currency (Adaptive Pricing), with
@@ -165,11 +203,11 @@ export function CheckoutForm({
         <StripeBadge />
       </div>
       <p className="mt-4 text-center text-xs text-stone-500">
-        By paying, you agree to FYStay&apos;s{" "}
+                By paying, you agree to FYStay&apos;s{" "}
         <Link href="/legal/terms" className="underline hover:text-stone-700">
           Terms
         </Link>{" "}
-        and this stay&apos;s cancellation policy shown here. Questions before you book?{" "}
+                and the cancellation policy above. Questions before you book?{" "}
         <a href={`mailto:${SUPPORT_EMAIL}`} className="underline hover:text-stone-700">
           {SUPPORT_EMAIL}
         </a>

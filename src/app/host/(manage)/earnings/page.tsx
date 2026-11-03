@@ -116,7 +116,7 @@ export default async function HostEarningsPage({
             </li>
             <li>
               <strong className="font-semibold text-foreground">Paid automatically.</strong> Each booking goes to your
-              Stripe account when the guest pays, then on to your bank 89 days (about 3 months) after they paid.
+              Stripe account when the guest pays, then on to your bank the day after they check in.
             </li>
           </ul>
         </HostPageEmpty>
@@ -339,7 +339,7 @@ export default async function HostEarningsPage({
 
       <Panel className="mt-4" bodyClassName="flex flex-wrap items-center gap-3 py-4">
         <p className="flex-1 text-sm text-stone-600">
-          Paid to your bank 89 days after the guest pays. Statements are in Stripe.
+          Paid to your bank the day after check-in. Statements are in Stripe.
         </p>
         {host.stripeConnectAccountId && (
           <a href="/api/host/stripe/dashboard" className={buttonVariants({ variant: "outline", size: "sm" })}>

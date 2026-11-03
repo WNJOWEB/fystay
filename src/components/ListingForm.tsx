@@ -16,7 +16,7 @@ import { LAST_MINUTE_WINDOW_OPTIONS } from "@/lib/deals";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/PhotoUploader";
 import { SectionHeading } from "@/components/SectionHeading";
-import { resolveCancellationPolicy, type CancellationPolicyKind } from "@/lib/cancellationPolicy";
+import { NO_REFUND, resolveCancellationPolicy, type CancellationPolicyKind } from "@/lib/cancellationPolicy";
 import { hasBedroomCountMismatch } from "@/lib/listingDataQuality";
 import { PROPERTY_TYPES, PROPERTY_TYPE_LABEL, type PropertyType } from "@/lib/propertyType";
 import {
@@ -248,6 +248,11 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
   const [values, setValues] = useState<ListingFormValues>(() =>
     initialValues ? withPickerTimes(initialValues) : emptyValues,
   );
+    // "No refund" is stored as a custom policy that refunds 0%.
+  const policyChoice =
+    values.cancellationPolicy === "CUSTOM" && values.customCancellationRefundPercent.trim() !== "" && Number(values.customCancellationRefundPercent) === 0
+      ? "NO_REFUND"
+      : values.cancellationPolicy;
   const [legacyTimes, setLegacyTimes] = useState(() => (initialValues ? legacyTimesOf(initialValues) : {}));
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
     () => splitAmenities(initialValues?.amenities ?? []).selected,
@@ -890,25 +895,38 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
             <Label htmlFor="cancellationPolicy">Refund rules for guest cancellations</Label>
             <Select
               id="cancellationPolicy"
-              value={values.cancellationPolicy}
-              onChange={(e) =>
-                update("cancellationPolicy", e.target.value as CancellationPolicyKind)
-              }
+                            value={policyChoice}
+              onChange={(e) => {
+                const choice = e.target.value;
+                if (choice === "NO_REFUND") {
+                  // No refund is a custom policy that refunds 0%.
+                  update("cancellationPolicy", "CUSTOM");
+                  update("customCancellationRefundPercent", "0");
+                  return;
+                }
+                if (choice === "CUSTOM" && values.customCancellationRefundPercent === "0") {
+                  update("customCancellationRefundPercent", "50");
+                }
+                update("cancellationPolicy", choice as CancellationPolicyKind);
+              }}
             >
               <option value="FLEXIBLE">Flexible</option>
               <option value="MODERATE">Moderate</option>
               <option value="STRICT">Strict</option>
-              <option value="NON_REFUNDABLE">Non-refundable</option>
+                            <option value="NON_REFUNDABLE">Non-refundable</option>
+              <option value="NO_REFUND">No refund</option>
               <option value="CUSTOM">Custom</option>
             </Select>
             <FieldHint>
-              {values.cancellationPolicy === "CUSTOM"
-                ? "Set your own cutoff and refund percentage below."
-                : POLICY_PREVIEWS[values.cancellationPolicy]}
+                            {policyChoice === "NO_REFUND"
+                ? NO_REFUND.description
+                : values.cancellationPolicy === "CUSTOM"
+                  ? "Set your own cutoff and refund percentage below."
+                  : POLICY_PREVIEWS[values.cancellationPolicy as Exclude<CancellationPolicyKind, "CUSTOM">]}
             </FieldHint>
           </Field>
 
-          {values.cancellationPolicy === "CUSTOM" && (
+                    {policyChoice === "CUSTOM" && (
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <Label htmlFor="customCutoff">Full-refund cutoff (days before check-in)</Label>

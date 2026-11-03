@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Cancellation policies",
-  description: "The Flexible, Moderate, Strict and Non-refundable cancellation policies FYStay hosts can choose from.",
+  description: "The Flexible, Moderate, Strict, Non-refundable and No refund cancellation policies FYStay hosts can choose from.",
   path: "/cancellation-policies",
 });
 
@@ -36,6 +36,10 @@ const POLICIES = [
       "Full refund if you cancel within 24 hours of paying, as long as that's before your check-in date",
       "No refund after that",
     ],
+  },
+    {
+    label: "No refund",
+    tiers: ["No refund if you cancel, at any time after booking"],
   },
   {
     label: "Custom",

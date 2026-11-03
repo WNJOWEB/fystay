@@ -74,6 +74,14 @@ const NON_REFUNDABLE: CancellationPolicy = {
   fullRefundHoursAfterPayment: 24,
 };
 
+/** Stored as a CUSTOM policy with a 0% refund, so it needs no database change. */
+export const NO_REFUND: CancellationPolicy = {
+  kind: "CUSTOM",
+  label: "No refund",
+  description: "No refund if you cancel, at any time after booking.",
+  tiers: [{ minDaysBeforeCheckIn: 0, refundPercent: 0 }],
+};
+
 const DEFAULT_CUSTOM_CUTOFF_DAYS = 7;
 const DEFAULT_CUSTOM_REFUND_PERCENT = 50;
 
@@ -128,7 +136,11 @@ export function resolveCancellationPolicy(listing: {
       return NON_REFUNDABLE;
     case "CUSTOM": {
       const cutoff = listing.customCancellationCutoffDays ?? DEFAULT_CUSTOM_CUTOFF_DAYS;
-      const percent = listing.customCancellationRefundPercent ?? DEFAULT_CUSTOM_REFUND_PERCENT;
+            const percent = listing.customCancellationRefundPercent ?? DEFAULT_CUSTOM_REFUND_PERCENT;
+      // A custom policy that refunds nothing is the "No refund" choice: no
+      // refund at any time (unlike Non-refundable, which still allows a full
+      // refund in the first 24 hours after paying).
+      if (percent === 0) return NO_REFUND;
       return {
         kind: "CUSTOM",
         label: "Custom",

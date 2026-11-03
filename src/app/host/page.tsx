@@ -72,7 +72,7 @@ const REASONS = [
 
 const GOOD_TO_KNOW = [
   "Guests pay your price. No booking fee is added on top.",
-  "Your share is paid to your bank 89 days after the guest pays, through Stripe.",
+  "Your share is paid to your bank the day after your guest checks in, through Stripe.",
   "You connect a Stripe account before guests can book.",
   "You choose your cancellation policy.",
   "Keeping the property safe and legal (gas, fire, electrics) is your responsibility.",

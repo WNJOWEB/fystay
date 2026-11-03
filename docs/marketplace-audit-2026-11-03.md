@@ -88,7 +88,7 @@ Effort: host navigation M (about 2 days), admin navigation S-M (1 day), account 
 
 - [ ] Clear out demo and generic listings, example hosts and example reviews; keep Preview-only example data clearly labelled.
 - [ ] 6-10 real listings with real photography and honest descriptions, the Lodge on the Lake first.
-- [x] "What you keep" on the List your place page (built 3 Nov, Preview): the 10% fee, a short good-to-know list (incl. the 89-day payout) and a calculator against Airbnb (15.5%, checked on Airbnb's own page) and Booking.com (10-25%, from its partner help as search returned it; its pages block direct reading). Dated and linked on the page; re-check both before relying on it, and before launch have the comparison read for UK advertising rules.
+- [x] "What you keep" on the List your place page (built 3 Nov, Preview): the 10% fee, a short good-to-know list (incl. the payout timing) and a calculator against Airbnb (15.5%, checked on Airbnb's own page) and Booking.com (10-25%, from its partner help as search returned it; its pages block direct reading). Dated and linked on the page; re-check both before relying on it, and before launch have the comparison read for UK advertising rules.
 - [ ] The host sign-up and first-listing flow tested start to finish on a phone by someone who has never used it.
 - [x] Host profile pages, so a guest sees a real person (built 3 Nov, Preview): /hosts/<id> with photo, badges, response stats, their stays and recent reviews; nothing private. A host bio needs a new database field (a Production migration, so waits for approval); kept noindex while pages are thin.
 - [ ] No placeholder text, dead links, empty rows or broken layouts on any public page (full pass on phone and desktop).
