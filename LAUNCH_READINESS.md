@@ -92,7 +92,7 @@ Before launch:
 - [x] `EMAIL_FROM` configured
 - [x] Sentry configured
 - [x] `/api/health` returns `"config": "ok"`
-- [ ] Company/legal information configured
+- [ ] Company/legal information configured (3 Nov: sole trader chosen; legal name and address still to be supplied)
 - [ ] Production database secured
 - [ ] Google authentication working
 - [ ] Email verification working

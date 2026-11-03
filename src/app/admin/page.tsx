@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BedDouble, CalendarCheck2, PoundSterling, Ticket, Users } from "lucide-react";
+import { AlertCircle, BedDouble, CalendarCheck2, ChevronRight, PoundSterling, Ticket, Users } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { summarizeExtrasRevenue, summarizePlatformFinancials } from "@/lib/adminSummary";
@@ -42,6 +42,11 @@ export default async function AdminOverviewPage() {
     paidBookings,
     bookingExtras,
     recentBookings,
+    openDisputes,
+    openTickets,
+    openReviewReports,
+    listingsNotLive,
+    requestsAwaitingHost,
   ] = await Promise.all([
     prisma.user.groupBy({ by: ["role"], _count: true }),
     prisma.listing.aggregate({
@@ -80,7 +85,24 @@ export default async function AdminOverviewPage() {
         listing: { select: { title: true } },
       },
     }),
+    prisma.paymentDispute.count({
+      where: { status: { in: ["WARNING_NEEDS_RESPONSE", "WARNING_UNDER_REVIEW", "NEEDS_RESPONSE", "UNDER_REVIEW"] } },
+    }),
+    prisma.supportTicket.count({ where: { status: "OPEN" } }),
+    prisma.reviewReport.count({ where: { status: "OPEN" } }),
+    prisma.listing.count({ where: { published: false, suspendedAt: null } }),
+    prisma.booking.count({ where: { approvalStatus: "AWAITING" } }),
   ]);
+
+  // What needs a person today, most urgent first (a chargeback has a Stripe deadline).
+  const attention = [
+    { label: "Open chargebacks", count: openDisputes, href: "/admin/disputes" },
+    { label: "Support tickets", count: openTickets, href: "/admin/support-tickets" },
+    { label: "Reported reviews", count: openReviewReports, href: "/admin/review-reports" },
+    { label: "Booking requests waiting for a host", count: requestsAwaitingHost, href: "/admin/bookings" },
+    { label: "Listings not live yet", count: listingsNotLive, href: "/admin/listings" },
+  ];
+  const needsAttention = attention.filter((row) => row.count > 0);
 
   const totalListings = await prisma.listing.count();
   const totalUsers = usersByRole.reduce((sum, r) => sum + r._count, 0);
@@ -101,6 +123,31 @@ export default async function AdminOverviewPage() {
       <div className="mt-6">
         <AdminNav active="/admin" />
       </div>
+
+      <section className="mt-6" aria-labelledby="attention-title">
+        <SectionHeading icon={AlertCircle} id="attention-title">
+          Needs attention
+        </SectionHeading>
+        {needsAttention.length === 0 ? (
+          <p className="mt-3 text-sm text-stone-500">Nothing waiting.</p>
+        ) : (
+          <Card className="mt-3">
+            <ul className="divide-y divide-border-subtle">
+              {needsAttention.map((row) => (
+                <li key={row.href}>
+                  <Link href={row.href} className="focus-ring flex items-center justify-between gap-3 px-4 py-3 text-sm hover:bg-surface-muted">
+                    <span className="text-stone-700">{row.label}</span>
+                    <span className="flex items-center gap-2 font-semibold tabular-nums text-foreground">
+                      {row.count}
+                      <ChevronRight className="h-4 w-4 text-stone-400" aria-hidden />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
+      </section>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
