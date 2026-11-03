@@ -115,6 +115,7 @@ legal details, or onboarding real hosts.
   Support (admin) does it from `/admin/bookings` and chooses the refund. Fine
   for a small launch; a host-side cancel flow needs a policy on refunds and
   penalties first.
+- **Marketplace audit and roadmap (owner, 3 Nov):** gaps against Airbnb and Booking.com, a plan for easier host, admin and guest dashboards (grouped Menu instead of sideways rows), a pitch-readiness list and a weeks-to-months checklist: [marketplace-audit-2026-11-03.md](../marketplace-audit-2026-11-03.md). Awaiting the owner's go-ahead on the order of work.
 - **Town pages restructure (owner, 2 Nov, later):** each `/destinations/<town>` page crams hero, listings, weather, events, itineraries and a 14-category guide into one long page. Plan: a short hub plus separate topic pages (things to do, eat, dog-friendly, beaches and walks, rainy day and so on) for SEO and speed, rolled out from Blackpool to all six towns. Plan and checklist: [town-pages-restructure.md](../town-pages-restructure.md). Not a launch blocker.
 - Host terms page: add `/legal/host-terms` and require acceptance before
   publishing, once the draft in legal-drafts.md is approved.
