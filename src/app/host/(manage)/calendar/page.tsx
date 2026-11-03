@@ -236,9 +236,7 @@ export default async function HostCalendarPage({ searchParams }: { searchParams:
           })}
         </div>
       </div>
-      <p className="mt-3 text-xs text-stone-500">
-        Tap a listing to block dates, sync another calendar, or see it month by month. Tap a stay for its details.
-      </p>
+      
     </div>
   );
 }

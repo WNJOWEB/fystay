@@ -73,9 +73,7 @@ export function PrivacyDataCard({ hasPassword }: { hasPassword: boolean }) {
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium text-foreground">Download your data</p>
-            <p className="mt-0.5 text-sm text-stone-500">
-              A copy of your profile, bookings, reviews and messages as a JSON file.
-            </p>
+            
           </div>
           <a
             href="/api/account/export"
@@ -90,9 +88,7 @@ export function PrivacyDataCard({ hasPassword }: { hasPassword: boolean }) {
           <div>
             <p className="text-sm font-medium text-foreground">Delete your account</p>
             <p className="mt-0.5 text-sm text-stone-500">
-              Permanently removes your personal details. Past bookings and reviews stay on record
-              for other guests/hosts and for our own financial records, but are no longer linked to
-              your name.
+              Removes your personal details. Past bookings stay on record, unlinked from your name.
             </p>
           </div>
           <Button
@@ -112,7 +108,7 @@ export function PrivacyDataCard({ hasPassword }: { hasPassword: boolean }) {
         onClose={closeDialog}
         onConfirm={handleDelete}
         title="Delete your account?"
-        description="This can't be undone. Your name, email and phone number are removed everywhere; you'll be signed out immediately."
+        description="This can't be undone. You'll be signed out immediately."
         confirmLabel="Delete my account"
         loading={deleting}
         danger

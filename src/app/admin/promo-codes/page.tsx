@@ -38,8 +38,7 @@ export default async function AdminPromoCodesPage() {
     <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Promo codes</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Platform-wide marketing codes a guest can enter when booking - created here, not by
-        hosts.
+        Marketing codes guests enter when booking.
       </p>
 
       <div className="mt-6">

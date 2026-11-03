@@ -49,8 +49,7 @@ export function ListingTransferAction({ listingId, listingTitle }: { listingId: 
         <form onSubmit={submit} className="flex flex-col gap-4">
           <p className="text-sm text-stone-600">
             <strong className="font-medium text-foreground">{listingTitle}</strong> moves to the host below and comes
-            off the site until they&apos;ve checked it. The current host loses access, and its calendar links stop
-            working. Listings with upcoming bookings or guest messages can&apos;t be transferred.
+            off the site until they&apos;ve checked it. The current host loses access.
           </p>
           <Field>
             <Label htmlFor={`transfer-email-${listingId}`}>New host&apos;s email</Label>

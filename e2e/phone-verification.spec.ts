@@ -33,7 +33,7 @@ test("phone verification: honest when unconfigured, full code flow when configur
 
     const card = page.locator("#phone-verification");
     await expect(card).toBeVisible();
-    if (await card.getByText("isn't switched on yet").isVisible()) {
+    if (await card.getByText("Not available yet.").isVisible()) {
       await expect(card.getByRole("button", { name: "Send code" })).toHaveCount(0);
       await expect(card.getByText("Not verified", { exact: true })).toBeVisible();
       return;

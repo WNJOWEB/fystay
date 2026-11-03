@@ -6,7 +6,6 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useAuthTransition } from "@/components/AuthTransition";
 import { Logo } from "@/components/Logo";
-import { SITE_NAME } from "@/lib/seo";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Field, FieldError, Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
@@ -166,16 +165,16 @@ function LoginFormInner({ providers, rememberedProvider }: LoginFormProps) {
       <div className="mb-8 flex flex-col items-center text-center">
         <Logo size="xl" withTagline className="mb-3" />
         <h1 className="text-2xl font-bold">Welcome back</h1>
-        <p className="mt-1 text-sm text-stone-500">
-          {/* Arriving from "Log in to book": say the stay is waiting for them. */}
-          {callbackUrl.startsWith("/listings/")
-            ? "Log in to book your stay - your dates are saved."
-            : emailVerifiedOutcome === "verified" || emailVerifiedOutcome === "already_verified"
-              ? "Your email is confirmed. Log in to continue."
+        {/* Arriving from "Log in to book": say the stay is waiting for them. Otherwise, no subtitle. */}
+        {(callbackUrl.startsWith("/listings/") || emailVerifiedOutcome === "verified" || emailVerifiedOutcome === "already_verified" || emailVerifiedOutcome === "invalid") && (
+          <p className="mt-1 text-sm text-stone-500">
+            {callbackUrl.startsWith("/listings/")
+              ? "Your dates are saved."
               : emailVerifiedOutcome === "invalid"
-                ? "That email link has expired or was already used. Log in to send a new one."
-                : `Log in to continue to ${SITE_NAME}`}
-        </p>
+                ? "That link has expired or been used. Log in to get a new one."
+                : "Your email is confirmed. Log in to continue."}
+          </p>
+        )}
       </div>
 
       <Card>

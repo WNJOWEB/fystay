@@ -73,8 +73,7 @@ export default async function AdminSupportTicketsPage({
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Support tickets</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        General-purpose issues raised by guests and hosts - anything that isn&apos;t a Stripe
-        chargeback (see Disputes) or a direct message to a host.
+        Issues raised by guests and hosts.
       </p>
 
       <div className="mt-6">

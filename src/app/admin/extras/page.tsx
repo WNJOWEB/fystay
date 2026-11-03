@@ -77,11 +77,7 @@ export default async function AdminExtrasPage() {
     <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Trip extras</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Providers and offerings shown as add-ons on a guest&apos;s confirmed booking - see{" "}
-        <code className="rounded bg-surface-muted px-1 py-0.5 text-xs">
-          docs/trip-extras-roadmap.md
-        </code>{" "}
-        for the plan behind this.
+        Add-on providers and offerings shown on confirmed bookings.
       </p>
 
       <div className="mt-6">
@@ -102,8 +98,7 @@ export default async function AdminExtrasPage() {
       <div className="mt-8">
         <SectionHeading icon={Send}>Fulfilment</SectionHeading>
         <p className="mt-1 text-sm text-stone-500">
-          Paid extras and whether the provider has them. Failed handoffs need a retry or a call
-          to the provider.
+          Failed handoffs need a retry or a call to the provider.
         </p>
         {paidExtras.length === 0 ? (
           <p className="mt-3 text-sm text-stone-500">No paid extras yet.</p>

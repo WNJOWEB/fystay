@@ -42,8 +42,7 @@ export default async function AdminPropertiesPage() {
         <div>
           <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Properties FYStay is preparing</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-            Draft a listing for an owner, send it to them to check and approve, then publish it once every check passes.
-            Drafts stay private until then. New listings hosts create themselves also appear here until FYStay approves them.
+            Draft a listing for an owner, send it for approval, then publish. Hosts&apos; new listings wait here for approval too.
           </p>
         </div>
         <Link href="/admin/properties/new" className={buttonVariants()}>

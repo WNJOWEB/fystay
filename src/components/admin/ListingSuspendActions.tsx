@@ -50,8 +50,7 @@ export function ListingSuspendActions({ listingId, suspended }: { listingId: str
       <Dialog open={open} onClose={() => setOpen(false)} title="Suspend this listing?">
         <div className="flex flex-col gap-4">
           <p className="text-sm text-stone-600">
-            It disappears from search and can&apos;t be booked. Existing bookings aren&apos;t
-            cancelled. The host still sees the listing, with the reason below.
+            Removed from search and booking. Existing bookings stay.
           </p>
           <Field>
             <Label htmlFor={`suspend-reason-${listingId}`}>Reason (shown to the host)</Label>

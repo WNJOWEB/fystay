@@ -80,36 +80,26 @@ export function IdentityVerificationCard({
           // A past verification stays true regardless of whether Stripe
           // happens to be configured in this environment right now - only
           // starting a NEW verification needs `configured`.
-          <p>Your government ID has been verified. This shows other guests and hosts you&apos;re a real, verified person.</p>
+          <p>Government ID verified.</p>
         ) : !configured ? (
-          <p>
-            Identity checks aren&apos;t switched on yet, so there&apos;s nothing to do here for now. Your account
-            shows as not verified until you complete one.
-          </p>
+          <p>Not available yet.</p>
         ) : status === "PENDING" && processing ? (
           <>
-            <p>
-              Thanks - Stripe is checking your ID and selfie. This usually takes a few minutes. Your account shows
-              as verified only once the check passes.
-            </p>
+            <p>Checking your ID - usually a few minutes.</p>
             <Button variant="outline" size="sm" className="self-start" onClick={() => router.refresh()}>
               Check again
             </Button>
           </>
         ) : (
           <>
-            <p>
-              Verify your identity with a government ID and a selfie, handled securely by Stripe -
-              FYStay never sees or stores your ID.
-            </p>
-            {status === "PENDING" && <p>You started a check but haven&apos;t finished it yet.</p>}
+            {status === "PENDING" && <p>Not finished yet.</p>}
             {status === "FAILED" && (
               <p className="text-amber-700">
                 Your last attempt didn&apos;t pass.{failureReason ? ` ${failureReason}` : ""} You can try again.
               </p>
             )}
             <Button onClick={startVerification} loading={loading} className="self-start">
-              {status === "PENDING" ? "Continue verification" : status === "FAILED" ? "Try again" : "Verify your identity"}
+              {status === "PENDING" ? "Continue verification" : status === "FAILED" ? "Try again" : "Verify"}
             </Button>
           </>
         )}

@@ -109,9 +109,7 @@ export function ListingDiscounts({
   return (
     <div className="flex flex-col gap-5">
       <p className="text-sm text-stone-600">
-        Guests get <strong>one discount per stay, never two</strong>. A stay of {MONTHLY_DISCOUNT_MIN_NIGHTS}+ nights
-        gets your monthly discount instead of your weekly one (or the weekly one if you haven&apos;t set a monthly
-        discount). A last-minute deal replaces either only when it&apos;s the bigger saving.
+        One discount per stay. Long stays get the monthly rate instead of the weekly one; a last-minute deal applies only if it saves more.
         {!usingOwnPrice && (
           <>
             {" "}
@@ -143,7 +141,7 @@ export function ListingDiscounts({
           </div>
           <FieldError>{weeklyError}</FieldError>
           <p id="weeklyDiscountPercent-hint" className="mt-1.5 text-xs text-stone-500">
-            Off every night of a stay of {WEEKLY_DISCOUNT_MIN_NIGHTS}+ nights.
+            {WEEKLY_DISCOUNT_MIN_NIGHTS}+ nights.
           </p>
           {weekly !== null && weekly > 0 && !weeklyError && (
             <ExampleLine label={`${WEEKLY_DISCOUNT_MIN_NIGHTS} nights`} example={example(WEEKLY_DISCOUNT_MIN_NIGHTS)} />
@@ -171,7 +169,7 @@ export function ListingDiscounts({
           </div>
           <FieldError>{monthlyError}</FieldError>
           <p id="monthlyDiscountPercent-hint" className="mt-1.5 text-xs text-stone-500">
-            Off every night of a stay of {MONTHLY_DISCOUNT_MIN_NIGHTS}+ nights, instead of the weekly discount.
+            {MONTHLY_DISCOUNT_MIN_NIGHTS}+ nights. Replaces the weekly discount.
           </p>
           {((monthly !== null && monthly > 0) || (weekly !== null && weekly > 0)) && !monthlyError && !weeklyError && (
             <ExampleLine label={`${MONTHLY_DISCOUNT_MIN_NIGHTS} nights`} example={example(MONTHLY_DISCOUNT_MIN_NIGHTS)} />
@@ -206,8 +204,7 @@ export function ListingDiscounts({
           </div>
           <FieldError>{lastMinuteError}</FieldError>
           <p id="lastMinuteDiscountPercent-hint" className="mt-1.5 text-xs text-stone-500">
-            {LAST_MINUTE_MIN_PERCENT}-{LAST_MINUTE_MAX_PERCENT}% off any stay that checks in within {windowDays} days of
-            booking. Featured in Last Minute Deals on the homepage.
+            {LAST_MINUTE_MIN_PERCENT}-{LAST_MINUTE_MAX_PERCENT}% off stays checking in within {windowDays} days. Shown in Last Minute Deals.
           </p>
           {lastMinute !== null && lastMinute > 0 && !lastMinuteError && (
             <>

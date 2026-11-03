@@ -29,13 +29,12 @@ const SECTIONS = [
   { id: "privacy", label: "Privacy" },
 ] as const;
 
-function AccountSection({ id, title, hint, children }: { id: string; title: string; hint: string; children: React.ReactNode }) {
+function AccountSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className="mt-8 scroll-mt-40">
       <h2 id={`${id}-heading`} className="text-lg font-bold text-foreground">
         {title}
       </h2>
-      <p className="mt-0.5 text-sm text-stone-500">{hint}</p>
       <div className="mt-4 flex flex-col gap-4">{children}</div>
     </section>
   );
@@ -94,7 +93,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         </div>
         <div>
           <h1 className="text-2xl font-bold text-foreground">Account</h1>
-          <p className="text-sm text-stone-500">Manage your trust and safety details.</p>
+          
         </div>
       </div>
 
@@ -122,12 +121,12 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         ))}
       </nav>
 
-      <AccountSection id="personal" title="Personal details" hint="Your name, photo and email.">
+      <AccountSection id="personal" title="Personal details">
         <ProfileCard initialName={user.name} email={user.email} image={user.image} />
         {hasPassword && <EmailChangeCard currentEmail={user.email} />}
       </AccountSection>
 
-      <AccountSection id="verification" title="Verification" hint="Optional checks that build trust with hosts and guests.">
+      <AccountSection id="verification" title="Verification">
         <IdentityVerificationCard
           status={identity.status}
           processing={identity.processing}
@@ -140,7 +139,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         />
       </AccountSection>
 
-      <AccountSection id="security" title="Login & security" hint="How you sign in, and where you are signed in.">
+      <AccountSection id="security" title="Login & security">
         {hasPassword && (
           <TwoFactorCard
             initialEnabled={Boolean(user.twoFactorEnabledAt)}
@@ -157,7 +156,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         <SecuritySessionsCard />
       </AccountSection>
 
-      <AccountSection id="privacy" title="Privacy & data" hint="Download or delete your data.">
+      <AccountSection id="privacy" title="Privacy & data">
         <PrivacyDataCard hasPassword={hasPassword} />
       </AccountSection>
     </div>

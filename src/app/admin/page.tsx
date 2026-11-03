@@ -96,9 +96,7 @@ export default async function AdminOverviewPage() {
   return (
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Admin overview</h1>
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Platform-wide numbers - not any one host&apos;s or guest&apos;s own view.
-      </p>
+      
 
       <div className="mt-6">
         <AdminNav active="/admin" />

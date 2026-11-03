@@ -5,7 +5,6 @@ import { CalendarSync, ChevronLeft, ChevronRight } from "lucide-react";
 import { auth } from "@/auth";
 import { withHostScope } from "@/lib/pms/hostScopedPrisma";
 import { isPmsProviderConnectable, PMS_PROVIDER_LABEL } from "@/lib/pms/registry";
-import { ICAL_IMPORT_MAX_AGE_MS } from "@/lib/icalSync";
 import {
   ICAL_CHANNEL_LABEL,
   ICAL_SYNC_SCHEDULE_TEXT,
@@ -20,7 +19,7 @@ import { Badge } from "@/components/ui/Badge";
 
 export const metadata: Metadata = { title: "Channels", robots: { index: false } };
 
-const RECHECK_MINUTES = Math.round(ICAL_IMPORT_MAX_AGE_MS / 60_000);
+
 
 /**
  * Channels: calendar sync with Airbnb and other sites over iCal - the only
@@ -101,8 +100,7 @@ export default async function HostIntegrationsPage({
       </Link>
       <h1 className="mt-3 text-2xl font-bold text-foreground">Channels</h1>
       <p className="mt-1 text-sm text-stone-500">
-        Keep your FYStay calendar in step with Airbnb and other sites using calendar sync (iCal), so dates
-        booked on one are blocked on the other.
+        Sync your calendar with Airbnb and other sites (iCal).
       </p>
 
       <IntegrationBanner connectedProvider={pms_connected} errorReason={pms_error} />
@@ -112,27 +110,24 @@ export default async function HostIntegrationsPage({
           name="Airbnb"
           connectedCount={countFor("AIRBNB")}
           listingCount={syncableCount}
-          intro="Airbnb's official calendar links, set up once per listing. A booking or blocked date on either site blocks the same dates on the other."
+          intro="Set up once per listing."
         >
           <p className="rounded-xl bg-surface-muted p-3 text-sm text-stone-600">
-            <span className="font-medium text-foreground">No direct Airbnb account connection.</span> Airbnb
-            only opens its API to software partners it approves, and FYStay isn&apos;t one yet, so prices,
-            messages and guest details don&apos;t sync - only which dates are taken.
+            <span className="font-medium text-foreground">No direct Airbnb account connection.</span> Dates
+            only - prices, messages and guest details don&apos;t sync.
           </p>
           <Steps
-            title="Bring Airbnb bookings into FYStay (import)"
+            title="Import Airbnb bookings"
             steps={[
-              "On Airbnb, open Calendar, choose the listing, then Availability → Connect calendars (Airbnb may call it Sync calendars).",
-              "Choose Export calendar and copy the link (it ends in .ics).",
-              "On FYStay, open the listing's calendar settings below, paste it into “Your Airbnb (or other) calendar link” and press Save. FYStay syncs straight away.",
+              "Airbnb: Calendar → Availability → Connect calendars → Export calendar. Copy the link.",
+              "Here: open the listing's calendar settings and paste it into “Your Airbnb (or other) calendar link”.",
             ]}
           />
           <Steps
-            title="Send FYStay bookings to Airbnb (export)"
+            title="Send FYStay bookings to Airbnb"
             steps={[
-              "On FYStay, open the listing's calendar settings below and copy “Your FYStay calendar link”.",
-              "On Airbnb, in the same Connect calendars section, choose Connect another website (or Import calendar).",
-              "Paste the FYStay link, name it FYStay, and save. Airbnb then reads it on its own schedule.",
+              "Here: copy “Your FYStay calendar link” from the listing's calendar settings.",
+              "Airbnb: Connect calendars → Connect another website. Paste it and save.",
             ]}
           />
         </ChannelCard>
@@ -141,38 +136,29 @@ export default async function HostIntegrationsPage({
           name={ICAL_CHANNEL_LABEL.OTHER}
           connectedCount={countFor("OTHER")}
           listingCount={syncableCount}
-          intro="Any site or calendar app that offers an iCal (.ics) export link, such as Vrbo or Google Calendar. It works the same way as Airbnb."
+          intro="Any site or app with an iCal (.ics) link, such as Vrbo or Google Calendar."
         >
           <Steps
             title="Set it up"
             steps={[
-              "On the other site, find its calendar export or iCal link and paste it into the listing's calendar settings on FYStay.",
-              "If that site can import a calendar, give it the listing's FYStay calendar link too, so FYStay bookings block dates there.",
+              "Paste its iCal link into the listing's calendar settings.",
+              "To send FYStay bookings there, give it the listing's FYStay calendar link.",
             ]}
           />
         </ChannelCard>
 
         <Card className="p-5">
-          <h2 className="text-base font-semibold text-foreground">How often it syncs, and its limits</h2>
+          <h2 className="text-base font-semibold text-foreground">Sync limits</h2>
           <ul className="mt-2 flex list-disc flex-col gap-1.5 pl-5 text-sm text-stone-600">
             <li>
-              FYStay checks each imported calendar {ICAL_SYNC_SCHEDULE_TEXT}, straight away when you save a link
-              or press Sync now, and again just before taking a booking if it hasn&apos;t checked in the last{" "}
-              {RECHECK_MINUTES} minutes.
+              Imported calendars sync {ICAL_SYNC_SCHEDULE_TEXT}, when you save or press Sync now, and before each
+              booking.
             </li>
             <li>
-              Airbnb reads your FYStay link on its own schedule, typically every few hours, so a FYStay booking
-              can take a while to appear there.
+              Updates aren&apos;t instant, so two guests can occasionally book the same dates on different sites.
+              Check new bookings on both.
             </li>
-            <li>
-              Because neither side updates instantly, two guests can occasionally book the same dates on
-              different sites. Check new bookings on both, and keep last-minute dates closed on one site if a
-              clash would be a problem.
-            </li>
-            <li>
-              Calendar links only carry which dates are taken - not prices, guest names, messages or payments.
-            </li>
-            <li>Syncing never cancels or changes a FYStay booking; imported dates show as &ldquo;Booked elsewhere&rdquo;.</li>
+            <li>Only dates are shared. Syncing never cancels a FYStay booking.</li>
           </ul>
         </Card>
       </div>

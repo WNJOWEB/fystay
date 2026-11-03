@@ -89,8 +89,8 @@ export function TwoFactorCard({ initialEnabled, configured }: { initialEnabled: 
           <>
             <p className="text-sm text-stone-500">
               {enabled
-                ? "You'll be asked for a code from your authenticator app each time you log in."
-                : "Add an extra step at login using an authenticator app (Google Authenticator, 1Password, Authy...)."}
+                ? "A code is asked for each time you log in."
+                : "Use an authenticator app when you log in."}
             </p>
             {enabled ? (
               <Button
@@ -106,7 +106,7 @@ export function TwoFactorCard({ initialEnabled, configured }: { initialEnabled: 
                 Turn off
               </Button>
             ) : !configured ? (
-              <p className="text-sm text-stone-500">Two-factor authentication isn&apos;t available right now.</p>
+              <p className="text-sm text-stone-500">Not available right now.</p>
             ) : (
               <Button size="sm" className="self-start" onClick={handleStartEnroll} loading={loading}>
                 <ShieldCheck className="h-4 w-4" />
@@ -119,8 +119,7 @@ export function TwoFactorCard({ initialEnabled, configured }: { initialEnabled: 
         {step === "enrolling" && (
           <div className="flex flex-col gap-4">
             <p className="text-sm text-stone-600">
-              Scan this QR code with your authenticator app, or enter the code manually, then confirm
-              with a 6-digit code below.
+              Scan the QR code with your authenticator app, then enter the 6-digit code.
             </p>
             {qrCodeDataUrl && (
               <Image
@@ -162,9 +161,7 @@ export function TwoFactorCard({ initialEnabled, configured }: { initialEnabled: 
         {step === "backup-codes" && (
           <div className="flex flex-col gap-4">
             <p className="text-sm text-stone-600">
-              Two-factor authentication is on. Save these one-time backup codes somewhere safe - each
-              works once, if you ever lose access to your authenticator app. They won&apos;t be shown
-              again.
+              Save these one-time backup codes somewhere safe. Each works once, and they won&apos;t be shown again.
             </p>
             <div className="grid grid-cols-2 gap-2 rounded-xl border border-border-subtle bg-surface-muted p-4 font-mono text-sm">
               {backupCodes.map((backupCode) => (
@@ -180,8 +177,7 @@ export function TwoFactorCard({ initialEnabled, configured }: { initialEnabled: 
         {step === "disabling" && (
           <div className="flex flex-col gap-4">
             <p className="text-sm text-stone-600">
-              Enter a current code from your authenticator app (or a backup code) to turn off
-              two-factor authentication.
+              Enter a code from your authenticator app (or a backup code) to turn this off.
             </p>
             <Field>
               <Label htmlFor="disableCode">Code</Label>

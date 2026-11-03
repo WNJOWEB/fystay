@@ -43,8 +43,7 @@ export function SecuritySessionsCard() {
           <div>
             <p className="text-sm font-medium text-foreground">Sign out of all devices</p>
             <p className="mt-0.5 text-sm text-stone-500">
-              Ends every session for this account, including this one - anywhere else you&rsquo;re
-              signed in will need to log back in.
+              Ends every session, including this one.
             </p>
           </div>
           <Button
@@ -64,7 +63,7 @@ export function SecuritySessionsCard() {
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleSignOutEverywhere}
         title="Sign out of all devices?"
-        description="You'll be signed out here too, and will need to log back in on every device."
+        description="You'll need to log in again on every device."
         confirmLabel="Sign out everywhere"
         loading={loading}
       />

@@ -165,7 +165,7 @@ export default async function HostPayoutsPage({
                   ? "Almost there - Stripe is finishing setting up your account."
                   : started
                   ? "Stripe still needs a few more details before you can be paid."
-                  : "FYStay uses Stripe to pay hosts directly and securely - we never see or store your bank details."}
+                  : "Payments are handled by Stripe."}
               </p>
               {requirements && <RequirementsNotice requirements={requirements} />}
               {/* Nothing left for the host to do: Stripe is just switching the

@@ -106,7 +106,7 @@ export default async function HostTodayPage() {
     {
       key: "listing",
       label: "Create your first listing",
-      description: "Add your property's photos, pricing and details to start welcoming guests.",
+      
       href: "/host/listings/new",
       cta: "Create a listing",
       done: listings.length > 0,
@@ -114,7 +114,7 @@ export default async function HostTodayPage() {
     {
       key: "payouts",
       label: "Connect payouts",
-      description: "Required before guests can book: set up Stripe so each booking pays you out automatically.",
+      description: "Required before guests can book.",
       href: "/host/payouts",
       cta: host.stripeConnectAccountId ? "Finish onboarding" : "Connect with Stripe",
       done: payoutsReady,
@@ -122,7 +122,7 @@ export default async function HostTodayPage() {
     {
       key: "identity",
       label: "Verify your identity",
-      description: "Get an Identity verified badge guests can see on your listings.",
+      
       href: "/account",
       cta: "Verify now",
       done: host.identityVerificationStatus === "VERIFIED",

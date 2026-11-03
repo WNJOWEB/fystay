@@ -134,12 +134,8 @@ export default async function HostPromotePage({
         <div>
           <h1 className="text-2xl font-bold text-foreground">Spotlight</h1>
           <p className="mt-1 max-w-xl text-sm leading-relaxed text-stone-600">
-            Feature a listing in <strong className="font-semibold text-foreground">Spotlight stays</strong>, the
-            carousel directly under the search on the FYStay homepage, where featured stays come first, ahead of
-            guests&rsquo; favourites. It also comes first in search results it matches, unless the guest picks
-            their own sort.
-            Spots are limited to {SPOTLIGHT_SLOTS} at a time, featured stays are labelled &ldquo;Promoted&rdquo;,
-            and you can see how many times yours is seen and clicked.
+            Feature a listing on the homepage and at the top of matching searches, labelled &ldquo;Promoted&rdquo;.{" "}
+            {SPOTLIGHT_SLOTS} spots at a time.
           </p>
         </div>
         <p className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-stone-700">

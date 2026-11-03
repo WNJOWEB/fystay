@@ -93,8 +93,7 @@ export default async function AdminReviewReportsPage({
     <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Review reports</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Reviews guests have flagged for moderation attention. Dismiss a report to leave the
-        review as-is, or remove the review to hide it everywhere it&apos;s shown publicly.
+        Flagged reviews. Dismiss to keep, or remove to hide everywhere.
       </p>
 
       <div className="mt-6">

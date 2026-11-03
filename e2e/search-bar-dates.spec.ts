@@ -68,7 +68,7 @@ test("homepage search's date picker sets checkIn/checkOut and filters results", 
   await expect(dateDialog).toBeHidden();
 
   await pickTown(page, "Blackpool");
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await page.waitForURL(new RegExp(`checkIn=${isoDate(checkIn)}`));
   expect(page.url()).toContain("/search?");
   expect(page.url()).toContain(`checkOut=${isoDate(checkOut)}`);

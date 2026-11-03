@@ -141,10 +141,7 @@ export function PhoneVerificationCard({
         )}
 
         {!configured && !verifiedPhone && (
-          <p>
-            Phone verification isn&apos;t switched on yet, so there&apos;s nothing to do here for now. Your number
-            shows as not verified until you confirm it with a code.
-          </p>
+          <p>Not available yet.</p>
         )}
 
         {showForm && !sent && (
@@ -175,7 +172,7 @@ export function PhoneVerificationCard({
                 </Button>
               </div>
               <p id="phoneHint" className="mt-1.5 text-xs text-stone-500">
-                UK numbers can start with 0. Others need their country code, e.g. +33.
+                Non-UK numbers need a country code, e.g. +33.
               </p>
             </Field>
             {changing && (

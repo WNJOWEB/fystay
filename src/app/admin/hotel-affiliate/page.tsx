@@ -48,7 +48,7 @@ function RevenueTable({
       <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       {rows.length === 0 ? (
         <p className="mt-2 text-sm text-stone-500">
-          No conversions recorded yet - this fills in once a provider reports one back.
+          No conversions yet.
         </p>
       ) : (
         <Card className="mt-2">
@@ -161,9 +161,7 @@ export default async function HotelAffiliateAnalyticsPage() {
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Hotel affiliate analytics</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Search-to-click funnel and commission reporting for the hotel affiliate marketplace - built
-        against the mock provider only today, so every figure below reflects test traffic, not real
-        bookings.
+        Search-to-click funnel and commission. Mock provider only, so figures are test traffic.
       </p>
 
       <div className="mt-6">
@@ -196,14 +194,11 @@ export default async function HotelAffiliateAnalyticsPage() {
               </span>
             </p>
             <p className="mt-0.5 text-xs text-stone-500">
-              A separate funnel metric, not this dashboard&apos;s CTR (that&apos;s clicks ÷ hotel views,
-              above) - clicks per search recorded.
+              Clicks per recorded search.
             </p>
           </div>
           <p className="max-w-sm text-xs text-stone-400 sm:text-right">
-            {searchLinkedClicks} of {funnel.totalClicks} recorded clicks are linked to a tracked search.
-            The rest predate per-search click tracking (added this phase) or are otherwise historical/test
-            traffic, so this ratio isn&apos;t a reliable per-search conversion figure yet.
+            {searchLinkedClicks} of {funnel.totalClicks} clicks are linked to a tracked search.
           </p>
         </CardContent>
       </Card>

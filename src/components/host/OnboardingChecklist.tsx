@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 export type OnboardingStep = {
   key: string;
   label: string;
-  description: string;
+  description?: string;
   href: string;
   cta: string;
   done: boolean;
@@ -52,7 +52,7 @@ export function OnboardingChecklist({ steps }: { steps: OnboardingStep[] }) {
                 {step.label}
                 {step.optional && !step.done ? " (optional)" : ""}
               </p>
-              <p className="text-xs text-stone-500">{step.description}</p>
+              {step.description && <p className="text-xs text-stone-500">{step.description}</p>}
             </div>
             {!step.done && (
               <Link

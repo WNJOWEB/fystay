@@ -114,7 +114,7 @@ export function ExtraProviderForm() {
                 onChange={(e) => update("notificationEmail", e.target.value)}
                 placeholder="bookings@provider.com"
               />
-              <FieldHint>Every paid booking request is emailed here (see the roadmap doc).</FieldHint>
+              <FieldHint>Paid booking requests are emailed here.</FieldHint>
             </Field>
             <Field>
               <Label htmlFor="providerBookingFormUrl">Their own booking page (optional)</Label>

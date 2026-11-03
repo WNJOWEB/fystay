@@ -159,7 +159,7 @@ export function ExtraOfferingForm({ providers }: { providers: ExtraProviderOptio
               value={values.priceCents}
               onChange={(e) => update("priceCents", e.target.value)}
             />
-            <FieldHint>What FYStay charges the guest - see the roadmap doc&apos;s payment model.</FieldHint>
+            <FieldHint>What FYStay charges the guest.</FieldHint>
           </Field>
 
           <Field>
@@ -171,8 +171,7 @@ export function ExtraOfferingForm({ providers }: { providers: ExtraProviderOptio
               placeholder="Tesla / fully electric, Fixed pricing, Meet & greet"
             />
             <FieldHint>
-              Comma-separated. Shown identically wherever this offering is cross-sold - homepage,
-              property page, booking flow, confirmation, account.
+              Comma-separated.
             </FieldHint>
           </Field>
 

@@ -85,8 +85,7 @@ export default async function LocalDataAdminPage() {
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Local data platform</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Operational status for the Local Guide&apos;s live data - weather, places and events feeding the
-        &quot;Right now&quot; concierge panel on every town&apos;s destination page.
+        Status of the Local Guide&apos;s live data: weather, places and events.
       </p>
 
       <div className="mt-6">
@@ -143,8 +142,7 @@ export default async function LocalDataAdminPage() {
       <div className="mt-8">
         <SectionHeading icon={Sparkles}>Manually featured recommendations</SectionHeading>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-          Every FYStay editorial pick currently live on a destination page&apos;s concierge panel and Local
-          Guide, in the order each town shows them.
+          Editorial picks live on each town page, in order.
         </p>
         <Card className="mt-4 overflow-x-auto">
           <CardContent className="pt-5">

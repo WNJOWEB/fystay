@@ -158,11 +158,7 @@ function RegisterFormInner({ providers, rememberedProvider }: RegisterFormProps)
       <div className="mb-8 flex flex-col items-center text-center">
         <Logo size="xl" withTagline className="mb-3" />
         <h1 className="text-2xl font-bold">Create your {SITE_NAME} account</h1>
-        <p className="mt-1 text-sm text-stone-500">
-          {callbackUrl?.startsWith("/listings/")
-            ? "It's free - we'll take you straight back to your stay with your dates saved."
-            : `Join ${SITE_NAME} in a few seconds`}
-        </p>
+        {callbackUrl?.startsWith("/listings/") && <p className="mt-1 text-sm text-stone-500">Your dates are saved.</p>}
       </div>
 
       {referralCode && (

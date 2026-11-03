@@ -58,9 +58,8 @@ export default async function AdminPromotionsPage() {
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Spotlight</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Paid placements in the homepage&apos;s Spotlight stays showcase, bought by hosts, with how often each was
-        seen and clicked. Up to {SPOTLIGHT_SLOTS}{" "}
-        listings at a time.
+        Paid Spotlight placements, with views and clicks. Up to {SPOTLIGHT_SLOTS}{" "}
+        at a time.
       </p>
 
       <div className="mt-6">

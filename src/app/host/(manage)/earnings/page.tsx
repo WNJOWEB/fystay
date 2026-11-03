@@ -251,7 +251,7 @@ export default async function HostEarningsPage({
             <Line label="Your earnings" value={summary.earnedCents} strong className="mt-1 border-t border-border-subtle pt-2" />
           </dl>
           <p className="mt-3 text-xs text-stone-500">
-            Guests pay your nightly rate with no fees added. FYStay keeps {hostCommissionText(smartPricingMode())} of each booking.
+            FYStay keeps {hostCommissionText(smartPricingMode())} of each booking.
           </p>
         </Panel>
       </div>
@@ -339,8 +339,7 @@ export default async function HostEarningsPage({
 
       <Panel className="mt-4" bodyClassName="flex flex-wrap items-center gap-3 py-4">
         <p className="flex-1 text-sm text-stone-600">
-          FYStay pays each booking into your bank 89 days (about 3 months) after the guest paid. Statements, payout
-          dates and tax documents are in your Stripe dashboard.
+          Paid to your bank 89 days after the guest pays. Statements are in Stripe.
         </p>
         {host.stripeConnectAccountId && (
           <a href="/api/host/stripe/dashboard" className={buttonVariants({ variant: "outline", size: "sm" })}>

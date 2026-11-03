@@ -47,9 +47,7 @@ export default async function InboxPage() {
         <Card className="mt-8 flex flex-col items-center gap-3 p-12 text-center">
           <MessageCircle className="h-8 w-8 text-stone-300" />
           <p className="font-medium text-foreground">No messages yet</p>
-          <p className="max-w-sm text-sm text-stone-500">
-            Questions to a host, or from a guest about one of your listings, will show up here.
-          </p>
+          
         </Card>
       ) : (
         <ul className="mt-6 flex flex-col gap-2">

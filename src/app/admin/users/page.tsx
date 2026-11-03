@@ -18,7 +18,7 @@ export default async function AdminUsersPage() {
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Users</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-        Look up a guest or host account to answer a support request.
+        Look up a guest or host account.
       </p>
 
       <div className="mt-6">

@@ -518,8 +518,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
               onChange={(e) => update("address", e.target.value)}
             />
             <FieldHint>
-              Only shown to guests once they&apos;ve booked, and in their check-in reminder. Leave it
-              blank and you&apos;ll need to send each guest the address yourself.
+              Shown to guests after they book.
             </FieldHint>
           </Field>
         </CardContent>
@@ -562,7 +561,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
                     onChange={(e) => update("weekendPricePerNight", e.target.value)}
                     placeholder={values.pricePerNight || "Same as weekdays"}
                   />
-                  <FieldHint>Charged for Friday and Saturday nights. Leave blank to charge the same every night.</FieldHint>
+                  <FieldHint>Friday and Saturday nights. Leave blank for the same price every night.</FieldHint>
                 </Field>
               </div>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -783,8 +782,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
               placeholder="e.g. Key is in lockbox by the front door, code 4821"
             />
             <FieldHint>
-              Only shown to a guest once their booking is paid for - never on the public listing
-              page.
+              Shown after payment only.
             </FieldHint>
           </Field>
 
@@ -860,8 +858,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
               </AmenityCheckbox>
             </div>
             <FieldHint>
-              With Instant Book off, a guest submits a request instead of paying right away - you
-              have 24 hours to accept or decline before it expires automatically.
+              Off: guests send a request and you have 24 hours to accept.
             </FieldHint>
           </Field>
 
@@ -878,10 +875,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
               placeholder="0"
             />
             <FieldHint>
-              A refundable hold on the guest&apos;s card, placed the day before check-in - never
-              charged unless you claim within 3 days of checkout. Card holds usually last a week, so
-              for stays longer than about 5 nights the time to claim can be shorter or gone: the
-              booking shows your exact claim deadline.
+              A refundable card hold, placed the day before check-in. Charged only if you claim within 3 days of checkout. The booking shows your claim deadline.
             </FieldHint>
           </Field>
         </CardContent>
@@ -1008,8 +1002,8 @@ function TimeField({
 function nightlyEarningsHint(pricePerNight: string, smartPriced: boolean): string {
   const cents = Math.round(Number(pricePerNight) * 100);
   if (!Number.isFinite(cents) || cents <= 0) {
-    return `Include cleaning - there's no separate cleaning fee. Guests pay this price; FYStay keeps ${formatRate(LEGACY_FIXED_10.baseRateBps)}.`;
+    return `Includes cleaning. FYStay keeps ${formatRate(LEGACY_FIXED_10.baseRateBps)}.`;
   }
   const pounds = (c: number) => `£${(c / 100).toFixed(2).replace(/\.00$/, "")}`;
-  return `Guests pay ${pounds(cents)} a night. You receive ${pounds(cents - hostCommissionFor(cents))} after FYStay's ${formatRate(LEGACY_FIXED_10.baseRateBps)}${smartPriced ? ` - or after ${commissionRangeText(CURRENT_DYNAMIC_POLICY)}, worked out per booking, while smart pricing is on (see Smart pricing below)` : ""}. Include cleaning in this price.`;
+  return `Guests pay ${pounds(cents)} a night. You receive ${pounds(cents - hostCommissionFor(cents))} after FYStay's ${formatRate(LEGACY_FIXED_10.baseRateBps)}${smartPriced ? ` - or after ${commissionRangeText(CURRENT_DYNAMIC_POLICY)} per booking with smart pricing on` : ""}. Includes cleaning.`;
 }
