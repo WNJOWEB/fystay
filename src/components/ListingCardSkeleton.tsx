@@ -1,11 +1,11 @@
 import { Skeleton } from "@/components/ui/Skeleton";
-import { ARCH_SHAPE_CLASS } from "@/components/LargeCard";
+import { LARGE_CARD_IMAGE_CLASS } from "@/components/LargeCard";
 import { cn } from "@/lib/cn";
 
 export function ListingCardSkeleton() {
   return (
     <div className="flex flex-col gap-3">
-      <Skeleton className={cn("w-full", ARCH_SHAPE_CLASS)} />
+      <Skeleton className={cn("w-full", LARGE_CARD_IMAGE_CLASS)} />
       <div className="flex flex-col gap-1.5">
         <Skeleton className="h-[2.5rem] w-3/4" />
         <Skeleton className="h-3.5 w-1/2" />

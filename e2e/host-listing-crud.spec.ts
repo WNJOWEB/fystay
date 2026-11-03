@@ -100,7 +100,9 @@ test("host can create, edit, and delete a listing", async ({ page }) => {
 
   // --- Delete ---
   const updatedRow = page.locator("article").filter({ has: page.getByRole("heading", { name: updatedTitle }) });
-  await updatedRow.getByRole("button", { name: "Delete" }).click();
+  // Delete lives behind the card's "More" menu, so it can't be hit by accident.
+  await updatedRow.getByRole("button", { name: /More/ }).click();
+  await updatedRow.getByRole("menuitem", { name: /Delete/ }).click();
 
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();

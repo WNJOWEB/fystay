@@ -25,24 +25,34 @@ import type { RefObject } from "react";
  * bottom corner, can read the same live number instead of hardcoding a
  * guess or duplicating this observer.
  *
- * Several bars can be registered at once (the site's bottom navigation
- * plus a page's own booking or hosting bar); the space reserved is the
- * tallest of them. A page bar (the default) also tells the site's bottom
- * navigation to step aside - see usePageBottomBarPresent - so two bars
- * never stack over the content.
+ * Several bars can be registered at once. Page bars (the site's bottom
+ * navigation, a page's own booking or hosting bar - the default) share one
+ * strip, so the tallest of them sets its height, exposed as
+ * --page-bottom-bar-height. A bar registered with pageBar: false (the cookie
+ * notice) is a layer above that strip: it adds its own height on top, and
+ * reads --page-bottom-bar-height to sit just above the page bar instead of
+ * covering it. --fixed-bottom-bar-height is the total of both. A page bar
+ * also tells the site's bottom navigation to step aside - see
+ * usePageBottomBarPresent - so two page bars never stack over the content.
  */
-const heights = new Map<HTMLElement, number>();
+const heights = new Map<HTMLElement, { height: number; pageBar: boolean }>();
 let pageBars = 0;
 const listeners = new Set<() => void>();
 
 function applyReservedSpace() {
-  const tallest = Math.max(0, ...heights.values());
-  if (tallest > 0) {
-    document.body.style.paddingBottom = `${tallest}px`;
-    document.documentElement.style.setProperty("--fixed-bottom-bar-height", `${tallest}px`);
+  const tallestOf = (pageBar: boolean) =>
+    Math.max(0, ...[...heights.values()].filter((bar) => bar.pageBar === pageBar).map((bar) => bar.height));
+  const page = tallestOf(true);
+  const total = page + tallestOf(false);
+  const root = document.documentElement;
+  if (page > 0) root.style.setProperty("--page-bottom-bar-height", `${page}px`);
+  else root.style.removeProperty("--page-bottom-bar-height");
+  if (total > 0) {
+    document.body.style.paddingBottom = `${total}px`;
+    root.style.setProperty("--fixed-bottom-bar-height", `${total}px`);
   } else {
     document.body.style.paddingBottom = "";
-    document.documentElement.style.removeProperty("--fixed-bottom-bar-height");
+    root.style.removeProperty("--fixed-bottom-bar-height");
   }
 }
 
@@ -60,7 +70,7 @@ export function useReserveBottomSpace(
     if (!el) return;
     if (pageBar) setPageBars(1);
     const observer = new ResizeObserver(() => {
-      heights.set(el, el.offsetHeight);
+      heights.set(el, { height: el.offsetHeight, pageBar });
       applyReservedSpace();
     });
     observer.observe(el);

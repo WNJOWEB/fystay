@@ -104,24 +104,28 @@ Effort: host navigation M (about 2 days), admin navigation S-M (1 day), account 
 
 ## 6. Checklist to work through
 
+Decisions (3 Nov): square cards on results (done); order of work is dashboards, then host profile pages, then the pitch page; pay later is skipped until there is demand.
+
+Also fixed on the way (found by a new test): the cookie notice covered the host's bottom tabs and a listing's "Add dates" bar on a first phone visit. It now sits above them.
+
 **Weeks 1-2 (before launch)**
 - [ ] Remove demo and generic listings and example data from anything real people can see
 - [ ] Real listings and photos in
 - [ ] Backups working (launch blocker), then re-enable the nightly schedule
-- [ ] Host navigation: five tabs plus grouped Menu; remove the sideways row
-- [ ] Listing cards: Edit plus "..." menu
-- [ ] Admin navigation: grouped menu, section dropdown, action-first Overview
+- [x] Host navigation: five tabs plus grouped Menu; remove the sideways row (built 3 Nov, Preview)
+- [x] Listing cards: Edit plus "More" menu (built 3 Nov, Preview)
+- [x] Admin navigation: grouped menu and section dropdown (built 3 Nov, Preview). Still to do: the action-first Overview (counts of open disputes, tickets, reports)
 - [ ] "Why list with FYStay" page
 - [ ] Phone and desktop QA pass on every public page
 
 **Weeks 3-6 (first month after launch)**
-- [ ] Guest account hub (rows and separate pages) and Notification settings
+- [x] Account page grouped into four sections with a sticky jump bar (built 3 Nov, Preview; kept as one page so Google linking, identity return and email confirmation still work). Still to do: Notification settings
 - [ ] Host public profile page; "responds within" badge
 - [ ] Message templates and quick replies
 - [ ] Admin monitoring view for failed emails and webhooks
 - [ ] Review-request email tested end to end
 - [ ] Written content for the town topic pages, town by town
-- [ ] Decide on the arch frame for results
+- [x] Arch frame on results replaced with the square card, matching the homepage (owner decision 3 Nov)
 
 **Months 2-3**
 - [ ] Host performance insights

@@ -68,7 +68,7 @@ export function ListingCard({
   checkIn,
   showLastMinutePrice = false,
   cta,
-  frame = "arch",
+  frame = "editorial",
 }: {
   listing: ListingCardData;
   isSaved?: boolean;

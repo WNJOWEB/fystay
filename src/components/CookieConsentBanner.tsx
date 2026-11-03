@@ -60,7 +60,8 @@ function CookieBar({ onDismiss }: { onDismiss: () => void }) {
       ref={barRef}
       role="region"
       aria-label="Cookie notice"
-      className="animate-host-page-in fixed inset-x-0 bottom-0 z-50 border-t border-border-subtle bg-surface/95 px-4 pb-[calc(0.625rem+env(safe-area-inset-bottom))] pt-2.5 backdrop-blur"
+      style={{ bottom: "var(--page-bottom-bar-height, 0px)" }}
+      className="animate-host-page-in fixed inset-x-0 z-50 border-t border-border-subtle bg-surface/95 px-4 pb-[calc(0.625rem+env(safe-area-inset-bottom))] pt-2.5 backdrop-blur"
     >
       <div className="mx-auto flex max-w-6xl items-center gap-3">
         <p className="min-w-0 flex-1 text-xs leading-snug text-stone-600 sm:text-sm">

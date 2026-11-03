@@ -16,7 +16,7 @@ import { cn } from "@/lib/cn";
 export function ComingSoonStayCard({
   destination,
   badge = "Coming soon",
-  frame = "arch",
+  frame = "editorial",
 }: {
   destination: FyldeCoastDestination;
   badge?: string;

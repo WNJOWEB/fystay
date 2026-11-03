@@ -22,6 +22,25 @@ import { isTwoFactorConfigured } from "@/lib/twoFactorCrypto";
 
 export const metadata: Metadata = { title: "Account", robots: { index: false } };
 
+const SECTIONS = [
+  { id: "personal", label: "Personal" },
+  { id: "verification", label: "Verification" },
+  { id: "security", label: "Security" },
+  { id: "privacy", label: "Privacy" },
+] as const;
+
+function AccountSection({ id, title, hint, children }: { id: string; title: string; hint: string; children: React.ReactNode }) {
+  return (
+    <section id={id} aria-labelledby={`${id}-heading`} className="mt-8 scroll-mt-40">
+      <h2 id={`${id}-heading`} className="text-lg font-bold text-foreground">
+        {title}
+      </h2>
+      <p className="mt-0.5 text-sm text-stone-500">{hint}</p>
+      <div className="mt-4 flex flex-col gap-4">{children}</div>
+    </section>
+  );
+}
+
 export default async function AccountPage({ searchParams }: PageProps<"/account">) {
   const session = await auth();
   const { emailVerified } = await searchParams;
@@ -87,12 +106,28 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         />
       </div>
 
-      <div className="mt-6">
-        <ProfileCard initialName={user.name} email={user.email} image={user.image} />
-      </div>
+      {/* One page, four labelled sections, with a jump bar that stays in view - so nobody scrolls past nine cards to find one. */}
+      <nav
+        aria-label="Account sections"
+        className="sticky top-[77px] z-20 lg:top-[85px] -mx-6 mt-5 flex gap-2 overflow-x-auto border-b border-border-subtle bg-background/95 px-6 py-2.5 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {SECTIONS.map((section) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className="focus-ring shrink-0 rounded-full border border-border-subtle bg-surface px-3.5 py-1.5 text-sm font-medium text-stone-700 hover:border-brand-200 hover:text-brand-800"
+          >
+            {section.label}
+          </a>
+        ))}
+      </nav>
 
-      <div className="mt-6 flex flex-col gap-4">
+      <AccountSection id="personal" title="Personal details" hint="Your name, photo and email.">
+        <ProfileCard initialName={user.name} email={user.email} image={user.image} />
         {hasPassword && <EmailChangeCard currentEmail={user.email} />}
+      </AccountSection>
+
+      <AccountSection id="verification" title="Verification" hint="Optional checks that build trust with hosts and guests.">
         <IdentityVerificationCard
           status={identity.status}
           processing={identity.processing}
@@ -103,6 +138,9 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
           verifiedPhone={user.phoneVerifiedAt ? user.phone : null}
           configured={isPhoneVerificationConfigured()}
         />
+      </AccountSection>
+
+      <AccountSection id="security" title="Login & security" hint="How you sign in, and where you are signed in.">
         {hasPassword && (
           <TwoFactorCard
             initialEnabled={Boolean(user.twoFactorEnabledAt)}
@@ -117,8 +155,11 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
           />
         </Suspense>
         <SecuritySessionsCard />
+      </AccountSection>
+
+      <AccountSection id="privacy" title="Privacy & data" hint="Download or delete your data.">
         <PrivacyDataCard hasPassword={hasPassword} />
-      </div>
+      </AccountSection>
     </div>
   );
 }

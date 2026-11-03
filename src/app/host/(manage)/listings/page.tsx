@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { CalendarDays, CheckCircle2, Circle, ClipboardCheck, Eye, Home, ImageOff, PencilLine, PlusCircle, Star } from "lucide-react";
+import { CheckCircle2, Circle, Home, ImageOff, PlusCircle, Star } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { loadHostPortfolio, type PortfolioListing } from "@/lib/hostData";
@@ -16,7 +16,7 @@ import { PUBLICATION_LISTING_SELECT, publicationState } from "@/lib/listingOnboa
 import { STAGE_LABEL, type LifecycleStage, type PublicationBlocker } from "@/lib/listingReview";
 import { HostPageEmpty, HostPageHeader, Meter, Pill, hostPageClassName } from "@/components/host/HostUi";
 import { PublishToggle } from "@/components/host/PublishToggle";
-import { DeleteListingButton } from "@/components/DeleteListingButton";
+import { ListingActionsMenu } from "@/components/host/ListingActionsMenu";
 import { buttonVariants } from "@/components/ui/Button";
 import { hostCommissionText } from "@/lib/pricingPolicy";
 import { smartPricingMode } from "@/lib/smartPricingMode";
@@ -255,28 +255,13 @@ function ListingCard({
       <div className="mt-auto flex flex-wrap items-center gap-1 border-t border-border-subtle px-3 py-2">
         {!listing.suspendedAt && <PublishToggle listingId={listing.id} published={listing.published} title={listing.title} />}
         <span className="ml-auto flex flex-wrap items-center gap-0.5">
-          {publication?.prepared && (
-            <ActionLink href={`/host/listings/${listing.id}/review`} icon={ClipboardCheck} label="Review" />
-          )}
-          <ActionLink href={`/host/listings/${listing.id}/edit`} icon={PencilLine} label="Edit" />
-          <ActionLink href={`/host/listings/${listing.id}/calendar`} icon={CalendarDays} label="Calendar" />
-          <ActionLink href={`/host/listings/${listing.id}/reviews`} icon={Star} label="Reviews" />
-          <ActionLink href={`/listings/${listing.id}`} icon={Eye} label="View" />
-          <DeleteListingButton listingId={listing.id} listingTitle={listing.title} />
+          <ListingActionsMenu
+            listingId={listing.id}
+            listingTitle={listing.title}
+            needsReview={Boolean(publication?.prepared)}
+          />
         </span>
       </div>
     </article>
-  );
-}
-
-function ActionLink({ href, icon: Icon, label }: { href: string; icon: typeof Eye; label: string }) {
-  return (
-    <Link
-      href={href}
-      className="focus-ring flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-medium text-stone-600 hover:bg-surface-muted hover:text-foreground"
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </Link>
   );
 }
