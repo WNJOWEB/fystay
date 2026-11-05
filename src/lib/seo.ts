@@ -32,7 +32,7 @@ export const DEFAULT_SHARE_IMAGE = {
   url: "/opengraph-image",
   width: 1200,
   height: 630,
-  alt: "WNJO - Web & SaaS. Independent holiday stays from local hosts.",
+  alt: "FYStay - For Your Stay. Independent holiday stays from local hosts.",
 };
 
 /**

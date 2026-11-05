@@ -102,9 +102,9 @@ export function renderEmail(content: EmailContent): string {
         <td align="center" style="padding:32px 16px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
             <tr>
-              <td style="padding:0 4px 20px;font-family:Helvetica,Arial,sans-serif;font-size:26px;font-weight:700;letter-spacing:1px;color:#3d2314;">
-                WNJO
-                <div style="margin-top:4px;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:400;letter-spacing:3.4px;text-transform:uppercase;color:#3d2314;">Web &amp; SaaS</div>
+              <td style="padding:0 4px 20px;font-family:${SERIF};font-size:26px;font-weight:700;letter-spacing:-0.5px;">
+                <span style="color:${COLORS.brand};">FY</span><span style="color:${COLORS.ink};">Stay</span>
+                <div style="margin-top:4px;font-family:${SERIF};font-size:9px;font-weight:400;letter-spacing:2.4px;text-transform:uppercase;color:${COLORS.ink};">For Your Stay</div>
               </td>
             </tr>
             <tr>
