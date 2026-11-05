@@ -1,25 +1,27 @@
 "use client";
 
+import { useId } from "react";
 import { cn } from "@/lib/cn";
 import { useNavTone } from "@/components/NavTone";
+import { BrandMark } from "@/lib/brandMark";
 
 const sizeClasses = {
-  sm: "text-2xl",
-  md: "text-3xl",
-  lg: "text-4xl",
-  xl: "text-5xl",
+  sm: "text-xl",
+  md: "text-2xl",
+  lg: "text-3xl",
+  xl: "text-4xl",
 };
 
-// The descriptor line's size per logo size: 7px under the header's (lg)
-// wordmark spans it exactly; the sign-in pages' larger (xl) wordmark gets a
-// proportionally larger line so it still spans the full width.
+// The "WEB & SAAS" descriptor line's size per logo size, spaced so it spans
+// roughly the width of the "WNJO" wordmark above it.
 const taglineSizeClasses = {
-  sm: "mt-1.5 text-[7px]",
-  md: "mt-2 text-[7px]",
-  lg: "mt-2 text-[7px]",
-  xl: "mt-2.5 text-[9.4px]",
+  sm: "mt-1 text-[7px] tracking-[0.42em]",
+  md: "mt-1 text-[8px] tracking-[0.42em]",
+  lg: "mt-1.5 text-[9px] tracking-[0.45em]",
+  xl: "mt-1.5 text-[12px] tracking-[0.45em]",
 };
 
+/** The WNJO lockup: the W mark, the "WNJO" wordmark and its descriptor. */
 export function Logo({
   size = "md",
   withTagline = false,
@@ -28,60 +30,45 @@ export function Logo({
 }: {
   size?: keyof typeof sizeClasses;
   withTagline?: boolean;
-  /** Extra classes for the "· Apartments · B&Bs · Lodges" descriptor line
-   * (small spaced capitals, sized per logo size). */
+  /** Extra classes for the "Web & SaaS" descriptor line. */
   taglineClassName?: string;
   className?: string;
 }) {
   const tone = useNavTone();
   const isHero = tone === "hero";
+  const gradientId = `wnjo-swoosh-${useId().replace(/:/g, "")}`;
 
   return (
     // w-fit: the lockup is only as wide as its content, even inside a
     // stretching flex column (the footer's).
-    <span className={cn("inline-flex w-fit flex-col", sizeClasses[size], className)}>
-      <span
-        className={cn(
-          // tracking-tight pulls DM Serif Display's fairly generous default
-          // spacing in so "FY" and "Stay" read as one fused wordmark rather
-          // than two adjacent words - font-normal guards against the
-          // browser synthesizing a bolder weight than the single 400 the
-          // font actually ships.
-          "font-[family-name:var(--font-logo)] font-normal leading-none tracking-tight",
-        )}
-      >
-        <span className="text-brand-600">FY</span>
-        <span className={cn("text-[var(--color-ink)]", isHero && "text-white")}>Stay</span>
-      </span>
-      {/* Separates "FYStay" from its descriptor for screen readers; the
-          flex column ignores it visually. */}{" "}
-      {withTagline && (
-        // What's on the marketplace, as the logo's descriptor line - the
-        // pre-rebrand "Apartments · B&Bs · Lodges" styling (f426c2f): small
-        // spaced capitals clear of the wordmark's descenders.
+    <span className={cn("inline-flex w-fit items-center gap-[0.4em]", sizeClasses[size], className)}>
+      <BrandMark
+        className="h-[1.7em] w-auto shrink-0"
+        ribbonColor={isHero ? "#ffffff" : undefined}
+        gradientId={gradientId}
+      />
+      <span className="inline-flex flex-col">
         <span
           className={cn(
-            "flex items-center gap-1 whitespace-nowrap font-[family-name:var(--font-logo)] uppercase leading-tight tracking-wide text-[var(--color-ink)]",
-            taglineSizeClasses[size],
-            isHero && "text-white/90",
-            taglineClassName,
+            "font-[family-name:var(--font-geist-sans)] font-semibold leading-none tracking-[0.04em] text-[#3d2314]",
+            isHero && "text-white",
           )}
         >
-          {/* The spaces are for screen readers; flex layout ignores them visually. */}
-          <span className={cn("text-stone-400", isHero && "text-white/40")} aria-hidden>
-            &middot;
-          </span>{" "}
-          <span>Apartments</span>{" "}
-          <span className={cn("text-stone-400", isHero && "text-white/40")} aria-hidden>
-            &middot;
-          </span>{" "}
-          <span>B&amp;Bs</span>{" "}
-          <span className={cn("text-stone-400", isHero && "text-white/40")} aria-hidden>
-            &middot;
-          </span>{" "}
-          <span>Lodges</span>
-        </span>
-      )}
+          WNJO
+        </span>{" "}
+        {withTagline && (
+          <span
+            className={cn(
+              "whitespace-nowrap font-[family-name:var(--font-geist-sans)] font-medium uppercase leading-tight text-[#3d2314]",
+              taglineSizeClasses[size],
+              isHero && "text-white/90",
+              taglineClassName,
+            )}
+          >
+            Web &amp; SaaS
+          </span>
+        )}
+      </span>
     </span>
   );
 }

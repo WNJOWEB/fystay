@@ -58,10 +58,10 @@ describe("notification emails", () => {
     expect(guestEmail.html).toContain("see you in Lytham &lt;b&gt;");
   });
 
-  it("uses the FYStay design for every message: wordmark, heading and one button", async () => {
+  it("uses the brand design for every message: wordmark, heading and one button", async () => {
     await sendBookingConfirmedEmails(ctx);
     for (const [message] of send.mock.calls) {
-      expect(message.html).toContain(">FY</span>");
+      expect(message.html).toContain("WNJO");
       expect(message.html).toMatch(/<h1[^>]*>/);
       expect(message.html.match(/<a href="[^"]+" style="display:inline-block/g)).toHaveLength(1);
       // Every email tells people where to write: FYStay's one customer address.
