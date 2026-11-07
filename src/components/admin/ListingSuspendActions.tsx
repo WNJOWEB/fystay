@@ -44,7 +44,7 @@ export function ListingSuspendActions({ listingId, suspended }: { listingId: str
 
   return (
     <>
-      <Button type="button" variant="danger" size="sm" onClick={() => setOpen(true)}>
+      <Button type="button" variant="outline" size="sm" onClick={() => setOpen(true)}>
         Suspend
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)} title="Suspend this listing?">

@@ -141,8 +141,9 @@ export function BookingCard({
   // actually going ahead - the same CONFIRMED/COMPLETED gate
   // tripExtraPurchaseError applies to buying a transfer at all - and only
   // when there's a real, active offering to point the CTA at.
-  const showJourney =
-    airportTransferProviderName !== null && (status === "CONFIRMED" || status === "COMPLETED");
+  // A finished stay (COMPLETED) gets no transfer offer: nobody needs a ride
+  // to the airport from a past stay.
+  const showJourney = airportTransferProviderName !== null && status === "CONFIRMED";
   const journeyViewRef = useViewOnce<HTMLDivElement>(() => {
     trackAddonEvent({
       name: "transfer_offer_viewed",
@@ -248,14 +249,10 @@ export function BookingCard({
             Your journey
           </p>
           <div className="mt-2 flex flex-col gap-2">
-            <div className="flex items-center gap-2 text-sm text-stone-700">
-              <Check className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
-              Stay
-            </div>
             {hasAirportTransfer ? (
               <div className="flex items-center gap-2 text-sm text-stone-700">
                 <Check className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
-                Airport transfer
+                Airport transfer booked
               </div>
             ) : (
               <div className="flex flex-col gap-2 rounded-lg bg-surface-muted p-3 sm:flex-row sm:items-center sm:justify-between">

@@ -58,6 +58,8 @@ See [launch/master-checklist.md](launch/master-checklist.md): trader identity, l
 
 - 7 Nov, item 4 - UI pass (first slice, phone checked): the account's email row is now one line that opens the form on request (was an always-open form); the trips tabs no longer wrap; the host Today page no longer repeats the payouts setup (the checklist already shows it). Full e2e: 141 passed. Still open in tiers 3-4: the trip card's journey panel, the admin screens at phone width, search results, and a full desktop pass.
 
+- 7 Nov, item 4 - UI pass (second slice): admin stat cards show the full figure on a phone (icon above the number; "Platform revenue" was cut off); admin copy shortened ("Booking value", "Commission"); the Suspend button is no longer a solid red block. Trip card: a transfer offer is no longer shown on a finished stay (it was: "Need a ride from the airport?" on a past holiday), and the redundant "Stay" tick is gone. Checked at phone and desktop: admin overview, homepage, search, host calendar, register. Full e2e 141 passed (one authorization run failed only because a local test account had been promoted to admin during the run; rerun alone 4/4).
+
 ## Next priorities
 
 1. Get a clean e2e run; fix every failure that is a real app bug.

@@ -155,7 +155,7 @@ export default async function AdminOverviewPage() {
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
           icon={PoundSterling}
-          label="Gross booking value"
+          label="Booking value"
           value={formatPrice(financials.grossBookingValueCents)}
           sublabel={`${financials.paidBookingsCount} paid booking${financials.paidBookingsCount === 1 ? "" : "s"}`}
         />
@@ -163,7 +163,7 @@ export default async function AdminOverviewPage() {
           icon={PoundSterling}
           label="Platform revenue"
           value={formatPrice(financials.platformRevenueCents)}
-          sublabel="Commission, net of credit/promo and refunds"
+          sublabel="Commission"
         />
         <StatCard
           icon={Ticket}
