@@ -96,7 +96,7 @@ test("without dates the results page lists stays to browse; invalid searches say
   // Browsing to Stays without searching: every stay, and a nudge to add dates.
   await page.goto("/search");
   await expect(page.getByRole("heading", { name: "All stays" })).toBeVisible();
-  await expect(page.getByText("Add your dates above")).toBeVisible();
+  await expect(page.getByText("Add dates to see availability")).toBeVisible();
   await expect(page.locator('main [data-testid="listing-card-title"]').first()).toBeVisible();
 
   // A place without dates yet: that place's stays, no error.

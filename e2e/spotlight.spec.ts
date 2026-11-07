@@ -39,6 +39,12 @@ test.use({ contextOptions: { reducedMotion: "reduce" } });
 test("a featured listing leads the Spotlight carousel, labelled Promoted, and its host sees views and clicks", async ({
   page,
 }) => {
+  // Event counts are rate-limited per visitor address, and every test in a
+  // run shares one. Give this test its own address so earlier tests can't
+  // use up its allowance.
+  await page.setExtraHTTPHeaders({
+    "x-forwarded-for": `198.51.100.${Math.floor(Math.random() * 250) + 1}`,
+  });
   await logInAsHost(page);
   const title = await featureListing(page, 0);
 
