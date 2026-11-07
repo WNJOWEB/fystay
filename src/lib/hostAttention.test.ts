@@ -43,9 +43,8 @@ describe("buildActionItems", () => {
     expect(items[0]).toMatchObject({ tone: "urgent", href: "/host/bookings/b1", title: "Ana wants to book" });
   });
 
-  it("flags payouts only when there's a listing to book", () => {
-    expect(buildActionItems({ ...base, payoutsReady: false, hasListings: false })).toEqual([]);
-    expect(buildActionItems({ ...base, payoutsReady: false })[0].key).toBe("payouts");
+  it("doesn't repeat the payouts setup, which the Today checklist shows", () => {
+    expect(buildActionItems({ ...base, payoutsReady: false }).map((i) => i.key)).not.toContain("payouts");
   });
 
   it("warns when a calendar sync is more than two days old", () => {

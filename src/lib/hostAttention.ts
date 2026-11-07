@@ -69,16 +69,8 @@ export function buildActionItems(input: {
   const items: ActionItem[] = [];
   const { now } = input;
 
-  if (input.hasListings && !input.payoutsReady) {
-    items.push({
-      key: "payouts",
-      tone: "urgent",
-      title: "Set up payouts to go live",
-      detail: "Guests can't book until your Stripe account is connected.",
-      href: "/host/payouts",
-      cta: "Set up",
-    });
-  }
+  // Payouts aren't listed here: while they're missing, the setup checklist at
+  // the top of the Today page already shows them with their button.
 
   for (const r of input.requests) {
     items.push({

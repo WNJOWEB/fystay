@@ -19,6 +19,8 @@ import { Button } from "@/components/ui/Button";
 export function EmailChangeCard({ currentEmail }: { currentEmail: string }) {
   const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
+  // Closed by default: the address is shown, and the form opens only on request.
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -49,9 +51,16 @@ export function EmailChangeCard({ currentEmail }: { currentEmail: string }) {
 
   return (
     <Card className="p-5">
-      <CardHeader className="p-0">
-        <CardTitle>Change email</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between gap-3 p-0">
+        <div className="min-w-0">
+          <CardTitle>Email</CardTitle>
+          <p className="mt-0.5 truncate text-sm text-stone-600">{currentEmail}</p>
+        </div>
+        <Button variant="outline" size="sm" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+          {open ? "Close" : "Change"}
+        </Button>
       </CardHeader>
+      {open && (
       <CardContent className="mt-3 p-0 text-sm text-stone-600">
         {sent ? (
           <div className="flex flex-col items-center gap-3 py-2 text-center">
@@ -123,6 +132,7 @@ export function EmailChangeCard({ currentEmail }: { currentEmail: string }) {
           </form>
         )}
       </CardContent>
+      )}
     </Card>
   );
 }

@@ -202,7 +202,7 @@ export function BookingsTabs({
             aria-selected={tab === t.key}
             onClick={() => selectTab(t.key)}
             className={cn(
-              "focus-ring -mb-px flex items-center gap-1.5 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors",
+              "focus-ring -mb-px flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-medium transition-colors",
               tab === t.key
                 ? "border-brand-700 text-brand-700"
                 : "border-transparent text-stone-500 hover:text-foreground",

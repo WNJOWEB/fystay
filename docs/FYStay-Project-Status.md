@@ -56,6 +56,8 @@ See [launch/master-checklist.md](launch/master-checklist.md): trader identity, l
 - 7 Nov, item 3 - admin failures view: new `DeliveryFailure` table (migration `20261107113211_delivery_failures`, RLS on, added to the manifest). Emails the provider refuses and Stripe webhooks that throw are recorded. Admins see them at `/admin/failures` and mark them handled. Overview shows the open count. Unit tests + e2e (`e2e/admin-failures.spec.ts`).
   - **Owner action:** apply the migration to Production through the normal migration workflow. It's additive (a new table and enum).
 
+- 7 Nov, item 4 - UI pass (first slice, phone checked): the account's email row is now one line that opens the form on request (was an always-open form); the trips tabs no longer wrap; the host Today page no longer repeats the payouts setup (the checklist already shows it). Full e2e: 141 passed. Still open in tiers 3-4: the trip card's journey panel, the admin screens at phone width, search results, and a full desktop pass.
+
 ## Next priorities
 
 1. Get a clean e2e run; fix every failure that is a real app bug.

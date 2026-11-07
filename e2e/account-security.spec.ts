@@ -44,6 +44,7 @@ test("changing email needs the current password", async ({ page }) => {
   try {
     await login(page, user.email);
     await page.goto("/account");
+    await page.getByRole("button", { name: "Change", exact: true }).click();
 
     const newEmail = `e2e-account-security-new-${Date.now()}@fystay.dev`;
     await page.getByLabel("New email address").fill(newEmail);
