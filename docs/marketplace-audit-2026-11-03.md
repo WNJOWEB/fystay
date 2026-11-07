@@ -114,14 +114,14 @@ Also fixed on the way (found by a new test): the cookie notice covered the host'
 - [ ] Backups working (launch blocker), then re-enable the nightly schedule
 - [x] Host navigation: five tabs plus grouped Menu; remove the sideways row (built 3 Nov, Preview)
 - [x] Listing cards: Edit plus "More" menu (built 3 Nov, Preview)
-- [x] Admin navigation: grouped menu and section dropdown (built 3 Nov, Preview). Still to do: the action-first Overview (counts of open disputes, tickets, reports)
+- [x] Admin navigation: grouped menu and section dropdown (built 3 Nov, Preview). Action-first Overview ("Needs attention" counts) also built (checked 7 Nov)
 - [x] "Why list with FYStay": done as the "What you keep" section on /host
 - [ ] Phone and desktop QA pass on every public page
 
 **Weeks 3-6 (first month after launch)**
-- [x] Account page grouped into four sections with a sticky jump bar (built 3 Nov, Preview; kept as one page so Google linking, identity return and email confirmation still work). Still to do: Notification settings
+- [x] Account page grouped into four sections with a sticky jump bar (built 3 Nov, Preview; kept as one page so Google linking, identity return and email confirmation still work). Notification settings card present (checked 7 Nov)
 - [x] Host public profile page (built 3 Nov). The response badges already existed. Still to do: an optional host bio (needs a database migration)
-- [ ] Message templates and quick replies
+- [x] Message templates and quick replies (host chips in the inbox, built 7 Nov, Preview)
 - [ ] Admin monitoring view for failed emails and webhooks
 - [ ] Review-request email tested end to end
 - [ ] Written content for the town topic pages, town by town
