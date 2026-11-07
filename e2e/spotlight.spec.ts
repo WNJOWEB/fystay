@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { PrismaClient } from "@prisma/client";
+import { isolateClientIp } from "./isolate-ip";
 
 // Without a Stripe key (CI, local development) a Spotlight purchase is
 // activated straight away - the same dev-mode fallback every checkout uses -
@@ -12,21 +14,48 @@ async function logInAsHost(page: Page) {
   await page.waitForURL((url) => !url.pathname.startsWith("/login"));
 }
 
-/** Features the host's nth listing for 7 days and returns its title. */
-async function featureListing(page: Page, nth: number): Promise<string> {
+const prisma = new PrismaClient();
+
+/**
+ * A listing this test owns, so no other test can delete or change its
+ * Spotlight placement while it runs (other specs create and delete their own
+ * fixtures for the same host, and deleting a listing cascades to its
+ * placements and view counts).
+ */
+async function createSpotlightFixture(): Promise<{ id: string; title: string }> {
+  const host = await prisma.user.findUniqueOrThrow({ where: { email: "host@fystay.dev" } });
+  const title = `E2E fixture: spotlight ${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+  const listing = await prisma.listing.create({
+    data: {
+      title,
+      description: "Temporary listing created for the Spotlight test.",
+      city: "Blackpool",
+      country: "England",
+      propertyType: "APARTMENT",
+      pricePerNightCents: 8000,
+      maxGuests: 4,
+      bedrooms: 1,
+      bathrooms: 1,
+      amenities: ["Wifi"],
+      photos: [],
+      published: true,
+      hostId: host.id,
+    },
+    select: { id: true },
+  });
+  return { id: listing.id, title };
+}
+
+/** Features one listing, by its exact title, for 7 days. */
+async function featureListing(page: Page, title: string): Promise<void> {
   await page.goto("/host/promote");
-  // Scoped to rows that offer a Spotlight purchase - the hosting menu is a list too.
   const listing = page
     .locator("main ul > li")
-    .filter({ has: page.getByRole("button", { name: /(Feature for|Add) 7 days/ }) })
-    .nth(nth);
-  const title = (await listing.locator("p.font-semibold").first().textContent())!.trim();
-  // A listing that's already featured (from an earlier run) offers "Add"
-  // instead of "Feature for" - either buys another 7 days.
+    .filter({ hasText: title })
+    .filter({ has: page.getByRole("button", { name: /(Feature for|Add) 7 days/ }) });
   await listing.getByRole("button", { name: /(Feature for|Add) 7 days/ }).click();
   await expect(page.getByText(`${title} is in Spotlight`)).toBeVisible();
   await expect(listing.getByText(/Live until/)).toBeVisible();
-  return title;
 }
 
 function spotlight(page: Page) {
@@ -39,14 +68,18 @@ test.use({ contextOptions: { reducedMotion: "reduce" } });
 test("a featured listing leads the Spotlight carousel, labelled Promoted, and its host sees views and clicks", async ({
   page,
 }) => {
-  // Event counts are rate-limited per visitor address, and every test in a
-  // run shares one. Give this test its own address so earlier tests can't
-  // use up its allowance.
-  await page.setExtraHTTPHeaders({
-    "x-forwarded-for": `198.51.100.${Math.floor(Math.random() * 250) + 1}`,
-  });
+  await isolateClientIp(page);
+  const fixture = await createSpotlightFixture();
+  try {
+    await runSpotlightJourney(page, fixture.title);
+  } finally {
+    await prisma.listing.deleteMany({ where: { id: fixture.id } });
+  }
+});
+
+async function runSpotlightJourney(page: Page, title: string) {
   await logInAsHost(page);
-  const title = await featureListing(page, 0);
+  await featureListing(page, title);
 
   // Listening from before the page loads: a promoted card reports its view
   // as soon as it's on screen.
@@ -81,4 +114,4 @@ test("a featured listing leads the Spotlight carousel, labelled Promoted, and it
     await expect(hostCard.getByText(/Seen [1-9][\d,]* times?/)).toBeVisible({ timeout: 1000 });
     await expect(hostCard.getByText(/[1-9][\d,]* clicks? to your listing/)).toBeVisible({ timeout: 1000 });
   }).toPass({ timeout: 15_000 });
-});
+}

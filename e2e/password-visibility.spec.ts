@@ -2,6 +2,12 @@ import { test, expect } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { generateReferralCode } from "../src/lib/referral";
+import { isolateClientIp } from "./isolate-ip";
+
+// Every test here signs up or logs in, and the limits are per address.
+test.beforeEach(async ({ page }) => {
+  await isolateClientIp(page);
+});
 
 // The show/hide password control: reveals and masks without losing what was
 // typed, works from the keyboard, keeps the autocomplete hint, and doesn't

@@ -28,10 +28,15 @@ this file tracks engineering tiers, test results and known bugs. Update it after
   - `spotlight` "Seen N times" missing in the full run only. Cause: the e2e suite shares one IP, and event posts are limited to 120 per visitor per 10 minutes, so later tests used up the allowance. The spec passes alone. The spec now gets its own forwarded address.
 - 7 Nov, full rerun with both fixes: **138 passed, 1 failed** (2.4 min, 3 workers).
   - Failing: `spotlight` - the host's "Seen N times" never appears for the "tiny B&B for two" fixture in the full run. The server logged a foreign-key error (`ListingPromotionStat_promotionId_fkey`) for an event posted against a promotion that is no longer in the database. The spec passes alone. Open: find which promotion id the homepage sends, and why it isn't the one the host page reads. Treat as a real bug until proven otherwise.
+- 7 Nov, spotlight fix: 139 passed, 1 failed (`favourites` sign-up). Cause: the sign-up limit (see Known bugs). Fixed by giving that test its own address.
+- 7 Nov, after per-test addresses, one failure in `email-verification-signup` (the `afterAll` race) and one timeout in `authorization` during teardown. Fixed the race by making the file serial. The authorization test passed on rerun.
+- 7 Nov, final: **140 passed, 0 failed** (2.5 min, 3 workers, exit 0).
 
 ## Known bugs
 
-- **Spotlight stats (open):** see the 7 Nov rerun above. The event route swallows errors, so a failed count is silent to the visitor. Root cause not yet found.
+- **Spotlight stats (fixed 7 Nov):** the spec featured the host's first listing, which another spec (`search-filters`) creates and deletes mid-run. Deleting a listing cascades to its placement and view counts. The spec now creates and features its own fixture listing and deletes it afterwards.
+- **Shared test IP (fixed 7 Nov):** sign-up is limited to 5 per hour per address, and the limit is stored in the database, so repeated runs in the same hour exhaust it. Sign-up specs now give each test its own address (`e2e/isolate-ip.ts`).
+- **Verification spec race (fixed 7 Nov):** its `afterAll` removed every account with the shared prefix, including accounts other workers were still using. The file now runs in serial mode.
 - **Security (to verify):** `clientIp()` in `src/lib/rateLimit.ts` trusts the first `x-forwarded-for` value. If a client can set that header and the host doesn't overwrite it, per-IP rate limits (auth, Spotlight events) can be bypassed. Check how Vercel sets the header before changing it.
 
 ## Technical decisions

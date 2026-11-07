@@ -3,6 +3,12 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { generateReferralCode } from "../src/lib/referral";
 import { generateResetToken } from "../src/lib/passwordReset";
+import { isolateClientIp } from "./isolate-ip";
+
+// Every test here signs up or logs in, and the limits are per address.
+test.beforeEach(async ({ page }) => {
+  await isolateClientIp(page);
+});
 
 // Sign-up needs a confirmed email before the account can log in. Locally no
 // email provider is configured, so /verify-email shows the link instead of
@@ -15,6 +21,10 @@ try {
 }
 
 const prisma = new PrismaClient();
+// Serial: the afterAll below removes every account with this prefix, so a
+// parallel worker's test could lose its user mid-run.
+test.describe.configure({ mode: "serial" });
+
 const PREFIX = "e2e-signup-verify-";
 const PASSWORD = "signupverify123";
 

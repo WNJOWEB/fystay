@@ -1,6 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 import { isoInDays } from "./support/search";
+import { isolateClientIp } from "./isolate-ip";
+
+// Every test here signs up or logs in, and the limits are per address.
+test.beforeEach(async ({ page }) => {
+  await isolateClientIp(page);
+});
 
 // Playwright's test process doesn't load .env the way `next dev` does.
 // CI sets these vars directly instead of via a .env file, so don't fail

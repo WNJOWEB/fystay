@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 import { generateBookingReference } from "../src/lib/bookingReference";
+import { isolateClientIp } from "./isolate-ip";
 
 try {
   process.loadEnvFile();
@@ -83,6 +84,7 @@ test.describe("favourites / wishlist", () => {
   });
 
   test("a guest who signs up from the prompt lands back on the property, already saved", async ({ page }) => {
+    await isolateClientIp(page);
     const listing = await createListing();
     const email = `e2e-favourite-signup-${generateBookingReference()}@fystay.dev`.toLowerCase();
 
