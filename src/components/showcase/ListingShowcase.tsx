@@ -205,6 +205,7 @@ export function ListingShowcase({
 
       <ShowcaseGalleryStrip
         photos={content.gallery}
+        narrow={!heroWide}
         startAt={
           content.hero && content.gallery[0]?.src === content.hero.src ? 1 : 0
         }

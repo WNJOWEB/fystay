@@ -91,7 +91,7 @@ Effort: host navigation M (about 2 days), admin navigation S-M (1 day), account 
 - [x] "What you keep" on the List your place page (built 3 Nov, Preview): the 10% fee, a short good-to-know list (incl. the payout timing) and a calculator against Airbnb (15.5%, checked on Airbnb's own page) and Booking.com (10-25%, from its partner help as search returned it; its pages block direct reading). Dated and linked on the page; re-check both before relying on it, and before launch have the comparison read for UK advertising rules.
 - [ ] The host sign-up and first-listing flow tested start to finish on a phone by someone who has never used it.
 - [x] Host profile pages, so a guest sees a real person (built 3 Nov, Preview): /hosts/<id> with photo, badges, response stats, their stays and recent reviews; nothing private. A host bio needs a new database field (a Production migration, so waits for approval); kept noindex while pages are thin.
-- [ ] No placeholder text, dead links, empty rows or broken layouts on any public page (full pass on phone and desktop).
+- [x] No placeholder text, dead links, empty rows or broken layouts on any public page (full pass on phone and desktop, 7 Nov; repeat with real listings).
 - [ ] Real emails checked: confirmation, host notice, reminder, review request, cancellation.
 - [ ] Legal entity details published once the company is confirmed (PR #7 stays unmerged until then).
 - [ ] Speed check (Lighthouse on a phone profile) on homepage, search, listing and a town page.
@@ -116,13 +116,13 @@ Also fixed on the way (found by a new test): the cookie notice covered the host'
 - [x] Listing cards: Edit plus "More" menu (built 3 Nov, Preview)
 - [x] Admin navigation: grouped menu and section dropdown (built 3 Nov, Preview). Action-first Overview ("Needs attention" counts) also built (checked 7 Nov)
 - [x] "Why list with FYStay": done as the "What you keep" section on /host
-- [ ] Phone and desktop QA pass on every public page
+- [x] Phone and desktop QA pass on every public page (7 Nov, local copy with demo data: 27 public pages on phone and desktop, 113 links, no dead links, no sideways scrolling, no script errors. Fixed: desktop photo row out of line under a smaller hero, "1 BATHROOMS", town hero text cut off mid-sentence, an empty "Near your stay" card, same icon on all four host steps, long text on the host, About and Deals pages. Repeat once real listings are in)
 
 **Weeks 3-6 (first month after launch)**
 - [x] Account page grouped into four sections with a sticky jump bar (built 3 Nov, Preview; kept as one page so Google linking, identity return and email confirmation still work). Notification settings card present (checked 7 Nov)
 - [x] Host public profile page (built 3 Nov). The response badges already existed. Still to do: an optional host bio (needs a database migration)
 - [x] Message templates and quick replies (host chips in the inbox, built 7 Nov, Preview)
-- [ ] Admin monitoring view for failed emails and webhooks
+- [x] Admin monitoring view for failed emails and webhooks (/admin/failures, on Production 7 Nov)
 - [ ] Review-request email tested end to end
 - [ ] Written content for the town topic pages, town by town
 - [x] Arch frame on results replaced with the square card, matching the homepage (owner decision 3 Nov)

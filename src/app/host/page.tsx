@@ -2,17 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BecomeHostButton } from "@/components/BecomeHostButton";
 import {
+  CalendarCheck,
   Camera,
   Handshake,
+  House,
   LayoutDashboard,
   MapPin,
   PoundSterling,
+  Rocket,
   Users,
 } from "lucide-react";
 import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
-import { DEFAULT_SHARE_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { DEFAULT_SHARE_IMAGE, SITE_URL } from "@/lib/seo";
 import { hostCommissionText } from "@/lib/pricingPolicy";
 import { HostEarningsCalculator } from "@/components/HostEarningsCalculator";
 import { smartPricingMode } from "@/lib/smartPricingMode";
@@ -40,33 +43,33 @@ export const metadata: Metadata = {
 const REASONS = [
   {
     icon: MapPin,
-    title: "Local exposure, not a drop in a global ocean",
+    title: "Seen locally",
     description:
-      "FYStay is a regional marketplace, not a worldwide catalogue. Your listing sits alongside a handful of other local places, not millions of listings from every country.",
+      "Your place sits among a handful of local stays, not millions worldwide.",
   },
   {
     icon: Users,
-    title: "Guests who've already chosen the area",
+    title: "Guests who chose the area",
     description:
-      "Guests come to FYStay to find a stay from a local host - you're reaching people who've already picked the area, not hoping to be noticed inside a worldwide catalogue.",
+      "People come to FYStay already set on the area.",
   },
   {
     icon: LayoutDashboard,
-    title: "Simple, self-serve property management",
+    title: "One simple dashboard",
     description:
-      "Your listing, calendar, availability, cancellation policy, bookings and reviews all live in one host dashboard - no separate apps or spreadsheets to keep in sync.",
+      "Listing, calendar, bookings and reviews in one dashboard.",
   },
   {
     icon: Handshake,
     title: "A direct line to your guests",
     description:
-      "Once a booking is confirmed, your contact details are right there on it for your guest - no anonymised relay or call centre standing between you and the person staying in your property.",
+      "Once a booking is confirmed, your guest has your contact details. No middleman.",
   },
   {
     icon: PoundSterling,
-    title: "Transparent fees, shown upfront",
+    title: "Clear fees",
     description:
-      `You set your own nightly rate, with cleaning included - guests pay exactly that, with no booking fees added. FYStay's only charge is a commission of ${hostCommissionText(smartPricingMode())} on each booking, taken before your payout. No card fees, no subscription.`,
+      `Guests pay your price, with no booking fee added. FYStay takes ${hostCommissionText(smartPricingMode())} of each booking. No card fees, no subscription.`,
   },
 ];
 
@@ -80,18 +83,22 @@ const GOOD_TO_KNOW = [
 
 const STEPS = [
   {
+    icon: House,
     title: "1. Create your listing",
     description: "Add your property's title, description, location, price and details.",
   },
   {
+    icon: Camera,
     title: "2. Add real photos and amenities",
     description: "The details that help a guest choose your place with confidence.",
   },
   {
+    icon: CalendarCheck,
     title: "3. Set your availability and cancellation policy",
     description: "Flexible, Moderate, Strict, Non-refundable or a Custom policy - entirely your call.",
   },
   {
+    icon: Rocket,
     title: "4. Publish and start hosting",
     description: "Manage bookings, message guests and respond to reviews from your dashboard.",
   },
@@ -129,10 +136,8 @@ export default async function BecomeAHostPage() {
             List your place on FYStay
           </h1>
           <p className="mt-4 text-base text-white/85 sm:text-lg">
-            {SITE_NAME} - for your stay - is a local booking platform that knows the area, not a
-            global marketplace you disappear into. It started on the Fylde Coast and welcomes
-            hosts across Lancashire and the North West. List your holiday home, apartment, lodge or
-            guest house and reach guests looking for a stay near you.
+            A local booking site for the Fylde Coast and the North West. Reach guests who want to
+            stay near you, and keep more of what they pay.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {cta(cn(buttonVariants({ size: "lg" }), "bg-white text-brand-800 hover:bg-white/90"))}
@@ -152,12 +157,8 @@ export default async function BecomeAHostPage() {
       <section className="mx-auto w-full max-w-6xl px-6 py-14">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-            Why local hosts choose FYStay
+            Why list with FYStay
           </h2>
-          <p className="mt-1 text-sm text-stone-500">
-            No unsupported promises about bookings or earnings - just how the platform actually
-            works for a local host.
-          </p>
         </div>
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {REASONS.map(({ icon: Icon, title: reasonTitle, description: reasonDescription }) => (
@@ -203,9 +204,9 @@ export default async function BecomeAHostPage() {
             Four steps from an empty dashboard to a bookable listing.
           </p>
           <div className="mt-8 flex flex-col gap-6">
-            {STEPS.map((step) => (
+            {STEPS.map(({ icon: StepIcon, ...step }) => (
               <div key={step.title} className="flex items-start gap-3">
-                <Camera className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" aria-hidden />
+                <StepIcon className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" aria-hidden />
                 <div>
                   <p className="text-sm font-semibold text-foreground">{step.title}</p>
                   <p className="mt-0.5 text-sm text-stone-600">{step.description}</p>

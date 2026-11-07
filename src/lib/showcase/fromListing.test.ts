@@ -30,7 +30,7 @@ describe("showcaseFromListing", () => {
   it("carries the price, the weekend price, the facts and the tagline", () => {
     const content = showcaseFromListing(listing);
     expect(content.price).toMatchObject({ fromCents: 12000, weekendCents: 14000, minNights: 2 });
-    expect(content.facts.map((fact) => `${fact.label} ${fact.value}`)).toEqual(["Sleeps 4", "Bedrooms 2", "Bathrooms 1", "Beds 3"]);
+    expect(content.facts.map((fact) => `${fact.label} ${fact.value}`)).toEqual(["Sleeps 4", "Bedrooms 2", "Bathroom 1", "Beds 3"]);
     expect(content.headline).toEqual({ before: "", accent: "", after: "" });
     expect(content.place).toContain("Blackpool");
   });

@@ -25,8 +25,7 @@ export default async function DealsPage() {
       </p>
       <h1 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">A little escape, closer than you think.</h1>
       <p className="mt-2 max-w-2xl text-sm text-stone-500 sm:text-base">
-        Stays with nights free in the coming days, for less, and genuine price drops - only real offers from local
-        hosts. Pick your dates on the stay to see the price for your trip.
+        Real offers from local hosts: last-minute nights and price drops.
       </p>
 
       {deals.length === 0 ? (

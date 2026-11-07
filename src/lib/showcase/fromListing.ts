@@ -43,9 +43,9 @@ export function showcaseFromListing(listing: ListingForShowcase): ShowcaseConten
     gallery,
     facts: [
       { label: "Sleeps", value: `${listing.maxGuests}`, icon: "users" },
-      { label: "Bedrooms", value: `${listing.bedrooms}`, icon: "door" },
-      { label: "Bathrooms", value: `${listing.bathrooms}`, icon: "bath" },
-      { label: "Beds", value: `${listing.beds}`, icon: "bed" },
+      { label: listing.bedrooms === 1 ? "Bedroom" : "Bedrooms", value: `${listing.bedrooms}`, icon: "door" },
+      { label: listing.bathrooms === 1 ? "Bathroom" : "Bathrooms", value: `${listing.bathrooms}`, icon: "bath" },
+      { label: listing.beds === 1 ? "Bed" : "Beds", value: `${listing.beds}`, icon: "bed" },
     ],
     amenities: [],
     goodToKnow: [],

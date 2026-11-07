@@ -14,11 +14,23 @@ import type { ShowcasePhoto } from "@/lib/showcase/types";
  * many more there are. Any of them opens the full gallery in a viewer with
  * the owner's description of each photo, arrows and the keyboard.
  */
+// Under a narrow hero the tiles fill its width, however many there are.
+const NARROW_COLUMNS: Record<number, string> = {
+  1: "sm:grid-cols-1",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+  4: "sm:grid-cols-4",
+  5: "sm:grid-cols-5",
+};
+
 export function ShowcaseGalleryStrip({
   photos,
   startAt = 0,
+  narrow = false,
 }: {
   photos: ShowcasePhoto[];
+  /** Line up with a centred, narrower hero (photos too small for the wide one). */
+  narrow?: boolean;
   /** Photos before this index are already on show above (the hero). */ startAt?: number;
 }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -56,9 +68,17 @@ export function ShowcaseGalleryStrip({
     <section
       id="photos"
       aria-label="Photos"
-      className="mx-auto w-full max-w-6xl scroll-mt-20 px-4 pt-2 sm:px-6 sm:pt-6"
+      className={cn(
+        "mx-auto w-full scroll-mt-20 px-4 pt-2 sm:px-6 sm:pt-6",
+        narrow ? "max-w-4xl" : "max-w-6xl",
+      )}
     >
-      <ul className="grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-3">
+      <ul
+        className={cn(
+          "grid grid-cols-2 gap-2 sm:gap-3",
+          narrow ? NARROW_COLUMNS[tiles.length] : "sm:grid-cols-5",
+        )}
+      >
         {tiles.map((p, i) => {
           const last = hasMore && i === tiles.length - 1;
           return (

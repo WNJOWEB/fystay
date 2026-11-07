@@ -39,18 +39,12 @@ export default function AboutPage() {
         For Your Stay
       </p>
       <p className="mt-4 text-sm leading-relaxed text-stone-600">
-        FYStay stands for &ldquo;For Your Stay&rdquo;: a booking platform for independent holiday
-        accommodation, and a local alternative to the big booking platforms. We started on
-        Blackpool and the Fylde Coast, and plan to grow across Lancashire, the North West and
-        beyond as local hosts join, because the region is full of great, independently run places
-        to stay that deserve a straightforward way to reach guests directly - without
-        disappearing into a global marketplace alongside thousands of listings from everywhere
-        else.
+        FYStay is a local booking site for independent holiday stays. We started on Blackpool and
+        the Fylde Coast, and grow across the North West as local hosts join.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-stone-600">
-        Guests get a simple way to search, compare, and book real local stays with genuine
-        reviews. Hosts get a dashboard to manage listings, availability, pricing, and bookings
-        without giving up a large cut of every booking to a global platform.
+        Guests book real local stays with genuine reviews. Hosts manage everything in one place and
+        keep more of each booking.
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">

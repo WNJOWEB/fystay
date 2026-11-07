@@ -23,7 +23,7 @@ export function PerfectDays({
 
   return (
     <section className="mt-10">
-      <SectionHeading icon={Route}>Perfect Days in {destinationName}</SectionHeading>
+      <SectionHeading icon={Route}>Perfect days in {destinationName}</SectionHeading>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
         Ready-made plans for however you want to spend the day - pick one and go.
       </p>
