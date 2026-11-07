@@ -5,9 +5,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
+import { HOST_REPLY_TEMPLATES } from "@/lib/hostReplyTemplates";
 
-/** A reply box for an existing conversation - refreshes the page's own server-fetched messages on success, rather than maintaining a separate client-side copy of the thread. */
-export function MessageComposer({ conversationId }: { conversationId: string }) {
+/** A reply box for an existing conversation - refreshes the page's own server-fetched messages on success, rather than maintaining a separate client-side copy of the thread. Hosts also get one-tap reply templates that fill the box for them to review before sending. */
+export function MessageComposer({
+  conversationId,
+  showTemplates = false,
+}: {
+  conversationId: string;
+  showTemplates?: boolean;
+}) {
   const router = useRouter();
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
@@ -34,8 +41,26 @@ export function MessageComposer({ conversationId }: { conversationId: string }) 
     router.refresh();
   }
 
+  function insertTemplate(text: string) {
+    setBody((current) => (current.trim() ? `${current.trimEnd()}\n${text}` : text));
+  }
+
   return (
     <div className="flex flex-col gap-2">
+      {showTemplates && (
+        <div className="flex flex-wrap gap-2" aria-label="Reply templates">
+          {HOST_REPLY_TEMPLATES.map((template) => (
+            <button
+              key={template.label}
+              type="button"
+              onClick={() => insertTemplate(template.body)}
+              className="focus-ring rounded-full border border-border-subtle bg-surface px-3 py-1.5 text-xs font-medium text-stone-700 hover:border-brand-700 hover:text-brand-700"
+            >
+              {template.label}
+            </button>
+          ))}
+        </div>
+      )}
       <Textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}

@@ -117,7 +117,10 @@ export default async function ConversationPage({
       </ul>
 
       <div className="mt-6">
-        <MessageComposer conversationId={conversation.id} />
+        <MessageComposer
+          conversationId={conversation.id}
+          showTemplates={conversation.hostId === session.user.id}
+        />
       </div>
     </div>
   );
