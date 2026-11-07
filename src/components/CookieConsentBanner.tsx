@@ -65,7 +65,7 @@ function CookieBar({ onDismiss }: { onDismiss: () => void }) {
     >
       <div className="mx-auto flex max-w-6xl items-center gap-3">
         <p className="min-w-0 flex-1 text-xs leading-snug text-stone-600 sm:text-sm">
-          Strictly necessary cookies only - no tracking or advertising.{" "}
+          Essential cookies only. No tracking.{" "}
           <Link href="/legal/cookies" className="whitespace-nowrap text-brand-700 underline underline-offset-2 hover:text-brand-800">
             Cookie Policy
           </Link>

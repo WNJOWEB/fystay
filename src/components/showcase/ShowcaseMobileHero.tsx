@@ -22,7 +22,6 @@ const SLIDE_MS = 5000;
  */
 export function ShowcaseMobileHero({
   photos,
-  title,
   corner,
   allSizes = false,
 }: {
@@ -31,8 +30,6 @@ export function ShowcaseMobileHero({
   corner?: ReactNode;
   /** Keep this layout on a bigger screen too (a property whose photos aren't big enough to fill a wide hero). */
   allSizes?: boolean;
-  /** Shown over the foot of the photo (above the booking card that rises over it). */
-  title?: { name: string; place: string };
 }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
@@ -141,27 +138,6 @@ export function ShowcaseMobileHero({
           >
             {corner}
           </div>
-        )}
-        {title && (
-          <>
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
-              aria-hidden
-            />
-            <div
-              className={cn(
-                "pointer-events-none absolute bottom-[4.75rem] left-5 text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.4)]",
-                corner ? "right-[7.5rem]" : "right-5",
-              )}
-            >
-              <p className="line-clamp-3 font-serif text-[1.85rem] font-bold leading-[1.05] sm:text-[2.1rem]">
-                {title.name}
-              </p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/85">
-                {title.place}
-              </p>
-            </div>
-          </>
         )}
         <div className="pointer-events-none absolute inset-x-4 top-4 flex items-start justify-between gap-3">
           {current.label ? (

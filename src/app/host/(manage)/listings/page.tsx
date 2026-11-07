@@ -173,11 +173,9 @@ function ListingCard({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <h2 className="line-clamp-2 text-sm font-semibold text-foreground">{listing.title}</h2>
-            <Pill tone={status.tone}>{status.label}</Pill>
-          </div>
-          <p className="mt-0.5 text-xs text-stone-500">
+          <Pill tone={status.tone}>{status.label}</Pill>
+          <h2 className="mt-1.5 line-clamp-2 text-sm font-semibold leading-snug text-foreground">{listing.title}</h2>
+          <p className="mt-1 text-xs text-stone-500">
             {listing.city} · {formatPrice(listing.pricePerNightCents)} a night
             {rating !== null && (
               <>
@@ -219,7 +217,7 @@ function ListingCard({
 
       <details className="group border-t border-border-subtle px-4 py-3">
         <summary className="flex cursor-pointer list-none items-center gap-3 text-xs [&::-webkit-details-marker]:hidden">
-          <span className="font-medium text-foreground">Listing {health.score}% complete</span>
+          <span className="font-medium text-foreground">{health.score}% complete</span>
           <Meter
             value={health.score}
             label={`${listing.title} completeness`}
@@ -227,7 +225,7 @@ function ListingCard({
             className="max-w-40 flex-1"
           />
           <span className="ml-auto text-brand-700 group-open:hidden">
-            {todo.length === 0 ? "All done" : `${todo.length} to do`}
+            {todo.length === 0 ? "Done" : `${todo.length} left`}
           </span>
         </summary>
         <ul className="mt-3 flex flex-col gap-2">

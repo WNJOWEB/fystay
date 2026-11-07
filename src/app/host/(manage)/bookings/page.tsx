@@ -260,21 +260,20 @@ export default async function HostBookingsPage({
                         )}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-baseline justify-between gap-3">
                           <span className="truncate text-sm font-semibold text-foreground">{b.guestName}</span>
+                          <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                            {formatPrice(hostRevenueCents(b.paymentStatus === "UNPAID" ? { ...b, paymentStatus: "PAID" } : b))}
+                          </span>
+                        </span>
+                        <span className="mt-1 flex min-w-0 items-center gap-2">
                           <Pill tone={state.tone}>{state.label}</Pill>
+                          <span className="truncate text-xs text-stone-500">{listing?.title}</span>
                         </span>
-                        <span className="mt-0.5 block truncate text-xs text-stone-600">{listing?.title}</span>
-                        <span className="mt-0.5 block truncate text-xs text-stone-500">
+                        <span className="mt-1 block truncate text-xs text-stone-500">
                           {range.format(b.checkIn)} – {range.format(b.checkOut)} · {b.nights} night
-                          {b.nights === 1 ? "" : "s"} · {b.guests} guest{b.guests === 1 ? "" : "s"}
+                          {b.nights === 1 ? "" : "s"}
                         </span>
-                      </span>
-                      <span className="shrink-0 text-right">
-                        <span className="block text-sm font-semibold text-foreground">
-                          {formatPrice(hostRevenueCents(b.paymentStatus === "UNPAID" ? { ...b, paymentStatus: "PAID" } : b))}
-                        </span>
-                        <span className="block text-[11px] text-stone-500">{b.paymentStatus !== "UNPAID" ? "your earnings" : b.status === "PENDING" ? "if accepted" : "due"}</span>
                       </span>
                     </Link>
                   </li>
