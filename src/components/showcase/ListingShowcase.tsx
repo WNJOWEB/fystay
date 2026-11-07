@@ -127,6 +127,7 @@ export function ListingShowcase({
       <section id="showcase-top" className={cn(heroWide && "sm:hidden")}>
         <ShowcaseMobileHero
           photos={content.carousel}
+          title={{ name: content.title, place: content.place }}
           corner={corner}
           allSizes={!heroWide}
         />
@@ -139,11 +140,7 @@ export function ListingShowcase({
         >
           {heroCard}
         </div>
-        {/* On a phone the name sits under the photo, as on Airbnb, so it is never cut off. */}
-        <div className="px-4 pt-6">
-          <h1 className="text-2xl font-bold leading-tight text-foreground">{content.title}</h1>
-          <p className="mt-1 text-sm text-stone-600">{content.place}</p>
-        </div>
+
       </section>
 
       {/* A bigger screen: as on the homepage, the photo edge to edge behind the headline. */}
