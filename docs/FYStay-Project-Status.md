@@ -69,6 +69,7 @@ See [launch/master-checklist.md](launch/master-checklist.md): trader identity, l
   - Full e2e after upgrades: 141 passed.
 
 - 7 Nov, fixes after QA: the Prisma high advisory is closed without a Prisma major upgrade. `deepmerge-ts` is pinned to 8.0.2 (override in package.json); Prisma validate, generate and migration status all pass. Production audit: 0 critical, 0 high, 5 moderate (all `@sentry/nextjs` 11, a major upgrade, deferred).
+- 7 Nov, remaining technical items: two slow sign-in e2e tests given more time (admin suspend notice, host-vs-host authorization). Upgraded `@sentry/nextjs` to 11.11.0; its new `dataCollection` option replaces `sendDefaultPii`, and every personal-data source is switched off in `src/lib/sentryDataCollection.ts` (Sentry 11 collects more by default). Vite pinned to 8.3.6 (override) for a high advisory that Sentry 11 brought in. Production audit: 0 vulnerabilities. Typecheck, lint, 2,045 unit, build and 141/141 e2e pass. Prisma 7 deliberately not done before launch: no open advisory needs it, and it rewrites the database client every booking and payment path uses (driver adapter, new generator, config file), plus the Production migration workflow. Do it after launch on its own branch.
 - 7 Nov, workflow: commit in bundles, push only on "push to preview" (send the link) or "push to production" (merge live). Recorded in `.claude/skills/fystay-release/SKILL.md` and CLAUDE.md.
 
 ## Next priorities

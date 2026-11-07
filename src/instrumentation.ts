@@ -1,4 +1,5 @@
 import type { Instrumentation } from "next";
+import { sentryDataCollection } from "@/lib/sentryDataCollection";
 
 // Server/edge-side Sentry init. Next.js calls register() once per runtime
 // before it starts handling requests; branching on NEXT_RUNTIME is the
@@ -17,8 +18,8 @@ export async function register() {
     const Sentry = await import("@sentry/nextjs");
     Sentry.init({
       dsn,
-      // Don't attach IP addresses, cookies or request bodies to events.
-      sendDefaultPii: false,
+      // No personal data: see src/lib/sentryDataCollection.ts.
+      dataCollection: sentryDataCollection,
       tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1,
       environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV,
     });
@@ -26,8 +27,8 @@ export async function register() {
     const Sentry = await import("@sentry/nextjs");
     Sentry.init({
       dsn,
-      // Don't attach IP addresses, cookies or request bodies to events.
-      sendDefaultPii: false,
+      // No personal data: see src/lib/sentryDataCollection.ts.
+      dataCollection: sentryDataCollection,
       tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1,
       environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV,
     });

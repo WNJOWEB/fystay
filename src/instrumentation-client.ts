@@ -8,14 +8,15 @@
 // every Sentry.* call elsewhere (captureException, etc.) becomes a no-op
 // and nothing is sent anywhere. Set NEXT_PUBLIC_SENTRY_DSN to turn this on.
 import * as Sentry from "@sentry/nextjs";
+import { sentryDataCollection } from "@/lib/sentryDataCollection";
 
 const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 if (dsn) {
   Sentry.init({
     dsn,
-    // Don't attach IP addresses, cookies or request bodies to events.
-    sendDefaultPii: false,
+    // No personal data: see src/lib/sentryDataCollection.ts.
+    dataCollection: sentryDataCollection,
     // Keep this low in production - it's a sample rate for performance
     // traces, not error reporting (errors are always captured regardless).
     tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1,
