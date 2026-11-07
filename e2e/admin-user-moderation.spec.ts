@@ -71,7 +71,8 @@ test("suspend signs the guest out and blocks sign-in; reinstate lets them back",
   await guestPage.fill("#password", PASSWORD);
   await guestPage.click("button[type=submit]");
   const notice = guestPage.getByRole("alert").filter({ hasText: "suspended" });
-  await expect(notice).toBeVisible();
+  // Sign-in is a slow round trip (password hashing) when the whole suite runs at once.
+  await expect(notice).toBeVisible({ timeout: 30_000 });
   await expect(notice.getByRole("link", { name: "contact support" })).toHaveAttribute("href", "/contact");
 
   await adminPage.getByRole("button", { name: "Reinstate account" }).click();

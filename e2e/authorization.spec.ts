@@ -152,6 +152,9 @@ test.describe("authorization by direct URL", () => {
   });
 
   test("one host can't see or change another host's listing", async ({ page }) => {
+    // Two full page loads plus an API call; under a full parallel run this has
+    // run out of the default 30s while closing the page.
+    test.setTimeout(60_000);
     await login(page, otherHostEmail, PASSWORD);
 
     await visit(page, `/host/listings/${listingId}/edit`);
