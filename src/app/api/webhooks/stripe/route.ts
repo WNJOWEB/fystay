@@ -24,6 +24,7 @@ import { giveBackReservedDiscounts, releaseUnpaidBooking } from "@/lib/bookingLi
 import { withListingAvailabilityLock } from "@/lib/availabilityLock";
 import { notifyListingPromotionActivated, notifyListingPromotionRefunded } from "@/lib/listingPromotionNotifications";
 import { Prisma } from "@prisma/client";
+import { describeError, recordDeliveryFailure } from "@/lib/deliveryFailures";
 
 /**
  * Whether a completed Checkout Session has actually been paid. "unpaid" is
@@ -791,4 +792,33 @@ async function postHandler(request: Request) {
   return NextResponse.json({ received: true });
 }
 
-export const POST = withApiErrorHandling(postHandler);
+/**
+ * A webhook that throws is answered with a 500, so Stripe retries it. Each
+ * failure is also kept for /admin/failures, labelled with the event type
+ * (read from a copy of the body, so the handler still gets it whole).
+ */
+async function postHandlerRecordingFailures(request: Request) {
+  const eventType = await request
+    .clone()
+    .text()
+    .then((raw) => {
+      try {
+        return (JSON.parse(raw) as { type?: unknown }).type;
+      } catch {
+        return undefined;
+      }
+    })
+    .catch(() => undefined);
+  try {
+    return await postHandler(request);
+  } catch (error) {
+    await recordDeliveryFailure({
+      kind: "WEBHOOK",
+      label: `Stripe ${typeof eventType === "string" ? eventType : "event"}`,
+      reason: describeError(error),
+    });
+    throw error;
+  }
+}
+
+export const POST = withApiErrorHandling(postHandlerRecordingFailures);

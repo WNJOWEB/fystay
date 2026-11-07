@@ -2525,3 +2525,22 @@ model PriceDecision {
 
   @@index([listingId, createdAt])
 }
+
+// An email the provider refused or that couldn't be sent, or a Stripe webhook
+// that failed to process (see src/lib/deliveryFailures.ts). Admins see the open
+// ones at /admin/failures; nothing here holds a recipient or a payment detail.
+enum DeliveryFailureKind {
+  EMAIL
+  WEBHOOK
+}
+
+model DeliveryFailure {
+  id         String              @id @default(cuid())
+  kind       DeliveryFailureKind
+  label      String
+  reason     String
+  createdAt  DateTime            @default(now())
+  resolvedAt DateTime?
+
+  @@index([resolvedAt, createdAt])
+}

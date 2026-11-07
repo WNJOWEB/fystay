@@ -47,6 +47,7 @@ export default async function AdminOverviewPage() {
     openReviewReports,
     listingsNotLive,
     requestsAwaitingHost,
+    openDeliveryFailures,
   ] = await Promise.all([
     prisma.user.groupBy({ by: ["role"], _count: true }),
     prisma.listing.aggregate({
@@ -92,6 +93,7 @@ export default async function AdminOverviewPage() {
     prisma.reviewReport.count({ where: { status: "OPEN" } }),
     prisma.listing.count({ where: { published: false, suspendedAt: null } }),
     prisma.booking.count({ where: { approvalStatus: "AWAITING" } }),
+    prisma.deliveryFailure.count({ where: { resolvedAt: null } }),
   ]);
 
   // What needs a person today, most urgent first (a chargeback has a Stripe deadline).
@@ -101,6 +103,7 @@ export default async function AdminOverviewPage() {
     { label: "Reported reviews", count: openReviewReports, href: "/admin/review-reports" },
     { label: "Booking requests waiting for a host", count: requestsAwaitingHost, href: "/admin/bookings" },
     { label: "Listings not live yet", count: listingsNotLive, href: "/admin/listings" },
+    { label: "Failed emails and webhooks", count: openDeliveryFailures, href: "/admin/failures" },
   ];
   const needsAttention = attention.filter((row) => row.count > 0);
 

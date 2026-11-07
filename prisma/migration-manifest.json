@@ -386,6 +386,12 @@
       "files": {
         "migration.sql": "c03e17eaca805f06d2df36e4c85cd7b79cac9c100a28dfdf984cdf035f858a19"
       }
+    },
+    {
+      "name": "20261107113211_delivery_failures",
+      "files": {
+        "migration.sql": "3071be65e3c56fd64d7ed1e86db86cedf9e49ed99eebb7cd50c621b4c3494e89"
+      }
     }
   ],
   "retired": [

@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { Resend } from "resend";
+import { recordDeliveryFailure } from "@/lib/deliveryFailures";
 
 /**
  * The Resend client every email in the app goes through, or null when no
@@ -38,6 +39,7 @@ function reportEmailRefused(subject: string, error: { name: string; message: str
     tags: { area: "email" },
     extra: { subject, reason: error.message },
   });
+  void recordDeliveryFailure({ kind: "EMAIL", label: subject, reason: `${error.name}: ${error.message}` });
 }
 
 /**
@@ -48,6 +50,7 @@ function reportEmailRefused(subject: string, error: { name: string; message: str
 export function reportUnsentOpsAlert(subject: string): void {
   console.error(`ops alert not emailed (email isn't configured): ${subject}`);
   Sentry.captureMessage(`Ops alert not emailed: ${subject}`, { level: "error", tags: { area: "payments" } });
+  void recordDeliveryFailure({ kind: "EMAIL", label: subject, reason: "Email isn't configured" });
 }
 
 /**

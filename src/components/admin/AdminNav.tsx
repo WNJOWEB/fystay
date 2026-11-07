@@ -38,7 +38,10 @@ const ADMIN_GROUPS = [
   },
   {
     title: "System",
-    links: [{ href: "/admin/local-data", label: "Local data" }],
+    links: [
+      { href: "/admin/failures", label: "Failed emails & webhooks" },
+      { href: "/admin/local-data", label: "Local data" },
+    ],
   },
 ] as const;
 
