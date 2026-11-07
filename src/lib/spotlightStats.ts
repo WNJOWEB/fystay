@@ -76,13 +76,21 @@ export async function recordSpotlightEvent(params: {
   const day = statDay(now);
   const impressions = type === "impression" ? 1 : 0;
   const clicks = type === "click" ? 1 : 0;
-  await prisma.$executeRaw`
-    INSERT INTO "ListingPromotionStat" ("id", "promotionId", "day", "impressions", "clicks")
-    VALUES (${`stat_${promotionId}_${day.toISOString().slice(0, 10)}`}, ${promotionId}, ${day}, ${impressions}, ${clicks})
-    ON CONFLICT ("promotionId", "day") DO UPDATE SET
-      "impressions" = "ListingPromotionStat"."impressions" + ${impressions},
-      "clicks" = "ListingPromotionStat"."clicks" + ${clicks}
-  `;
+  try {
+    await prisma.$executeRaw`
+      INSERT INTO "ListingPromotionStat" ("id", "promotionId", "day", "impressions", "clicks")
+      VALUES (${`stat_${promotionId}_${day.toISOString().slice(0, 10)}`}, ${promotionId}, ${day}, ${impressions}, ${clicks})
+      ON CONFLICT ("promotionId", "day") DO UPDATE SET
+        "impressions" = "ListingPromotionStat"."impressions" + ${impressions},
+        "clicks" = "ListingPromotionStat"."clicks" + ${clicks}
+    `;
+  } catch (error) {
+    // The placement was checked live a moment ago, but its listing can be
+    // deleted in between (deleting a listing removes its placements and
+    // counts). That's "not live", not a failure to report.
+    if (error instanceof Error && /foreign key constraint/i.test(error.message)) return "not_live";
+    throw error;
+  }
   return "counted";
 }
 

@@ -110,3 +110,21 @@ describe("helpers", () => {
     expect(await spotlightStatsFor([])).toEqual(new Map());
   });
 });
+
+describe("recordSpotlightEvent when the placement is deleted mid-request", () => {
+  it("reports not_live instead of failing when the stats row hits a missing placement", async () => {
+    executeRaw.mockRejectedValueOnce(
+      new Error('Raw query failed. Code: `23503`. Message: `insert or update on table "ListingPromotionStat" violates foreign key constraint "ListingPromotionStat_promotionId_fkey"`'),
+    );
+    await expect(
+      recordSpotlightEvent({ promotionId: "promo_1", type: "impression", visitor: "v1", now }),
+    ).resolves.toBe("not_live");
+  });
+
+  it("still throws for any other database error", async () => {
+    executeRaw.mockRejectedValueOnce(new Error("connection reset"));
+    await expect(
+      recordSpotlightEvent({ promotionId: "promo_1", type: "impression", visitor: "v1", now }),
+    ).rejects.toThrow("connection reset");
+  });
+});

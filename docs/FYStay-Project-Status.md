@@ -34,10 +34,11 @@ this file tracks engineering tiers, test results and known bugs. Update it after
 
 ## Known bugs
 
+- **Spotlight deleted-placement race (fixed 7 Nov):** the event insert can fail if the placement's listing is deleted between the live check and the insert. That now counts as "not live" (`src/lib/spotlightStats.ts`), covered by unit tests.
 - **Spotlight stats (fixed 7 Nov):** the spec featured the host's first listing, which another spec (`search-filters`) creates and deletes mid-run. Deleting a listing cascades to its placement and view counts. The spec now creates and features its own fixture listing and deletes it afterwards.
 - **Shared test IP (fixed 7 Nov):** sign-up is limited to 5 per hour per address, and the limit is stored in the database, so repeated runs in the same hour exhaust it. Sign-up specs now give each test its own address (`e2e/isolate-ip.ts`).
 - **Verification spec race (fixed 7 Nov):** its `afterAll` removed every account with the shared prefix, including accounts other workers were still using. The file now runs in serial mode.
-- **Security (to verify):** `clientIp()` in `src/lib/rateLimit.ts` trusts the first `x-forwarded-for` value. If a client can set that header and the host doesn't overwrite it, per-IP rate limits (auth, Spotlight events) can be bypassed. Check how Vercel sets the header before changing it.
+- **Rate-limit IP header (checked 7 Nov, no code change):** Vercel's documentation says it overwrites `x-forwarded-for` on every request, so a client cannot choose the address the limits see. Checked against the documentation only, not by probing Production. Note: `x-vercel-forwarded-for` is the same value and is not overwritten if another proxy ever sits in front of Vercel. Revisit only if the hosting changes.
 
 ## Technical decisions
 
