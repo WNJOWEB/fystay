@@ -60,6 +60,14 @@ See [launch/master-checklist.md](launch/master-checklist.md): trader identity, l
 
 - 7 Nov, item 4 - UI pass (second slice): admin stat cards show the full figure on a phone (icon above the number; "Platform revenue" was cut off); admin copy shortened ("Booking value", "Commission"); the Suspend button is no longer a solid red block. Trip card: a transfer offer is no longer shown on a finished stay (it was: "Need a ride from the airport?" on a past holiday), and the redundant "Stay" tick is gone. Checked at phone and desktop: admin overview, homepage, search, host calendar, register. Full e2e 141 passed (one authorization run failed only because a local test account had been promoted to admin during the run; rerun alone 4/4).
 
+- 7 Nov, item 5 - QA and production readiness:
+  - Crawl of 120 public pages from the homepage: all 200, no broken internal links. Console errors on listing pages are OpenStreetMap map tiles blocked by the sandbox proxy, not an app fault.
+  - Every admin and host API route refuses a signed-out request (401/403/redirect). The seed-demo-data route returns 501 in production by design.
+  - Dependency audit (production): found 2 critical advisories in `next` (16.3.3, affected up to 16.4.0) and `@sentry/nextjs` (10.74.0). Upgraded to next 16.4.5, @sentry/nextjs 10.78.0, zod 4.6.7. Criticals cleared.
+  - Still open (high, production dependencies): Prisma 6 advisory via `@prisma/config` / `deepmerge-ts`, which is used when the Prisma CLI loads config (build and migrations, not request handling). The fix is Prisma 7, a major upgrade. Planned, not done.
+  - Test fix: the autocomplete spec read the place-details session before the request was made (race). It now waits for the request.
+  - Full e2e after upgrades: 141 passed.
+
 ## Next priorities
 
 1. Get a clean e2e run; fix every failure that is a real app bug.

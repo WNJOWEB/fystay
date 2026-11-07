@@ -113,6 +113,9 @@ test("picking a Google place stores its id, name, coordinates and area in the se
   await page.locator("#search-city").fill("FY4");
   await page.getByRole("option", { name: /South Shore/ }).click();
   await expect(page.locator("#search-city")).toHaveValue("South Shore");
+  // The details lookup starts right after the pick; wait for it, or the
+  // session it carries is read before the route has recorded it.
+  await expect.poll(() => detailsSession).not.toBe("");
   // One Google session from typing to the picked place.
   expect(suggestSession).toMatch(/^[A-Za-z0-9_-]{16,64}$/);
   expect(detailsSession).toBe(suggestSession);
