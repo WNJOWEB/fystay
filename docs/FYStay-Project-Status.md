@@ -26,10 +26,12 @@ this file tracks engineering tiers, test results and known bugs. Update it after
 - 7 Nov, clean run on a healthy database: 138 passed, 2 failed.
   - `search-bar-dates` "without dates" expected the old copy "Add your dates above". Test updated to the new wording (the copy change was intentional).
   - `spotlight` "Seen N times" missing in the full run only. Cause: the e2e suite shares one IP, and event posts are limited to 120 per visitor per 10 minutes, so later tests used up the allowance. The spec passes alone. The spec now gets its own forwarded address.
-- 7 Nov, full rerun with both fixes: in progress at the time of writing (see the commit log for the final result).
+- 7 Nov, full rerun with both fixes: **138 passed, 1 failed** (2.4 min, 3 workers).
+  - Failing: `spotlight` - the host's "Seen N times" never appears for the "tiny B&B for two" fixture in the full run. The server logged a foreign-key error (`ListingPromotionStat_promotionId_fkey`) for an event posted against a promotion that is no longer in the database. The spec passes alone. Open: find which promotion id the homepage sends, and why it isn't the one the host page reads. Treat as a real bug until proven otherwise.
 
 ## Known bugs
 
+- **Spotlight stats (open):** see the 7 Nov rerun above. The event route swallows errors, so a failed count is silent to the visitor. Root cause not yet found.
 - **Security (to verify):** `clientIp()` in `src/lib/rateLimit.ts` trusts the first `x-forwarded-for` value. If a client can set that header and the host doesn't overwrite it, per-IP rate limits (auth, Spotlight events) can be bypassed. Check how Vercel sets the header before changing it.
 
 ## Technical decisions
