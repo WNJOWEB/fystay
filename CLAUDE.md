@@ -24,10 +24,12 @@ location search.
   recheck completed work without a reason.
 - **Own the launch checklist.** Pick and implement the next actionable task
   without waiting for the owner to choose it.
-- **Git, without asking:** commit and push the task's own branch so it builds
-  a Vercel Preview. Don't open PRs (owner, 26 Oct: "stop PR and just build to
-  preview"). Fix build failures on that branch. Never ask the owner to do
-  routine Git operations.
+- **Git (owner, 7 Nov, supersedes earlier rules):** commit finished work in
+  bundles on the working branch, and push nothing by default. Push to the
+  Preview only when the owner says "push to preview", then send the link. Merge
+  to Production only when the owner says "push to production". Follow the
+  `fystay-release` skill (`.claude/skills/fystay-release/SKILL.md`). Don't open
+  PRs. Never ask the owner to do routine Git operations.
 - **Keep it proportionate:** reuse existing architecture, keep each change
   focused. No over-engineering, oversimplifying, duplicate PRs, unnecessary
   abstractions or excessive reporting.

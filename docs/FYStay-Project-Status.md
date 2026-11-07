@@ -68,6 +68,9 @@ See [launch/master-checklist.md](launch/master-checklist.md): trader identity, l
   - Test fix: the autocomplete spec read the place-details session before the request was made (race). It now waits for the request.
   - Full e2e after upgrades: 141 passed.
 
+- 7 Nov, fixes after QA: the Prisma high advisory is closed without a Prisma major upgrade. `deepmerge-ts` is pinned to 8.0.2 (override in package.json); Prisma validate, generate and migration status all pass. Production audit: 0 critical, 0 high, 5 moderate (all `@sentry/nextjs` 11, a major upgrade, deferred).
+- 7 Nov, workflow: commit in bundles, push only on "push to preview" (send the link) or "push to production" (merge live). Recorded in `.claude/skills/fystay-release/SKILL.md` and CLAUDE.md.
+
 ## Next priorities
 
 1. Get a clean e2e run; fix every failure that is a real app bug.
