@@ -516,25 +516,28 @@ export function BookingWidget({
               {HOST_NOT_PAYMENT_READY_MESSAGE}
             </p>
           ) : !isLoggedIn ? (
-            <>
-              <Button onClick={goToLogin} size="lg" className="mt-4 w-full">
-                Log in to book
+            hasDates ? (
+              <>
+                <Button onClick={goToLogin} size="lg" className="mt-4 w-full">
+                  Continue to book
+                  <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+                </Button>
+                <p className="mt-3 text-center text-sm text-stone-600">
+                  New to FYStay?{" "}
+                  <Link
+                    href={`/register?callbackUrl=${encodeURIComponent(listingUrlWithSelection())}`}
+                    className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
+                  >
+                    Create a free account
+                  </Link>
+                  {" "}- your dates stay selected.
+                </p>
+              </>
+            ) : (
+              <Button onClick={openCalendar} size="lg" className="mt-4 w-full">
+                Choose your dates
               </Button>
-              <p className="mt-3 text-center text-sm text-stone-600">
-                New to FYStay?{" "}
-                <Link
-                  href={`/register?callbackUrl=${encodeURIComponent(listingUrlWithSelection())}`}
-                  className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
-                >
-                  Create a free account
-                </Link>
-              </p>
-              <p className="mt-1.5 text-center text-xs text-stone-500">
-                Booking needs a free FYStay account - it keeps your booking, receipt and host messages
-                together. Once you&apos;ve confirmed your email, we&apos;ll bring you back to this stay with your
-                dates and guests still chosen.
-              </p>
-            </>
+            )
           ) : (
             <Button onClick={handleReserve} loading={reserving} size="lg" className="mt-4 w-full">
               {!hasDates ? "Choose your dates" : instantBook ? "Reserve your stay" : "Request to book"}

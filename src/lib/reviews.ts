@@ -22,6 +22,15 @@ export function averageRating(reviews: { rating: number }[]): number | null {
   return reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 }
 
+/** A listing shows its star rating only from this many reviews; before that it's "New on FYStay", so one review can't look like a track record. */
+export const MIN_REVIEWS_FOR_RATING = 3;
+
+/** The rating a guest sees: null until the listing has enough reviews. */
+export function publicRating(reviews: { rating: number }[]): number | null {
+  if (reviews.length < MIN_REVIEWS_FOR_RATING) return null;
+  return averageRating(reviews);
+}
+
 /** Only the listing's own host may reply to a review left on it. */
 export function canRespondToReview(params: {
   listingHostId: string;

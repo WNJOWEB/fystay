@@ -130,18 +130,24 @@ test("guest can log in, book a listing, and see it in their trips", async ({ pag
   await expect(page.getByText("Confirmed").first()).toBeVisible();
 });
 
-test("logged-out guest is redirected to log in when trying to book", async ({ page }) => {
+test("logged-out guest picks dates first, then is asked to log in to continue", async ({ page }) => {
   const listing = await prisma.listing.findFirstOrThrow({
     where: { published: true },
     orderBy: { createdAt: "asc" },
   });
 
+  // Without dates the booking box asks for dates, not a login.
   await page.goto(`/listings/${listing.id}`);
+  await expect(page.getByRole("button", { name: "Choose your dates" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Log in to book" })).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Log in to book" }).click();
+  // With dates, the next step is sign-in, and the dates are kept for the return trip.
+  await page.goto(`/listings/${listing.id}?checkIn=${isoInDays(250)}&checkOut=${isoInDays(252)}&adults=2`);
+  await page.getByRole("button", { name: "Continue to book" }).click();
   await page.waitForURL(/\/login/);
-  // The callback is URL-encoded (it can carry the selected dates/guests).
-  expect(decodeURIComponent(page.url())).toContain("callbackUrl=/listings/");
+  // The callback is URL-encoded (it carries the selected dates/guests).
+  const callback = new URL(page.url()).searchParams.get("callbackUrl")!;
+  expect(callback).toBe(`/listings/${listing.id}?checkIn=${isoInDays(250)}&checkOut=${isoInDays(252)}&adults=2`);
 });
 
 test("a new guest can go straight to sign-up from the booking box, keeping their dates and guests", async ({ page }) => {

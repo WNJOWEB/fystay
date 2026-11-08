@@ -8,7 +8,7 @@ import { PROPERTY_TYPE_LABEL, type PropertyType } from "@/lib/propertyType";
 import { useFormattedPrice } from "@/components/CurrencyProvider";
 import { computeBookingPricing, stayRates } from "@/lib/pricing";
 import { SaveButton } from "@/components/SaveButton";
-import { averageRating as computeAverageRating } from "@/lib/reviews";
+import { publicRating } from "@/lib/reviews";
 import { AMENITY_CATEGORIES } from "@/lib/amenityCategories";
 import { cn } from "@/lib/cn";
 import { withCity } from "@/lib/seo";
@@ -112,7 +112,7 @@ export function ListingCard({
 }) {
   const isLarge = size === "large";
   const isArch = frame === "arch";
-  const rating = computeAverageRating(listing.reviews);
+  const rating = publicRating(listing.reviews);
   const landmarkDistance =
     nearLandmark && listing.latitude != null && listing.longitude != null
       ? (() => {

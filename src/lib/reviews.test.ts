@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+  MIN_REVIEWS_FOR_RATING,
   averageRating,
   canActionReport,
   canReportReview,
+  publicRating,
   canReviewBooking,
   canRespondToReview,
   computeRatingBreakdown,
@@ -158,5 +160,17 @@ describe("computeRatingBreakdown", () => {
     expect(breakdown.categoryAverages.cleanliness).toBeCloseTo(4);
     expect(breakdown.categoryAverages.location).toBe(4);
     expect(breakdown.categoryAverages.accuracy).toBeNull();
+  });
+});
+
+describe("publicRating", () => {
+  it("hides the rating until there are enough reviews", () => {
+    expect(publicRating([])).toBeNull();
+    expect(publicRating([{ rating: 5 }])).toBeNull();
+    expect(publicRating(Array.from({ length: MIN_REVIEWS_FOR_RATING - 1 }, () => ({ rating: 5 })))).toBeNull();
+  });
+
+  it("shows the average once there are enough reviews", () => {
+    expect(publicRating([{ rating: 5 }, { rating: 4 }, { rating: 3 }])).toBe(4);
   });
 });

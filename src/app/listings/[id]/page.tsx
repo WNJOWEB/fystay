@@ -46,7 +46,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { FYLDE_COAST_DESTINATIONS } from "@/lib/destinations";
 import { LOCAL_GUIDES } from "@/lib/localGuide";
 import { SITE_NAME, SITE_URL, withCity } from "@/lib/seo";
-import { computeRatingBreakdown } from "@/lib/reviews";
+import { computeRatingBreakdown, publicRating } from "@/lib/reviews";
 import { computeHostResponseStats, isGreatHost } from "@/lib/hostStats";
 import { PROPERTY_TYPE_LABEL } from "@/lib/propertyType";
 import { getFeaturedOffering } from "@/lib/travelAddons";
@@ -255,8 +255,9 @@ export default async function ListingDetailPage({
   ];
 
   const ratingBreakdown = computeRatingBreakdown(listing.reviews);
-  const rating = ratingBreakdown.average;
   const reviewCount = listing.reviews.length;
+  // Shown as a star rating only from a few reviews; before that the page says "New on FYStay".
+  const rating = publicRating(listing.reviews);
   const cancellationPolicy = resolveCancellationPolicy(listing);
   const petsAllowed = isPetFriendly(listing.amenities);
   const parkingAvailable = hasParking(listing.amenities);
