@@ -88,7 +88,7 @@ export function ListingActionsMenu({
                 setOpen(false);
                 setConfirmDelete(true);
               }}
-              className={cn(item, "text-red-600 hover:bg-red-50")}
+              className={cn(item, "text-red-700 hover:bg-red-50")}
             >
               <Trash2 className="h-4 w-4" aria-hidden />
               Delete…

@@ -269,7 +269,7 @@ export function RoomTypesEditor({
               <button
                 type="button"
                 onClick={() => setRemoveIndex(index)}
-                className="focus-ring flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-red-600 hover:bg-red-50"
+                className="focus-ring flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-red-700 hover:bg-red-50"
               >
                 <Trash2 className="h-4 w-4" />
                 Remove

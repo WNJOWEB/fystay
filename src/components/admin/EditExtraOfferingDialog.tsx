@@ -136,7 +136,7 @@ export function EditExtraOfferingDialog({ offering }: { offering: EditableOfferi
             <FieldHint>Comma-separated.</FieldHint>
           </Field>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="text-sm text-red-700">{error}</p>}
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>

@@ -119,7 +119,7 @@ export default async function AdminDisputesPage() {
                           </td>
                           <td className="px-4 py-3">
                             {dispute.evidenceDueBy ? (
-                              <span className={overdue ? "font-medium text-red-600" : "text-stone-700"}>
+                              <span className={overdue ? "font-medium text-red-700" : "text-stone-700"}>
                                 {dateFormatter.format(dispute.evidenceDueBy)}
                                 {overdue && " (overdue)"}
                               </span>

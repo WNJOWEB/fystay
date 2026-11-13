@@ -39,6 +39,8 @@ const previewBaseUrl =
     : undefined;
 
 const nextConfig: NextConfig = {
+  // No need to tell every visitor which framework serves the site.
+  poweredByHeader: false,
   ...(previewBaseUrl ? { env: { NEXT_PUBLIC_BASE_URL: previewBaseUrl } } : {}),
   images: { remotePatterns },
   // Short addresses for the legal pages - the ones people (and Google's

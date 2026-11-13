@@ -90,7 +90,7 @@ function EmailChangeConfirmFormInner() {
           )}
           {status === "error" && (
             <>
-              <XCircle className="h-8 w-8 text-red-600" aria-hidden />
+              <XCircle className="h-8 w-8 text-red-700" aria-hidden />
               <p className="text-sm text-stone-600">{message}</p>
               <Link href="/account" className="mt-2 text-sm font-medium text-brand-700 hover:underline">
                 Back to your account

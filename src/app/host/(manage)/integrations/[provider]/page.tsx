@@ -100,7 +100,7 @@ export default async function ManageIntegrationPage({
                         {formatDistanceToNow(log.startedAt, { addSuffix: true })}
                       </p>
                       {log.errorMessage && (
-                        <p className="mt-0.5 truncate text-xs text-red-600" title={log.errorMessage}>
+                        <p className="mt-0.5 truncate text-xs text-red-700" title={log.errorMessage}>
                           {log.errorMessage}
                         </p>
                       )}

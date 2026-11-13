@@ -487,7 +487,7 @@ export function BookingWidget({
                         Apply
                       </Button>
                     </div>
-                    {promoError && <p className="text-xs text-red-600">{promoError}</p>}
+                    {promoError && <p className="text-xs text-red-700">{promoError}</p>}
                   </div>
                 ))}
             </div>
@@ -509,7 +509,7 @@ export function BookingWidget({
             </div>
           )}
 
-          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+          {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
 
           {!acceptsPaidBookings ? (
             <p role="status" className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-3 text-sm text-amber-900">

@@ -62,7 +62,7 @@ export function CancelBookingButton({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="focus-ring rounded-lg px-2 py-1 text-sm font-medium text-red-600 hover:bg-red-50"
+        className="focus-ring rounded-lg px-2 py-1 text-sm font-medium text-red-700 hover:bg-red-50"
       >
         Cancel booking
       </button>

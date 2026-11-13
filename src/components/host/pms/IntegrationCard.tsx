@@ -91,7 +91,7 @@ export function IntegrationCard({ summary }: { summary: IntegrationSummary }) {
                   : "never"}
               </span>
               {summary.lastSyncStatus === "FAILURE" && summary.lastSyncError && (
-                <span className="text-red-600">{summary.lastSyncError}</span>
+                <span className="text-red-700">{summary.lastSyncError}</span>
               )}
             </>
           ) : summary.live ? (

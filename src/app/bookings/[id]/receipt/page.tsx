@@ -161,7 +161,7 @@ export default async function BookingReceiptPage({
                 <span>{formatPrice(booking.totalPriceCents)}</span>
               </div>
               {refundedAmountCents > 0 && (
-                <div className="flex justify-between text-red-600">
+                <div className="flex justify-between text-red-700">
                   <span>
                     {booking.paymentStatus === "REFUNDED" ? "Refunded" : "Partially refunded"}
                   </span>

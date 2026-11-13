@@ -181,7 +181,7 @@ export function CheckoutForm({
           </span>
         </label>
         {policyError && (
-          <p id="cancellation-policy-error" role="alert" className="mt-2 text-sm text-red-600">
+          <p id="cancellation-policy-error" role="alert" className="mt-2 text-sm text-red-700">
             Please tick the box to accept the cancellation policy.
           </p>
         )}

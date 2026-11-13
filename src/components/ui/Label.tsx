@@ -24,7 +24,7 @@ export function Field({
 
 export function FieldError({ children }: { children?: string | null }) {
   if (!children) return null;
-  return <p className="mt-1.5 text-sm text-red-600">{children}</p>;
+  return <p className="mt-1.5 text-sm text-red-700">{children}</p>;
 }
 
 export function FieldHint({ children }: { children: React.ReactNode }) {

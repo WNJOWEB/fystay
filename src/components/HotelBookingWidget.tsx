@@ -173,7 +173,7 @@ export function HotelBookingWidget({
                   : `${maxNights} night maximum stay`}
             </p>
           )}
-          {lengthError && <p className="mt-2 text-sm text-red-600">{lengthError}</p>}
+          {lengthError && <p className="mt-2 text-sm text-red-700">{lengthError}</p>}
         </div>
 
         <div className="mt-5 flex flex-col gap-4 border-t border-border-subtle pt-5">
@@ -479,13 +479,13 @@ function RoomTypeBookingCard({
                     Apply
                   </Button>
                 </div>
-                {promoError && <p className="text-xs text-red-600">{promoError}</p>}
+                {promoError && <p className="text-xs text-red-700">{promoError}</p>}
               </div>
             ))}
         </div>
       )}
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-700">{error}</p>}
 
       <div className="mt-3">
         {!bookable ? null : !isLoggedIn ? (

@@ -633,7 +633,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
                 describedBy={stayError ? "maxNights-error" : undefined}
               />
               {stayError && (
-                <p id="maxNights-error" role="alert" className="mt-1.5 text-sm text-red-600">
+                <p id="maxNights-error" role="alert" className="mt-1.5 text-sm text-red-700">
                   {stayError}
                 </p>
               )}
@@ -955,7 +955,7 @@ export function ListingForm({ listingId, initialValues, afterSaveHref = "/host/l
         </CardContent>
       </Card>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-700">{error}</p>}
 
       <Button type="submit" loading={loading} size="lg" className="self-start">
         {listingId ? "Save changes" : "Create listing"}

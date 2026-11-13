@@ -270,7 +270,7 @@ function RegisterFormInner({ providers, rememberedProvider }: RegisterFormProps)
                 it under the password input regardless (as FieldError would)
                 misled a visitor into thinking their password was the
                 problem when it was really an empty name field. */}
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-700">{error}</p>}
 
             {/* Both pages already exist and are linked from the footer,
                 but a footer link is easy to never see - tying the same

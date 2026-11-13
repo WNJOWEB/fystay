@@ -68,7 +68,7 @@ export function PropertyPicker({ providerPath, label }: { providerPath: string; 
           Pick which {label} property to import rooms, rates and bookings from.
         </p>
         {loadError ? (
-          <p className="text-sm text-red-600">{loadError}</p>
+          <p className="text-sm text-red-700">{loadError}</p>
         ) : properties === null ? (
           <div className="flex items-center gap-2 text-sm text-stone-500">
             <Spinner className="h-4 w-4" />

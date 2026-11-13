@@ -77,7 +77,8 @@ test("requesting a reset for an unknown email doesn't reveal whether the account
   page,
 }) => {
   await page.goto("/forgot-password");
-  await page.getByLabel("Email").fill("definitely-not-a-real-user@fystay.dev");
+  // A fresh address each run: reset requests are limited per email, so a fixed one fails when the suite is rerun within 15 minutes.
+  await page.getByLabel("Email").fill(`definitely-not-a-real-user-${Date.now()}@fystay.dev`);
   await page.getByRole("button", { name: "Send reset link" }).click();
 
   await expect(page.getByText(/we've sent a link to reset your password/)).toBeVisible();

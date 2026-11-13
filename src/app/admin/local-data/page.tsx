@@ -40,7 +40,7 @@ function SourceRow({ source }: { source: SourceSummary }) {
       <td className="py-3 pr-4">
         <p className="font-medium text-foreground">{source.label}</p>
         {source.lastAttempt?.status === "FAILURE" && source.lastAttempt.errorMessage && (
-          <p className="mt-0.5 max-w-sm truncate text-xs text-red-600" title={source.lastAttempt.errorMessage}>
+          <p className="mt-0.5 max-w-sm truncate text-xs text-red-700" title={source.lastAttempt.errorMessage}>
             {source.lastAttempt.errorMessage}
           </p>
         )}
@@ -51,7 +51,7 @@ function SourceRow({ source }: { source: SourceSummary }) {
       <td className="py-3 pr-4 text-stone-600">{relativeOrNever(source.lastSuccessAt)}</td>
       <td className="py-3 pr-4 font-mono tabular-nums text-stone-700">{source.recordCount.toLocaleString()}</td>
       <td className="py-3 pr-4 font-mono tabular-nums text-stone-700">
-        <span className={source.failuresLast7Days > 0 ? "font-semibold text-red-600" : undefined}>
+        <span className={source.failuresLast7Days > 0 ? "font-semibold text-red-700" : undefined}>
           {source.failuresLast7Days}
         </span>{" "}
         <span className="text-xs text-stone-500">/ 7d</span>

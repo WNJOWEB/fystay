@@ -241,7 +241,7 @@ export function SignInMethodsCard({
                 <FieldError>{dialogError}</FieldError>
               </Field>
             ) : (
-              dialogError && <p className="mt-3 text-sm text-red-600">{dialogError}</p>
+              dialogError && <p className="mt-3 text-sm text-red-700">{dialogError}</p>
             )}
             <div className="mt-5 flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => setDialog(null)} disabled={submitting}>

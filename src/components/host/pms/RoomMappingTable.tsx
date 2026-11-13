@@ -132,7 +132,7 @@ export function RoomMappingTable({
         </p>
 
         {loadError ? (
-          <p className="mt-4 text-sm text-red-600">{loadError}</p>
+          <p className="mt-4 text-sm text-red-700">{loadError}</p>
         ) : rooms === null ? (
           <div className="mt-4 flex items-center gap-2 text-sm text-stone-500">
             <Spinner className="h-4 w-4" />
