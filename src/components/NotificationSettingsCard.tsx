@@ -35,7 +35,7 @@ export function NotificationSettingsCard({ initial }: { initial: Record<Key, boo
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className="pt-5">
         <ul className="flex flex-col divide-y divide-border-subtle">
           {OPTIONS.map((option) => (
             <li key={option.key} className="flex items-start justify-between gap-4 py-3 first:pt-0">

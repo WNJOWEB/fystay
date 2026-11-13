@@ -143,7 +143,7 @@ export function CheckoutForm({
               invalid={Boolean(error)}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="For your host to reach you about the stay"
+              placeholder="e.g. 07700 900123"
             />
             <FieldError>{error}</FieldError>
           </Field>

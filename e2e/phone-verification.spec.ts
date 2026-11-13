@@ -6,7 +6,7 @@ import { generateReferralCode } from "../src/lib/referral";
 // The phone verification card on /account. Twilio is never called here:
 // with Twilio configured on the server, the two API calls are answered by
 // page.route so the UI states (send, resend cooldown, wrong code, verified)
-// can be checked; without it, the card must say so and offer no form.
+// can be checked; without it, the card is not shown.
 
 try {
   process.loadEnvFile();
@@ -32,12 +32,13 @@ test("phone verification: honest when unconfigured, full code flow when configur
     await expect(page).toHaveURL(/\/account/, { timeout: 30_000 });
 
     const card = page.locator("#phone-verification");
-    await expect(card).toBeVisible();
-    if (await card.getByText("Not available yet.").isVisible()) {
-      await expect(card.getByRole("button", { name: "Send code" })).toHaveCount(0);
-      await expect(card.getByText("Not verified", { exact: true })).toBeVisible();
+    // Without Twilio there is no card at all: nothing that looks available but isn't.
+    if ((await card.count()) === 0) {
+      await expect(page.getByRole("heading", { name: "Account", exact: true })).toBeVisible();
+      await expect(page.getByText("Not available yet.")).toHaveCount(0);
       return;
     }
+    await expect(card).toBeVisible();
 
     let checks = 0;
     await page.route("**/api/account/phone/send-code", (route) =>

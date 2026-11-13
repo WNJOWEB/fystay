@@ -38,7 +38,7 @@ export function HostBioCard({ initialBio, hostId }: { initialBio: string; hostId
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className="pt-5">
         <form onSubmit={save} className="flex flex-col gap-3">
           <div>
             <Label htmlFor="hostBio">About you</Label>

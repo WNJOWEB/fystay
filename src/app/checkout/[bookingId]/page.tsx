@@ -157,8 +157,6 @@ export default async function CheckoutPage({
               promoDiscountCents={booking.promoDiscountCents}
               securityDepositCents={booking.securityDepositCents}
               totalPriceCents={booking.totalPriceCents}
-              cancellationPolicyLabel={cancellationPolicy.label}
-              cancellationPolicyDescription={cancellationPolicy.description}
             />
           </div>
         </div>

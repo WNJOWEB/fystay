@@ -91,6 +91,14 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
   // Google accounts - a separate, real gap, not silently worked around
   // here).
   const hasPassword = Boolean(user.passwordHash);
+  // A verification card is shown only when the person can use it, or has
+  // already done it. A card that says "Not available yet" is a feature that
+  // looks available but isn't.
+  const phoneConfigured = isPhoneVerificationConfigured();
+  const showIdentity = Boolean(stripe) || identity.status === "VERIFIED";
+  const showPhone = phoneConfigured || Boolean(user.phoneVerifiedAt);
+  const showVerification = showIdentity || showPhone;
+  const twoFactorConfigured = isTwoFactorConfigured();
 
   return (
     <div className="mx-auto w-full max-w-2xl flex-1 px-6 py-8">
@@ -117,7 +125,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         aria-label="Account sections"
         className="sticky top-[77px] z-20 lg:top-[85px] -mx-6 mt-5 flex gap-2 overflow-x-auto border-b border-border-subtle bg-background/95 px-6 py-2.5 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {SECTIONS.map((section) => (
+        {SECTIONS.filter((section) => section.id !== "verification" || showVerification).map((section) => (
           <a
             key={section.id}
             href={`#${section.id}`}
@@ -144,24 +152,30 @@ export default async function AccountPage({ searchParams }: PageProps<"/account"
         />
       </AccountSection>
 
-      <AccountSection id="verification" title="Verification">
-        <IdentityVerificationCard
-          status={identity.status}
-          processing={identity.processing}
-          failureReason={identity.failureReason}
-          configured={Boolean(stripe)}
-        />
-        <PhoneVerificationCard
-          verifiedPhone={user.phoneVerifiedAt ? user.phone : null}
-          configured={isPhoneVerificationConfigured()}
-        />
-      </AccountSection>
+      {showVerification && (
+        <AccountSection id="verification" title="Verification">
+          {showIdentity && (
+            <IdentityVerificationCard
+              status={identity.status}
+              processing={identity.processing}
+              failureReason={identity.failureReason}
+              configured={Boolean(stripe)}
+            />
+          )}
+          {showPhone && (
+            <PhoneVerificationCard
+              verifiedPhone={user.phoneVerifiedAt ? user.phone : null}
+              configured={phoneConfigured}
+            />
+          )}
+        </AccountSection>
+      )}
 
       <AccountSection id="security" title="Login & security">
-        {hasPassword && (
+        {hasPassword && (twoFactorConfigured || user.twoFactorEnabledAt) && (
           <TwoFactorCard
             initialEnabled={Boolean(user.twoFactorEnabledAt)}
-            configured={isTwoFactorConfigured()}
+            configured={twoFactorConfigured}
           />
         )}
         <Suspense>
