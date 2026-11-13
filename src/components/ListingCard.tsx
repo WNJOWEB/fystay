@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import type { TouchEvent } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, ImageOff, MapPin, Sparkles, Star, Users } from "lucide-react";
+import { ArrowRight, CalendarCheck, ChevronLeft, ChevronRight, ImageOff, MapPin, Sparkles, Star, Users } from "lucide-react";
 import { PROPERTY_TYPE_LABEL, type PropertyType } from "@/lib/propertyType";
 import { useFormattedPrice } from "@/components/CurrencyProvider";
 import { computeBookingPricing, stayRates } from "@/lib/pricing";
@@ -19,6 +19,7 @@ import { useAutoRotate } from "@/hooks/useAutoRotate";
 import { ARCH_IMAGE_CLASS, EDITORIAL_RULE_CLASS, LARGE_CARD_IMAGE_CLASS } from "@/components/LargeCard";
 import { dealNightlyPriceCents, lastMinuteDiscountFor, listingDeal } from "@/lib/deals";
 import { parseStayDate } from "@/lib/stayDates";
+import { daysBeforeCheckIn, freeCancellationDays, resolveCancellationPolicy, type CancellationPolicyKind } from "@/lib/cancellationPolicy";
 
 export type ListingCardData = {
   id: string;
@@ -51,6 +52,11 @@ export type ListingCardData = {
    * a total it worked out from the listing's own rates.
    */
   smartPriced?: boolean;
+  // Cancellation terms (src/lib/cancellationPolicy.ts) - optional, so callers
+  // that don't select them simply show no "free cancellation" line.
+  cancellationPolicy?: CancellationPolicyKind | null;
+  customCancellationCutoffDays?: number | null;
+  customCancellationRefundPercent?: number | null;
 };
 
 const MAX_AMENITY_ICONS = 3;
@@ -189,6 +195,16 @@ export function ListingCard({
   }
 
   const searchedCheckIn = checkIn ? parseStayDate(checkIn) : null;
+  // "Free cancellation" only when the listing's policy refunds in full before
+  // check-in, and - once dates are searched - only if that check-in is still
+  // far enough away for it to apply.
+  const freeCancelDays = listing.cancellationPolicy
+    ? freeCancellationDays(resolveCancellationPolicy({ ...listing, cancellationPolicy: listing.cancellationPolicy }))
+    : null;
+  const freeCancellation =
+    freeCancelDays !== null && (!searchedCheckIn || daysBeforeCheckIn(searchedCheckIn) >= freeCancelDays)
+      ? `up to ${freeCancelDays} day${freeCancelDays === 1 ? "" : "s"} before check-in`
+      : null;
   const hasWeekendRate =
     listing.weekendPricePerNightCents !== null &&
     listing.weekendPricePerNightCents !== undefined &&
@@ -459,6 +475,14 @@ export function ListingCard({
               </li>
             ))}
           </ul>
+        )}
+        {freeCancellation && (
+          <p className="flex items-start gap-1 text-xs text-accent-600">
+            <CalendarCheck className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden />
+            <span className="text-balance">
+              <span className="font-medium">Free cancellation</span> {freeCancellation}
+            </span>
+          </p>
         )}
         {/* items-start (not items-end, this used to be a single price
             line) - the rating/New chip now aligns with the top of the

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { WeekendShortcuts } from "@/components/WeekendShortcuts";
 import { useEffect, useState, useTransition } from "react";
 import { format } from "date-fns";
 import type { DateRange } from "react-day-picker";
@@ -89,8 +90,11 @@ export function SearchBar({
   liveUpdate = true,
   variant = "default",
   className,
+  weekendShortcuts = false,
 }: {
   liveUpdate?: boolean;
+  /** Show one-tap "Weekend" date chips under the bar (the homepage's). */
+  weekendShortcuts?: boolean;
   /** Extra classes for the outer card, merged last (e.g. the homepage's wider, raised bar). */
   className?: string;
   /**
@@ -530,6 +534,13 @@ export function SearchBar({
           </ul>
         )}
       </div>
+      {weekendShortcuts && (
+        <WeekendShortcuts
+          value={range}
+          onPick={setRange}
+          className={cn("basis-full px-3 pb-1 pt-0.5 sm:order-last", isHero ? "text-white/90" : "text-stone-600")}
+        />
+      )}
     </form>
   );
 }

@@ -36,7 +36,7 @@ export function HomeSearchBar({ slimOnPhone = false }: { slimOnPhone?: boolean }
         </button>
       )}
       <div className={cn(folded && "hidden sm:block")}>
-        <SearchBar liveUpdate={false} className="max-w-none shadow-[var(--shadow-popover)]" />
+        <SearchBar liveUpdate={false} weekendShortcuts className="max-w-none shadow-[var(--shadow-popover)]" />
       </div>
     </>
   );

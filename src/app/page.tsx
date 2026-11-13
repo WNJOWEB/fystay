@@ -6,6 +6,7 @@ import { loadHeroStays } from "@/lib/heroStays";
 import { LargeCardRailSkeleton } from "@/components/LargeCard";
 import { HomeTowns } from "@/components/HomeTowns";
 import { HomeServices } from "@/components/HomeServices";
+import { HomeTrustStrip } from "@/components/HomeTrustStrip";
 import { SpotlightStays } from "@/components/SpotlightStays";
 import { LastMinuteDeals } from "@/components/LastMinuteDeals";
 import { FYLDE_COAST_DESTINATIONS } from "@/lib/destinations";
@@ -143,6 +144,7 @@ export default async function Home() {
 
       <div className="relative z-10 bg-background">
         <div className="mx-auto w-full max-w-6xl flex-1 px-6 pb-12">
+          <HomeTrustStrip />
           {/* The main attractions: Spotlight stays (paid placements, labelled,
               then guests' favourites) and genuine last-minute deals. */}
           <Suspense fallback={<RailSkeleton />}>

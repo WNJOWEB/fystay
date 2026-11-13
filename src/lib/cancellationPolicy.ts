@@ -158,6 +158,18 @@ export function resolveCancellationPolicy(listing: {
 }
 
 /**
+ * How many days before check-in a guest can still cancel for a full refund,
+ * or null when the policy never gives one that way (Strict, Non-refundable
+ * and No refund). The 24-hour window after paying (Non-refundable) is not
+ * counted: it isn't "free cancellation" in the sense a search result means.
+ */
+export function freeCancellationDays(policy: CancellationPolicy): number | null {
+  const full = policy.tiers.filter((tier) => tier.refundPercent === 100 && tier.minDaysBeforeCheckIn > 0);
+  if (full.length === 0) return null;
+  return Math.max(...full.map((tier) => tier.minDaysBeforeCheckIn));
+}
+
+/**
  * Whole calendar days between now and check-in (not exact 24-hour periods,
  * so cancelling at 11pm the day before check-in still counts as "1 day
  * before", matching how a guest or host would describe it); negative once

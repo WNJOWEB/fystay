@@ -16,7 +16,7 @@ import { MobileBookingBar, scrollToBookingWidget } from "@/components/MobileBook
 import { usePromoCode } from "@/hooks/usePromoCode";
 import { formatPrice } from "@/lib/format";
 import { nightsBetween, rangesOverlap, stayLengthError } from "@/lib/availability";
-import type { CancellationPolicy } from "@/lib/cancellationPolicy";
+import { freeCancellationDays, type CancellationPolicy } from "@/lib/cancellationPolicy";
 import {
   computeBookingPricing,
   MONTHLY_DISCOUNT_MIN_NIGHTS,
@@ -148,6 +148,7 @@ export function BookingWidget({
   // check-in", the same way Booking.com/Airbnb show an actual cutoff date
   // instead of leaving a guest to do the maths themselves.
   const bestTier = cancellationPolicy.tiers[0];
+  const freeCancelDays = freeCancellationDays(cancellationPolicy);
   const cancellationCutoffDate =
     range?.from && bestTier && bestTier.refundPercent > 0
       ? subDays(range.from, bestTier.minDaysBeforeCheckIn)
@@ -565,7 +566,16 @@ export function BookingWidget({
             <p className="flex items-center gap-2">
               <CalendarClock className="h-4 w-4 shrink-0 text-brand-600" aria-hidden />
               <span>
-                <span className="font-medium text-stone-700">{cancellationPolicy.label}</span> cancellation
+                {freeCancelDays !== null ? (
+                  <>
+                    <span className="font-medium text-stone-700">Free cancellation</span> up to {freeCancelDays} day
+                    {freeCancelDays === 1 ? "" : "s"} before check-in
+                  </>
+                ) : (
+                  <>
+                    <span className="font-medium text-stone-700">{cancellationPolicy.label}</span> cancellation
+                  </>
+                )}{" "}
                 -{" "}
                 <a href="#cancellation-policy" className="underline hover:text-brand-700">
                   see policy
