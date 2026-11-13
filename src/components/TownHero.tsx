@@ -47,7 +47,7 @@ export function TownHero({
         )}
 
         <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">{destination.name}</h1>
-        <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/90 sm:text-base">{hero.intro}</p>
+        <p className="mt-2 line-clamp-3 max-w-xl text-sm leading-snug text-white/90 sm:text-base">{hero.intro}</p>
 
         <div className="mt-3 flex flex-wrap gap-2">
           {hero.perfectFor.slice(0, 2).map((tag) => (

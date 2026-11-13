@@ -123,6 +123,8 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Done (13 Nov, later):** one-line reason under the sign-up heading (guests and hosts see different lines). Corrected: the stay-page photo gallery already has a five-tile grid with "View all N photos" and a full viewer (arrows, keyboard, swipe), so no change is needed.
 
+**Done (13 Nov, signed-in audit):** every guest, host and admin screen and the booking flow (stay, checkout, pay, confirmation, booking page) checked at desktop and phone size on a local build; all 141 browser tests pass. Fixed: Identity, Phone and Two-factor cards hidden when their service isn't configured (no "Not available yet" boxes; Verification tab goes with them); missing top padding on the notification and host-bio cards; cancellation policy no longer repeated at checkout; phone placeholder cut off on phones; town page hero text cut off mid-sentence, the false "No ticketed events found" line (shown whenever events aren't connected) and the empty "Near Your Stay" teaser removed; shorter About and Deals intros. Not a bug, confirmed: all pages have a visible h1.
+
 **Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH

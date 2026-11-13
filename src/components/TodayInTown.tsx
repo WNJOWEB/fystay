@@ -39,7 +39,7 @@ export function TodayInTown({
           <p className="text-xs font-semibold uppercase tracking-wide">Today in {destinationName}</p>
         </div>
 
-        <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+        <div className={todaysEvents.length > 0 ? "mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]" : "mt-5"}>
           {weather && (
             <div>
               <div className="flex items-center gap-3">
@@ -55,12 +55,12 @@ export function TodayInTown({
             </div>
           )}
 
-          <div>
-            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-brand-200">
-              <CalendarClock className="h-3.5 w-3.5" aria-hidden />
-              Today&apos;s events
-            </p>
-            {todaysEvents.length > 0 ? (
+          {todaysEvents.length > 0 && (
+            <div>
+              <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-brand-200">
+                <CalendarClock className="h-3.5 w-3.5" aria-hidden />
+                Today&apos;s events
+              </p>
               <ul className="mt-3 flex flex-col gap-2.5">
                 {todaysEvents.slice(0, 4).map((event) => (
                   <li key={event.id} className="flex items-baseline gap-2.5 text-sm">
@@ -70,12 +70,8 @@ export function TodayInTown({
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="mt-3 text-sm text-white/60">
-                No ticketed events found for today - see What&apos;s On below for upcoming dates.
-              </p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {recommended.length > 0 && (

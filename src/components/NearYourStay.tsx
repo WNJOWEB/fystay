@@ -24,27 +24,17 @@ const GROUPS: { label: string; categories: LocalPlaceCategory[] }[] = [
  * transport options the rest of the guide already lists.
  */
 export function NearYourStay({
-  destinationName,
   fromListing,
   nearby,
   guide,
 }: {
-  destinationName: string;
   fromListing: OriginListing | null;
   nearby: LocalRecommendation[];
   guide: TownGuide;
 }) {
-  if (!fromListing) {
-    return (
-      <section className="mt-10 rounded-2xl border border-dashed border-border-subtle bg-surface-muted p-6">
-        <SectionHeading icon={MapPinned}>Near Your Stay</SectionHeading>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">
-          Come back here from one of our {destinationName} listings and this section shows real walking and
-          driving times to everything nearby, from your exact property.
-        </p>
-      </section>
-    );
-  }
+  // Without a listing to measure from there is nothing real to show; a
+  // teaser box would only be filler.
+  if (!fromListing) return null;
 
   return (
     <section className="mt-10">

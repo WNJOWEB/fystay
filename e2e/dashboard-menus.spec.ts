@@ -38,11 +38,12 @@ test.describe("phone", () => {
     await expect(page.getByRole("dialog", { name: "Hosting menu" })).toHaveCount(0);
   });
 
-  test("the account page has four sections and a jump bar", async ({ page }) => {
+  test("the account page has labelled sections and a jump bar", async ({ page }) => {
     await logInAsHost(page);
     await page.goto("/account");
     const jump = page.getByRole("navigation", { name: "Account sections" });
-    for (const name of ["Personal", "Verification", "Security", "Privacy"]) {
+    // Verification appears only when Identity or phone checks are available.
+    for (const name of ["Personal", "Notifications", "Security", "Privacy"]) {
       await expect(jump.getByRole("link", { name })).toBeVisible();
     }
     await jump.getByRole("link", { name: "Security" }).click();

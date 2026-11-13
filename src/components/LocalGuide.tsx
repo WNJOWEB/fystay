@@ -62,7 +62,6 @@ export function LocalGuide({
       />
 
       <NearYourStay
-        destinationName={destination.name}
         fromListing={fromListing}
         nearby={snapshot.nearby}
         guide={guide}
