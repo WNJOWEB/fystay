@@ -133,6 +133,8 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Load check (13 Nov, local, 171 published test listings):** all key pages load in about 1 second on desktop and phone with no sideways overflow or broken images. Search paginates at 24 per page. Found and fixed: the `/deals` page had no cap, so its list grew with every deal (now 48). Test data was generated locally only (never on Production) and removed afterwards, since three e2e tests look for demo listings by name.
 
+**Owner runbook (13 Nov):** [real-money-test.md](real-money-test.md) - one booking, cancellation and payout, step by step.
+
 **Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH
