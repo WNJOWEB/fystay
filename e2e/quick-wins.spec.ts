@@ -38,6 +38,13 @@ test("search cards say free cancellation only where the policy refunds in full",
   const flexibleCard = page.locator(`a[href^="/listings/${flexible!.id}"]`).filter({ hasText: flexible!.title }).first();
   await expect(flexibleCard).toContainText("Free cancellation up to 1 day before check-in");
 
+  // With dates searched, the card gives the exact last day for free cancellation.
+  const day = (n: number) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
+  await page.goto(`/search?city=${encodeURIComponent(flexible!.city)}&checkIn=${day(60)}&checkOut=${day(62)}`);
+  await expect(page.locator(`a[href^="/listings/${flexible!.id}"]`).filter({ hasText: flexible!.title }).first()).toContainText(
+    /Free cancellation until \d{1,2} \w{3}/,
+  );
+
   await page.goto(`/search?city=${encodeURIComponent(strict!.city)}`);
   const strictCard = page.locator(`a[href^="/listings/${strict!.id}"]`).filter({ hasText: strict!.title }).first();
   await expect(strictCard).toBeVisible();

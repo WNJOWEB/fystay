@@ -137,6 +137,8 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Done (13 Nov, owner override of the pre-launch freeze in handover.md):** "New on FYStay" homepage shelf - stays approved in the last 30 days, newest first, shown only with at least three (e2e/new-on-fystay.spec.ts). Browse chips still not built: they need a town and wording chosen by the owner.
 
+**Search card redesign (13 Nov, owner: "redesign if you think it could be better, then visually audit"):** the card now leads with what tells stays apart (sea view, pet-friendly, parking) and puts Wi-Fi and a kitchen last, instead of showing the same three basics on every stay; amenity labels show on phones too (bare icons were unclear); the free-cancellation line is one line: "Free cancellation" with the rule on hover and for screen readers, or "Free cancellation until 7 Jan" once dates are searched. Checked at 390, 768 and 1280px with and without dates (no overflow); 145/145 browser tests.
+
 **Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH

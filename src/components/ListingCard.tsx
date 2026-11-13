@@ -60,6 +60,7 @@ export type ListingCardData = {
 };
 
 const MAX_AMENITY_ICONS = 3;
+const CARD_HIGHLIGHT_ORDER = ["sea_view", "pet_friendly", "parking", "washer", "air_conditioning", "kitchen", "wifi"];
 const SWIPE_THRESHOLD_PX = 30;
 
 export function ListingCard({
@@ -133,9 +134,13 @@ export function ListingCard({
   const reviewCount = listing.reviews.length;
   const showScore = rating !== null && reviewCount >= MIN_REVIEWS_FOR_SCORE;
   const reviewCountLabel = `${reviewCount} review${reviewCount === 1 ? "" : "s"}`;
-  const keyAmenities = AMENITY_CATEGORIES.filter((category) =>
-    category.test(listing.amenities),
-  ).slice(0, MAX_AMENITY_ICONS);
+  // What tells one stay from another comes first (a sea view, pets welcome,
+  // parking); Wi-Fi and a kitchen are on nearly every stay, so they only fill
+  // the row when nothing more distinctive is there.
+  const keyAmenities = CARD_HIGHLIGHT_ORDER.flatMap((key) => {
+    const category = AMENITY_CATEGORIES.find((c) => c.key === key);
+    return category && category.test(listing.amenities) ? [category] : [];
+  }).slice(0, MAX_AMENITY_ICONS);
 
   // A deal-style ribbon (the "SALE"/"% OFF" tag airline sites lead their
   // own deal tiles with) for a listing that actually has a real length-of-
@@ -201,9 +206,22 @@ export function ListingCard({
   const freeCancelDays = listing.cancellationPolicy
     ? freeCancellationDays(resolveCancellationPolicy({ ...listing, cancellationPolicy: listing.cancellationPolicy }))
     : null;
-  const freeCancellation =
-    freeCancelDays !== null && (!searchedCheckIn || daysBeforeCheckIn(searchedCheckIn) >= freeCancelDays)
+  const freeCancellationApplies =
+    freeCancelDays !== null && (!searchedCheckIn || daysBeforeCheckIn(searchedCheckIn) >= freeCancelDays);
+  // With dates searched the cutoff is an exact date; without them the card
+  // just says "Free cancellation" and the rule goes in the tooltip and to
+  // screen readers - one line on the card, the full rule on the stay page.
+  const freeCancellationRule =
+    freeCancellationApplies && freeCancelDays !== null
       ? `up to ${freeCancelDays} day${freeCancelDays === 1 ? "" : "s"} before check-in`
+      : null;
+  const freeCancellationUntil =
+    freeCancellationApplies && freeCancelDays !== null && searchedCheckIn
+      ? new Date(searchedCheckIn.getTime() - freeCancelDays * 86_400_000).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          timeZone: "UTC",
+        })
       : null;
   const hasWeekendRate =
     listing.weekendPricePerNightCents !== null &&
@@ -471,16 +489,17 @@ export function ListingCard({
             {keyAmenities.map((category) => (
               <li key={category.key} className="flex items-center gap-1 text-xs text-stone-500">
                 <category.icon className="h-3.5 w-3.5" aria-hidden="true" />
-                <span className="sr-only sm:not-sr-only">{category.label}</span>
+                <span>{category.label}</span>
               </li>
             ))}
           </ul>
         )}
-        {freeCancellation && (
-          <p className="flex items-start gap-1 text-xs text-accent-600">
-            <CalendarCheck className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden />
-            <span className="text-balance">
-              <span className="font-medium">Free cancellation</span> {freeCancellation}
+        {freeCancellationRule && (
+          <p className="flex items-center gap-1 text-xs text-accent-600" title={`Free cancellation ${freeCancellationRule}`}>
+            <CalendarCheck className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            <span>
+              <span className="font-medium">Free cancellation</span>
+              {freeCancellationUntil ? ` until ${freeCancellationUntil}` : <span className="sr-only"> {freeCancellationRule}</span>}
             </span>
           </p>
         )}
