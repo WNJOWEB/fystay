@@ -9,6 +9,7 @@ import { HomeServices } from "@/components/HomeServices";
 import { HomeTrustStrip } from "@/components/HomeTrustStrip";
 import { SpotlightStays } from "@/components/SpotlightStays";
 import { LastMinuteDeals } from "@/components/LastMinuteDeals";
+import { NewOnFystay } from "@/components/NewOnFystay";
 import { FYLDE_COAST_DESTINATIONS } from "@/lib/destinations";
 import { SITE_NAME, SITE_URL, SUPPORT_EMAIL } from "@/lib/seo";
 import { HERO_SLIDES, type HeroSlideKey } from "@/lib/heroSlides";
@@ -152,6 +153,9 @@ export default async function Home() {
           </Suspense>
           <Suspense fallback={null}>
             <LastMinuteDeals />
+          </Suspense>
+          <Suspense fallback={null}>
+            <NewOnFystay />
           </Suspense>
 
           <HomeTowns />

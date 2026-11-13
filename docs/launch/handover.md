@@ -355,6 +355,10 @@ Then onboard a few known hosts (soft launch, runbook §7).
 
 ## Not to do now
 
+- **Owner override (13 Nov 2026):** the "no new features" freeze above is
+  lifted for the homepage "New on FYStay" shelf (shows only with at least 3
+  stays approved in the last 30 days). Browse chips (pet-friendly, parking and
+  so on) are still not built: they need the owner to choose a town and wording.
 - No homepage redesign, no new features, no P2 items. New ideas go into
   [docs/future-features.md](../future-features.md).
 - Known P2 items (post-launch): two navigation landmarks share a name (minor

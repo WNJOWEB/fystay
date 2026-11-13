@@ -135,6 +135,8 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Owner runbook (13 Nov):** [real-money-test.md](real-money-test.md) - one booking, cancellation and payout, step by step.
 
+**Done (13 Nov, owner override of the pre-launch freeze in handover.md):** "New on FYStay" homepage shelf - stays approved in the last 30 days, newest first, shown only with at least three (e2e/new-on-fystay.spec.ts). Browse chips still not built: they need a town and wording chosen by the owner.
+
 **Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH
