@@ -158,7 +158,12 @@ function RegisterFormInner({ providers, rememberedProvider }: RegisterFormProps)
       <div className="mb-8 flex flex-col items-center text-center">
         <Logo size="xl" withTagline className="mb-3" />
         <h1 className="text-2xl font-bold">Create your {SITE_NAME} account</h1>
-        {callbackUrl?.startsWith("/listings/") && <p className="mt-1 text-sm text-stone-500">Your dates are saved.</p>}
+        <p className="mt-1 text-sm text-stone-500">
+          {role === "HOST"
+            ? "One account to list your place, take bookings and get paid."
+            : "One account to book, save stays and message hosts."}
+        </p>
+        {callbackUrl?.startsWith("/listings/") && <p className="mt-1 text-sm font-medium text-brand-800">Your dates are saved.</p>}
       </div>
 
       {referralCode && (
