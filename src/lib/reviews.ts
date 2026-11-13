@@ -95,6 +95,14 @@ const CATEGORY_FIELD: Record<ReviewCategory, keyof RatableReview> = {
 };
 
 /**
+ * A star score from one or two reviews says little and reads as a trust
+ * claim, so cards and the booking box show the score from this many reviews
+ * and the plain count (or "New") below it. The reviews section still shows
+ * every review.
+ */
+export const MIN_REVIEWS_FOR_SCORE = 3;
+
+/**
  * The single source of truth for turning a listing's reviews into the
  * summary shown at the top of the property page (overall average, the
  * star-count breakdown) and the per-category averages shown alongside it.

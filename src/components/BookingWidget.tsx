@@ -530,9 +530,8 @@ export function BookingWidget({
                 </Link>
               </p>
               <p className="mt-1.5 text-center text-xs text-stone-500">
-                Booking needs a free FYStay account - it keeps your booking, receipt and host messages
-                together. Once you&apos;ve confirmed your email, we&apos;ll bring you back to this stay with your
-                dates and guests still chosen.
+                A free account keeps your booking, receipt and host messages together. We&apos;ll bring you
+                back here with your dates chosen.
               </p>
             </>
           ) : (
@@ -576,10 +575,6 @@ export function BookingWidget({
             <p className="flex items-center gap-2">
               <Lock className="h-4 w-4 shrink-0 text-brand-600" aria-hidden />
               Secure payment via Stripe - we never see your card details
-            </p>
-            <p className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4 shrink-0 text-brand-600" aria-hidden />
-              Message your host directly once you&apos;re booked
             </p>
           </div>
         </CardContent>

@@ -340,7 +340,7 @@ export async function ListingsGrid({
       {browse && results.length > 0 && (
         <p className="flex items-center gap-2.5 rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-800">
           <CalendarDays className="h-4 w-4 shrink-0" aria-hidden />
-          Add dates to see availability and total prices.
+          No booking fees. Add dates to see availability and the total price.
         </p>
       )}
 

@@ -36,7 +36,6 @@ import { ReadMoreText } from "@/components/ReadMoreText";
 import { WhatGuestsLove } from "@/components/WhatGuestsLove";
 import { GoodToKnow, type GoodToKnowRow } from "@/components/GoodToKnow";
 import { HouseRules } from "@/components/HouseRules";
-import { WhyBookWithFYStay } from "@/components/WhyBookWithFYStay";
 import { PropertyTransferPromo } from "@/components/PropertyTransferPromo";
 import { TrustLine } from "@/components/TrustLine";
 import { ListingsMap } from "@/components/ListingsMap";
@@ -46,7 +45,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { FYLDE_COAST_DESTINATIONS } from "@/lib/destinations";
 import { LOCAL_GUIDES } from "@/lib/localGuide";
 import { SITE_NAME, SITE_URL, withCity } from "@/lib/seo";
-import { computeRatingBreakdown } from "@/lib/reviews";
+import { computeRatingBreakdown, MIN_REVIEWS_FOR_SCORE } from "@/lib/reviews";
 import { computeHostResponseStats, isGreatHost } from "@/lib/hostStats";
 import { PROPERTY_TYPE_LABEL } from "@/lib/propertyType";
 import { getFeaturedOffering } from "@/lib/travelAddons";
@@ -257,6 +256,8 @@ export default async function ListingDetailPage({
   const ratingBreakdown = computeRatingBreakdown(listing.reviews);
   const rating = ratingBreakdown.average;
   const reviewCount = listing.reviews.length;
+  // Below MIN_REVIEWS_FOR_SCORE the booking box shows no star score.
+  const headlineRating = reviewCount >= MIN_REVIEWS_FOR_SCORE ? rating : null;
   const cancellationPolicy = resolveCancellationPolicy(listing);
   const petsAllowed = isPetFriendly(listing.amenities);
   const parkingAvailable = hasParking(listing.amenities);
@@ -466,10 +467,6 @@ export default async function ListingDetailPage({
         </p>
       </div>
 
-      <div className="border-t border-border-subtle pt-2">
-        <WhyBookWithFYStay />
-      </div>
-
       <div className="mt-10 border-t border-border-subtle pt-8" id="reviews">
         <SectionHeading icon={Star}>Guest reviews</SectionHeading>
         {reviewCount > 0 ? (
@@ -548,7 +545,7 @@ export default async function ListingDetailPage({
             (r) => ({ checkIn: r.checkIn.toISOString(), checkOut: r.checkOut.toISOString() }),
           )}
           isLoggedIn={Boolean(session?.user)}
-          rating={rating}
+          rating={headlineRating}
           reviewCount={reviewCount}
           cancellationPolicy={cancellationPolicy}
           securityDepositCents={listing.securityDepositCents}
@@ -580,13 +577,13 @@ export default async function ListingDetailPage({
           heroWide={heroWide}
           bookingHref="#booking-widget"
           bookingOnPhone
-          bookTitle={`Book ${listing.title}`}
+          bookTitle="Book this stay"
           heroCard={
             <LiveHeroCard
               fromCents={listing.pricePerNightCents}
               weekendCents={listing.weekendPricePerNightCents ?? undefined}
               minNights={listing.minNights}
-              rating={rating}
+              rating={headlineRating}
               reviewCount={reviewCount}
             />
           }

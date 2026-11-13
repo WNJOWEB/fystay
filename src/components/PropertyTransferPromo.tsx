@@ -38,7 +38,7 @@ const CATEGORY_COPY: Record<
  * The property-page cross-sell (item 2 of the cross-sell brief in
  * docs/trip-extras-roadmap.md), shown right next to the booking widget
  * rather than competing with it: a plain bordered card, no gradient, the
- * same weight as WhyBookWithFYStay above it on this page, not a second
+ * same weight as the booking card's own list, not a second
  * call to action fighting "Reserve". Generic over `offering.category` (see
  * src/lib/travelAddons.ts's getFeaturedOffering) rather than hardcoded to
  * airport transfers.

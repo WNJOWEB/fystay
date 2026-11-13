@@ -115,6 +115,14 @@ legal details, or onboarding real hosts.
 - Optional settings, only if wanted at launch: `PMS_ENCRYPTION_KEY` (property-management connections), Apple sign-in (`APPLE_*`), `EV_EXEC_NOTIFICATION_EMAIL` (trip-extra orders inbox).
 - Branch `claude/admin-assisted-onboarding` (listing approval, unmerged, large): not a launch blocker unless chosen as the answer to blocker 4.
 
+## Website polish from the 13 Nov audit
+
+Audit method: local production build with the demo catalogue, 19 pages at desktop and phone size. Retracted after checking: the host fee wording (already follows the smart-pricing setting; only the Stripe business description still says 8-15%), the phone airport banner (a lazy-loading capture artifact), the cookie bar (already slim) and the footer (three short columns).
+
+**Done (committed, 13 Nov):** star score shown only from 3 reviews (cards and booking box show "N reviews" below that); listing page loses the generic "Why book with FYStay" block, the card's repeated "message your host" line and the long account paragraph, and the booking heading is "Book this stay"; "no booking fees" said once in the search notice instead of under every card; host page about 19% shorter.
+
+**Next, if wanted:** a real photo gallery on stay pages (grid on desktop, "Show all photos"); one-line reason on sign-up ("needed to book, save stays and message hosts"); homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
+
 ## OPTIONAL / POST-LAUNCH
 
 - **Decision for you:** hosts can't cancel a confirmed booking themselves.

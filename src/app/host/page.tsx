@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   MapPin,
   PoundSterling,
-  Users,
 } from "lucide-react";
 import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/Button";
@@ -40,33 +39,27 @@ export const metadata: Metadata = {
 const REASONS = [
   {
     icon: MapPin,
-    title: "Local exposure, not a drop in a global ocean",
+    title: "Local, not lost in a global catalogue",
     description:
-      "FYStay is a regional marketplace, not a worldwide catalogue. Your listing sits alongside a handful of other local places, not millions of listings from every country.",
-  },
-  {
-    icon: Users,
-    title: "Guests who've already chosen the area",
-    description:
-      "Guests come to FYStay to find a stay from a local host - you're reaching people who've already picked the area, not hoping to be noticed inside a worldwide catalogue.",
+      "FYStay is a regional marketplace. Your listing sits alongside other local stays, and guests arrive having already chosen the area.",
   },
   {
     icon: LayoutDashboard,
-    title: "Simple, self-serve property management",
+    title: "One simple dashboard",
     description:
-      "Your listing, calendar, availability, cancellation policy, bookings and reviews all live in one host dashboard - no separate apps or spreadsheets to keep in sync.",
+      "Your listing, calendar, availability, cancellation policy, bookings and reviews in one place.",
   },
   {
     icon: Handshake,
     title: "A direct line to your guests",
     description:
-      "Once a booking is confirmed, your contact details are right there on it for your guest - no anonymised relay or call centre standing between you and the person staying in your property.",
+      "Once a booking is confirmed, the guest's contact details are on it. No anonymised relay or call centre in between.",
   },
   {
     icon: PoundSterling,
-    title: "Transparent fees, shown upfront",
+    title: "Fees shown upfront",
     description:
-      `You set your own nightly rate, with cleaning included - guests pay exactly that, with no booking fees added. FYStay's only charge is a commission of ${hostCommissionText(smartPricingMode())} on each booking, taken before your payout. No card fees, no subscription.`,
+      `You set your nightly rate, cleaning included. Guests pay exactly that, with no booking fees added. FYStay's only charge is a ${hostCommissionText(smartPricingMode())} commission on each booking, taken before your payout. No card fees, no subscription.`,
   },
 ];
 
@@ -129,10 +122,9 @@ export default async function BecomeAHostPage() {
             List your place on FYStay
           </h1>
           <p className="mt-4 text-base text-white/85 sm:text-lg">
-            {SITE_NAME} - for your stay - is a local booking platform that knows the area, not a
-            global marketplace you disappear into. It started on the Fylde Coast and welcomes
-            hosts across Lancashire and the North West. List your holiday home, apartment, lodge or
-            guest house and reach guests looking for a stay near you.
+            {SITE_NAME} is a local booking platform for holiday homes, apartments, lodges and guest
+            houses. It started on the Fylde Coast and welcomes hosts across Lancashire and the North
+            West.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {cta(cn(buttonVariants({ size: "lg" }), "bg-white text-brand-800 hover:bg-white/90"))}
@@ -155,8 +147,7 @@ export default async function BecomeAHostPage() {
             Why local hosts choose FYStay
           </h2>
           <p className="mt-1 text-sm text-stone-500">
-            No unsupported promises about bookings or earnings - just how the platform actually
-            works for a local host.
+            How the platform works for a local host.
           </p>
         </div>
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -8,7 +8,7 @@ import { PROPERTY_TYPE_LABEL, type PropertyType } from "@/lib/propertyType";
 import { useFormattedPrice } from "@/components/CurrencyProvider";
 import { computeBookingPricing, stayRates } from "@/lib/pricing";
 import { SaveButton } from "@/components/SaveButton";
-import { averageRating as computeAverageRating } from "@/lib/reviews";
+import { averageRating as computeAverageRating, MIN_REVIEWS_FOR_SCORE } from "@/lib/reviews";
 import { AMENITY_CATEGORIES } from "@/lib/amenityCategories";
 import { cn } from "@/lib/cn";
 import { withCity } from "@/lib/seo";
@@ -125,6 +125,8 @@ export function ListingCard({
         })()
       : null;
   const reviewCount = listing.reviews.length;
+  const showScore = rating !== null && reviewCount >= MIN_REVIEWS_FOR_SCORE;
+  const reviewCountLabel = `${reviewCount} review${reviewCount === 1 ? "" : "s"}`;
   const keyAmenities = AMENITY_CATEGORIES.filter((category) =>
     category.test(listing.amenities),
   ).slice(0, MAX_AMENITY_ICONS);
@@ -403,14 +405,14 @@ export function ListingCard({
                 <span className="font-serif text-xl tabular-nums text-brand-800">{formattedNightlyPrice}</span>
                 <span className="text-xs text-stone-500">/ night</span>
               </p>
-              {rating !== null && (
+              {showScore ? (
                 <span className="flex items-center gap-1 text-xs font-medium text-stone-700">
                   <Star className="h-3.5 w-3.5 fill-accent-500 text-accent-500" aria-hidden />
                   {rating.toFixed(1)}
-                  <span className="text-stone-500">
-                    ({reviewCount} review{reviewCount === 1 ? "" : "s"})
-                  </span>
+                  <span className="text-stone-500">({reviewCountLabel})</span>
                 </span>
+              ) : (
+                reviewCount > 0 && <span className="text-xs text-stone-500">{reviewCountLabel}</span>
               )}
             </div>
             {cta && (
@@ -492,15 +494,17 @@ export function ListingCard({
               <span className="text-xs text-stone-500">{formattedTotal} total</span>
             ) : listing.smartPriced && nights ? (
               <span className="text-xs text-stone-500">price varies by date</span>
-            ) : (
-              <span className="text-xs text-stone-500">no booking fees</span>
-            )}
+            ) : null}
           </div>
-          {rating !== null ? (
+          {showScore ? (
             <span className="flex shrink-0 items-center gap-1 rounded-full border border-border-subtle bg-surface px-2 py-1 text-xs font-medium text-stone-700">
               <Star className="h-3.5 w-3.5 fill-accent-500 text-accent-500" aria-hidden />
               {rating.toFixed(1)}
-              {reviewCount > 0 && <span className="text-stone-500">({reviewCount})</span>}
+              <span className="text-stone-500">({reviewCount})</span>
+            </span>
+          ) : reviewCount > 0 ? (
+            <span className="shrink-0 rounded-full border border-border-subtle bg-surface px-2 py-1 text-xs font-medium text-stone-600">
+              {reviewCountLabel}
             </span>
           ) : (
             // A blank gap here (rather than a placeholder) reads as broken
