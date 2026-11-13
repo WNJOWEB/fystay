@@ -131,6 +131,8 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Done (13 Nov, owner asked "build the quick wins" after the competitor audit):** "Free cancellation up to N days before check-in" on search cards and in the stay page's booking card, shown only where the policy refunds in full (Flexible, Moderate, a Custom 100% policy; never Strict, Non-refundable or No refund) and, once dates are searched, only if check-in is far enough away; a three-line trust strip under the homepage search (full price shown, reviews only from guests who stayed, secure payment with Stripe); two Friday-to-Sunday "Weekend" chips in the homepage search that fill the dates; check-in/out times: no change needed - the host form defaults to 3pm/11am and the stay page shows them whenever stored (listings made without times, such as the Lodge import, show none until the host or admin sets them). Not built yet: a "New on FYStay" shelf (waits for real listings). Verified: 141/141 old browser tests, 3 new ones (e2e/quick-wins.spec.ts), 2,052 unit tests.
 
+**Load check (13 Nov, local, 171 published test listings):** all key pages load in about 1 second on desktop and phone with no sideways overflow or broken images. Search paginates at 24 per page. Found and fixed: the `/deals` page had no cap, so its list grew with every deal (now 48). Test data was generated locally only (never on Production) and removed afterwards, since three e2e tests look for demo listings by name.
+
 **Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH

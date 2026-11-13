@@ -13,9 +13,12 @@ export const metadata = pageMetadata({
 // Live availability and today's date decide which deals count.
 export const dynamic = "force-dynamic";
 
+const DEALS_PAGE_LIMIT = 48;
+
 /** Every genuine deal right now (see loadLastMinuteDeals) - the homepage row's "View all". */
 export default async function DealsPage() {
-  const { deals, savedListingIds, isLoggedIn } = await loadLastMinuteDeals();
+  // Capped: the page is one unpaginated list, so an uncapped query grows with every deal.
+  const { deals, savedListingIds, isLoggedIn } = await loadLastMinuteDeals(DEALS_PAGE_LIMIT);
 
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-12">
