@@ -121,7 +121,9 @@ Audit method: local production build with the demo catalogue, 19 pages at deskto
 
 **Done (committed, 13 Nov):** star score shown only from 3 reviews (cards and booking box show "N reviews" below that); listing page loses the generic "Why book with FYStay" block, the card's repeated "message your host" line and the long account paragraph, and the booking heading is "Book this stay"; "no booking fees" said once in the search notice instead of under every card; host page about 19% shorter.
 
-**Next, if wanted:** a real photo gallery on stay pages (grid on desktop, "Show all photos"); one-line reason on sign-up ("needed to book, save stays and message hosts"); homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
+**Done (13 Nov, later):** one-line reason under the sign-up heading (guests and hosts see different lines). Corrected: the stay-page photo gallery already has a five-tile grid with "View all N photos" and a full viewer (arrows, keyboard, swipe), so no change is needed.
+
+**Next, if wanted:** homepage rails once real listings exist (the deals rail is thin with demo data); town page length (see town-pages-restructure.md); a signed-in pass over host, guest and checkout screens, which the audit did not cover.
 
 ## OPTIONAL / POST-LAUNCH
 
