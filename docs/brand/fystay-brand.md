@@ -194,3 +194,35 @@ inventory, and a page that lists nothing would be thin and misleading.
 When a "create later" page becomes due, add it to `src/lib/destinations.ts`
 (which feeds the page, sitemap and town badges), with original copy, a
 local guide, and the listings to back it.
+
+## Design standard: look made, not generated (owner, 14 Nov 2026)
+
+The owner's standing instruction for all design work. FYStay already has its
+own identity (DM Serif Display, terracotta and cream, arch-framed stay cards,
+real Fylde Coast photography); new and redesigned pages must keep it and avoid
+generic website-builder patterns.
+
+**Avoid unless there is a reason specific to FYStay:** gradient hero banners;
+a centred headline over centred text; twin buttons (one filled, one outlined);
+rows of three icon-and-caption cards; the same icon repeated on every item; the
+same carousel section repeated down a page; glass, glow, floating shapes;
+stock photos; marketing filler ("elevate", "unlock", "transform").
+
+**Instead:** left-aligned, asymmetric compositions; one clear action per
+section and a plain text link for the second; ruled lists and run-in bold
+leads instead of cards; large serif numerals; full-width photography from our
+own `public/images`, framed in the brand arch where it fits; a deliberate
+change of ground between sections (cream, ink, oat); copy in plain, specific
+sentences with no invented claims.
+
+**Before calling a page done:** screenshot it at 390, 768 and 1280px, look at
+it, and fix what looks wrong; run the accessibility scan (dark bands and text
+over photos are the contrast risks).
+
+**Applied 13-14 Nov 2026:** /host (arched Cleveleys photo, dark "What you keep"
+band, ruled list, stepped numerals, windmill close); /about (editorial
+spread, full-width photo, run-in values); homepage trust line set as type;
+homepage towns as a mosaic on an oat band, with the New on FYStay shelf moved
+below it so carousels aren't stacked; search card highlights.
+Still to review against this standard: /help, /safety, /cancellation-policies,
+/services, /travel-extras, /contact, and the stay page's top section.

@@ -17,6 +17,20 @@ const TOWN_TAGLINES: Record<string, string> = {
 };
 
 /**
+ * How the six tiles are laid out from lg: Blackpool large and tall, then
+ * tiles of different widths, so the grid has a composition instead of six
+ * equal boxes. Below lg it is the swipe row and these do nothing.
+ */
+const MOSAIC_SPANS = [
+  "lg:col-span-6 lg:row-span-2",
+  "lg:col-span-6",
+  "lg:col-span-3",
+  "lg:col-span-3",
+  "lg:col-span-5",
+  "lg:col-span-7",
+];
+
+/**
  * The homepage's "Explore the Fylde Coast": a card per town, each opening the
  * things-to-do buttons of that town's Local Guide. Real photography where FYStay has it (DESTINATION_PHOTOS),
  * otherwise the same icon-and-gradient art as /destinations - never a
@@ -29,7 +43,7 @@ const TOWN_TAGLINES: Record<string, string> = {
  */
 export function HomeTowns() {
   return (
-    <section className="mt-12 sm:mt-16" aria-labelledby="experiences-heading">
+    <section aria-labelledby="experiences-heading">
       <EditorialHeader
         id="experiences-heading"
         name="Explore the Fylde Coast"
@@ -37,17 +51,23 @@ export function HomeTowns() {
       />
 
       <div className="relative h-[188px] min-[400px]:h-[198px] sm:h-[208px] lg:h-auto">
-        <ul className="absolute inset-x-0 top-0 -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:gap-4 lg:static lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
-          {FYLDE_COAST_DESTINATIONS.map((destination) => {
+        <ul className="absolute inset-x-0 top-0 -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:gap-4 lg:static lg:mx-0 lg:grid lg:auto-rows-[12.5rem] lg:grid-cols-12 lg:gap-5 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
+          {FYLDE_COAST_DESTINATIONS.map((destination, index) => {
             const art = DESTINATION_ART[destination.slug] ?? FALLBACK_ART;
             const Icon = art.icon;
             const photo = DESTINATION_PHOTOS[destination.slug]?.tile;
             return (
-              <li key={destination.slug} className="w-[46%] shrink-0 snap-start min-[400px]:w-[44%] sm:w-[30%] lg:w-auto">
+              <li
+                key={destination.slug}
+                className={cn(
+                  "w-[46%] shrink-0 snap-start min-[400px]:w-[44%] sm:w-[30%] lg:h-full lg:w-auto",
+                  MOSAIC_SPANS[index] ?? "lg:col-span-4",
+                )}
+              >
                 <Link
                   href={`/destinations/${destination.slug}#quick-discovery`}
                   className={cn(
-                    "focus-ring group relative flex h-[180px] flex-col justify-end overflow-hidden border-b-[3px] border-brand-500 bg-gradient-to-br p-3 shadow-[var(--shadow-card)] ring-1 ring-black/5 transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)] min-[400px]:h-[190px] sm:h-[200px] sm:p-4 lg:h-auto lg:aspect-[16/10] lg:p-5",
+                    "focus-ring group relative flex h-[180px] flex-col justify-end overflow-hidden border-b-[3px] border-brand-500 bg-gradient-to-br p-3 shadow-[var(--shadow-card)] ring-1 ring-black/5 transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)] min-[400px]:h-[190px] sm:h-[200px] sm:p-4 lg:h-full lg:p-6",
                     art.gradient,
                   )}
                 >
@@ -67,7 +87,7 @@ export function HomeTowns() {
                   )}
                   <div className="relative flex items-end justify-between gap-1">
                     <div className="min-w-0">
-                      <p className="font-serif text-base font-bold leading-tight text-white min-[400px]:text-lg lg:text-2xl">
+                      <p className={cn("font-serif text-base font-bold leading-tight text-white min-[400px]:text-lg", index === 0 ? "lg:text-4xl" : "lg:text-2xl")}>
                         {destination.name}
                       </p>
                       <p className="mt-1 text-[11px] font-medium uppercase leading-snug tracking-[0.08em] text-white/90 min-[400px]:text-[11px] lg:text-xs">

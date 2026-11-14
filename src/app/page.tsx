@@ -154,11 +154,22 @@ export default async function Home() {
           <Suspense fallback={null}>
             <LastMinuteDeals />
           </Suspense>
+
+        </div>
+
+        {/* The towns sit on a full-width oat band: the page moves from the
+            cream stays, to a tinted band, and back, instead of one pattern
+            repeating down the page. */}
+        <div className="mt-12 bg-surface-muted py-12 sm:mt-16 sm:py-16">
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <HomeTowns />
+          </div>
+        </div>
+
+        <div className="mx-auto w-full max-w-6xl px-6 pb-12">
           <Suspense fallback={null}>
             <NewOnFystay />
           </Suspense>
-
-          <HomeTowns />
           <HomeServices />
         </div>
       </div>

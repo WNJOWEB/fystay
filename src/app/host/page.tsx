@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { BecomeHostButton } from "@/components/BecomeHostButton";
-import {
-  Camera,
-  Handshake,
-  LayoutDashboard,
-  MapPin,
-  PoundSterling,
-} from "lucide-react";
 import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -29,37 +23,28 @@ export const metadata: Metadata = {
 };
 
 /**
- * Each reason is written as a direct, factual statement about how FYStay
- * itself works - never a claim about a competitor's algorithm or conversion
- * rate, since none of that is something this app could support. The one
- * comparison made is on fees (the "What you keep" section): each site's own
- * published rate, linked and dated (src/lib/competitorFees.ts), applied to
- * the same stay.
+ * Each reason is a direct, factual statement about how FYStay itself works -
+ * never a claim about a competitor's algorithm or conversion rate, since none
+ * of that is something this app could support. The one comparison made is on
+ * fees (the "What you keep" section): each site's own published rate, linked
+ * and dated (src/lib/competitorFees.ts), applied to the same stay.
  */
 const REASONS = [
   {
-    icon: MapPin,
-    title: "Local, not lost in a global catalogue",
-    description:
-      "FYStay is a regional marketplace. Your listing sits alongside other local stays, and guests arrive having already chosen the area.",
+    label: "Local",
+    text: "FYStay is a regional site. Your listing sits alongside other local stays, and guests arrive having already chosen the area.",
   },
   {
-    icon: LayoutDashboard,
-    title: "One simple dashboard",
-    description:
-      "Your listing, calendar, availability, cancellation policy, bookings and reviews in one place.",
+    label: "One dashboard",
+    text: "Your listing, calendar, availability, cancellation policy, bookings and reviews, in one place.",
   },
   {
-    icon: Handshake,
-    title: "A direct line to your guests",
-    description:
-      "Once a booking is confirmed, the guest's contact details are on it. No anonymised relay or call centre in between.",
+    label: "Direct contact",
+    text: "Once a booking is confirmed, the guest's contact details are on it. There is no anonymised relay or call centre in between.",
   },
   {
-    icon: PoundSterling,
-    title: "Fees shown upfront",
-    description:
-      `You set your nightly rate, cleaning included. Guests pay exactly that, with no booking fees added. FYStay's only charge is a ${hostCommissionText(smartPricingMode())} commission on each booking, taken before your payout. No card fees, no subscription.`,
+    label: "Plain fees",
+    text: `You set your nightly rate, cleaning included. Guests pay exactly that, with no booking fees added. FYStay's only charge is a ${hostCommissionText(smartPricingMode())} commission on each booking, taken before your payout. No card fees, no subscription.`,
   },
 ];
 
@@ -110,118 +95,149 @@ export default async function BecomeAHostPage() {
 
   return (
     <div className="flex-1">
-      {/* Full-bleed gradient hero, same brand-teal palette as the homepage
-          hero and the search card's signature strip, so this reads as
-          FYStay's own page rather than a bolted-on marketing microsite. */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-950 via-brand-800 to-brand-600 px-6 py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent-400 sm:text-sm">
-            For holiday let owners across the North West
-          </p>
-          <h1 className="mt-3 text-3xl font-bold leading-tight text-white sm:text-5xl">
-            List your place on FYStay
+      {/* The hero is a composition, not a banner: the headline on the left,
+          a local photograph in the brand's arch on the right, dropped a
+          little so the two don't line up. One button; "how it works" is a
+          plain link, not a second button competing with it. */}
+      <section className="mx-auto grid w-full max-w-6xl gap-10 px-6 pb-14 pt-10 lg:grid-cols-12 lg:gap-14 lg:pb-24 lg:pt-16">
+        <div className="lg:col-span-7 lg:pt-8">
+          <h1 className="text-[2.5rem] leading-[1.04] text-foreground sm:text-5xl lg:text-[3.75rem]">
+            Let your place to guests who came for the coast.
           </h1>
-          <p className="mt-4 text-base text-white/85 sm:text-lg">
-            {SITE_NAME} is a local booking platform for holiday homes, apartments, lodges and guest
-            houses. It started on the Fylde Coast and welcomes hosts across Lancashire and the North
-            West.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-700">
+            {SITE_NAME} is a small booking site that started on the Fylde Coast. You set the nightly price.
+            We take {hostCommissionText(smartPricingMode())} of each booking, and you are paid the day after your guest
+            checks in.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            {cta(cn(buttonVariants({ size: "lg" }), "bg-white text-brand-800 hover:bg-white/90"))}
+          <p className="mt-3 max-w-xl text-stone-600">
+            For owners of holiday homes, apartments, lodges and guest houses across Lancashire and the North West.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            {cta(buttonVariants({ size: "lg" }))}
             <Link
               href="#how-it-works"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "border-white/30 text-white hover:bg-white/10",
-              )}
+              className="focus-ring rounded text-base font-medium text-brand-700 underline decoration-brand-300 underline-offset-[6px] hover:decoration-brand-700"
             >
-              See how it works
+              How it works
             </Link>
           </div>
         </div>
+        <figure className="mx-auto w-full max-w-sm lg:col-span-5 lg:mx-0 lg:max-w-none lg:translate-y-10">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-b-2xl shadow-[var(--shadow-card)] ring-1 ring-black/5 [border-top-left-radius:50%] [border-top-right-radius:50%]">
+            <Image
+              src="/images/destinations/cleveleys.jpg"
+              alt="Evening light through a concrete porthole on the Cleveleys promenade, looking out over the sand to the sea"
+              fill
+              priority
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="object-cover"
+            />
+          </div>
+          <figcaption className="mt-3 text-center text-sm italic text-stone-500 lg:text-left">
+            Cleveleys, on the Fylde Coast
+          </figcaption>
+        </figure>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-6 py-14">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-            Why local hosts choose FYStay
-          </h2>
-          <p className="mt-1 text-sm text-stone-500">
-            How the platform works for a local host.
-          </p>
-        </div>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {REASONS.map(({ icon: Icon, title: reasonTitle, description: reasonDescription }) => (
-            <div key={reasonTitle} className="flex flex-col gap-2 rounded-2xl border border-border-subtle bg-surface p-5 shadow-[var(--shadow-card)]">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-700">
-                <Icon className="h-4.5 w-4.5" aria-hidden />
-              </span>
-              <p className="text-sm font-semibold text-foreground">{reasonTitle}</p>
-              <p className="text-sm leading-relaxed text-stone-600">{reasonDescription}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="what-you-keep" className="scroll-mt-20 border-t border-border-subtle bg-surface-muted">
-        <div className="mx-auto grid w-full max-w-5xl gap-8 px-6 py-14 lg:grid-cols-2 lg:items-start">
-          <div>
-            <h2 className="text-xl font-bold text-foreground sm:text-2xl">What you keep</h2>
-            <p className="mt-1 text-sm text-stone-500">
+      {/* The money, on a dark band: the page's one change of mood, so the
+          numbers are what a host remembers. The calculator sits on a cream
+          sheet so it keeps its own light styling. */}
+      <section id="what-you-keep" className="scroll-mt-20 bg-ink text-white">
+        <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 lg:grid-cols-12 lg:gap-14 lg:py-20">
+          <div className="lg:col-span-5">
+            <h2 className="text-3xl text-white sm:text-4xl">What you keep</h2>
+            <p className="mt-4 text-lg leading-relaxed text-white/80">
               FYStay takes {hostCommissionText(smartPricingMode())} of each booking. Nothing else.
             </p>
-            <h3 className="mt-6 text-sm font-semibold text-foreground">Good to know</h3>
-            <ul className="mt-2 flex flex-col gap-2 text-sm text-stone-700">
+            <h3 className="mt-10 text-sm font-semibold uppercase tracking-wide text-white/60">Good to know</h3>
+            <ul className="mt-3 divide-y divide-white/15 border-y border-white/15 text-white/90">
               {GOOD_TO_KNOW.map((line) => (
-                <li key={line} className="flex gap-2">
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" />
+                <li key={line} className="py-3">
                   {line}
                 </li>
               ))}
             </ul>
-            <Link href="/host-guide" className="mt-4 inline-block text-sm font-medium text-brand-700 hover:underline">
-              Read the host guide →
+            <Link
+              href="/host-guide"
+              className="focus-ring mt-6 inline-block rounded text-brand-200 underline underline-offset-4 hover:text-white"
+            >
+              Read the host guide
             </Link>
           </div>
-          <HostEarningsCalculator />
+          <div className="rounded-2xl bg-background p-5 text-foreground sm:p-7 lg:col-span-7 lg:self-start">
+            <HostEarningsCalculator />
+          </div>
         </div>
       </section>
 
-      <section id="how-it-works" className="scroll-mt-20 border-t border-border-subtle">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <h2 className="text-xl font-bold text-foreground sm:text-2xl">How listing works</h2>
-          <p className="mt-1 text-sm text-stone-500">
-            Four steps from an empty dashboard to a bookable listing.
-          </p>
-          <div className="mt-8 flex flex-col gap-6">
-            {STEPS.map((step) => (
-              <div key={step.title} className="flex items-start gap-3">
-                <Camera className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" aria-hidden />
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{step.title}</p>
-                  <p className="mt-0.5 text-sm text-stone-600">{step.description}</p>
-                </div>
+      {/* Why a small site: a ruled list, label on the left and the plain
+          sentence on the right - no cards, no icons. */}
+      <section className="mx-auto w-full max-w-6xl px-6 py-16 lg:py-24">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-14">
+          <h2 className="text-3xl sm:text-4xl lg:col-span-4">Why a small, local site</h2>
+          <dl className="divide-y divide-border-subtle border-y border-border-subtle lg:col-span-8">
+            {REASONS.map(({ label, text }) => (
+              <div key={label} className="grid gap-2 py-6 sm:grid-cols-3 sm:gap-8">
+                <dt className="font-serif text-xl text-brand-800">{label}</dt>
+                <dd className="leading-relaxed text-stone-700 sm:col-span-2">{text}</dd>
               </div>
             ))}
-          </div>
-          <Link
-            href="/host-guide"
-            className="mt-6 inline-block text-sm font-medium text-brand-700 hover:underline"
-          >
-            Read the full host guide →
-          </Link>
+          </dl>
         </div>
       </section>
 
-      <section className="px-6 py-14 text-center">
-        <div className="mx-auto max-w-xl">
-          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-            Ready to welcome your first guest?
-          </h2>
-          <p className="mt-2 text-sm text-stone-500">
-            It takes a few minutes to create a listing, and you choose when to publish it.
+      {/* Four steps as big serif numerals, each row stepped in a little
+          further than the last, so the eye travels down the page. The title
+          sits on the left, on the same grid as the section above. */}
+      <section id="how-it-works" className="scroll-mt-20 bg-surface-muted">
+        <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 lg:grid-cols-12 lg:gap-14 lg:py-24">
+          <div className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
+            <h2 className="text-3xl sm:text-4xl">How listing works</h2>
+            <p className="mt-3 max-w-xs text-stone-600">Four steps from an empty dashboard to a bookable listing.</p>
+            <Link
+              href="/host-guide"
+              className="focus-ring mt-6 inline-block rounded text-base font-medium text-brand-700 underline underline-offset-4"
+            >
+              Read the full host guide
+            </Link>
+          </div>
+          <ol className="flex flex-col gap-8 sm:gap-10 lg:col-span-8">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.title}
+                className="flex items-baseline gap-5 sm:gap-8"
+                style={{ marginLeft: `min(${index * 2.5}rem, 12vw)` }}
+              >
+                <span aria-hidden className="font-serif text-6xl leading-none text-brand-500 sm:text-7xl">
+                  {index + 1}
+                </span>
+                <div className="max-w-md">
+                  <h3 className="text-lg font-semibold text-foreground">{step.title.replace(/^\d+\.\s*/, "")}</h3>
+                  <p className="mt-1 leading-relaxed text-stone-700">{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* The close is a photograph with one line and one button, left-aligned. */}
+      <section className="relative isolate overflow-hidden bg-ink">
+        <Image
+          src="/images/destinations/lytham-st-annes.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        {/* A scrim so the words sit on clean ground, heaviest where they are. */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-ink/75 sm:bg-gradient-to-r sm:from-ink/90 sm:via-ink/60 sm:to-ink/10" />
+        <div className="mx-auto w-full max-w-6xl px-6 py-20 lg:py-28">
+          <h2 className="max-w-xl text-3xl text-white sm:text-5xl">Ready when you are.</h2>
+          <p className="mt-4 max-w-md text-lg text-white/85">
+            It takes a few minutes to start a listing, and you choose when to publish it.
           </p>
-          {cta(cn(buttonVariants({ size: "lg" }), "mt-6"))}
+          {cta(cn(buttonVariants({ size: "lg" }), "mt-8"))}
         </div>
       </section>
     </div>
