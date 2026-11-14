@@ -223,6 +223,8 @@ over photos are the contrast risks).
 band, ruled list, stepped numerals, windmill close); /about (editorial
 spread, full-width photo, run-in values); homepage trust line set as type;
 homepage towns as a mosaic on an oat band, with the New on FYStay shelf moved
-below it so carousels aren't stacked; search card highlights.
+below it so carousels aren't stacked; search card highlights; the stay page's
+booking panel now sticks beside the content from lg (it used to be at the very
+foot of a 5,000px page).
 Still to review against this standard: /help, /safety, /cancellation-policies,
-/services, /travel-extras, /contact, and the stay page's top section.
+/services, /travel-extras, /contact.

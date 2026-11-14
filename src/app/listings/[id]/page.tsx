@@ -578,6 +578,7 @@ export default async function ListingDetailPage({
           bookingHref="#booking-widget"
           bookingOnPhone
           bookTitle="Book this stay"
+          stickyBooking
           heroCard={
             <LiveHeroCard
               fromCents={listing.pricePerNightCents}
@@ -602,7 +603,7 @@ export default async function ListingDetailPage({
           }
           booking={widgetPanel}
         >
-          <div className="mx-auto w-full max-w-4xl px-6 pb-4 pt-2">
+          <div className="mx-auto w-full max-w-4xl px-6 pb-4 pt-2 lg:max-w-none lg:px-0">
             {isOwnListing && listing.published && <HostPageLink url={stayUrl} />}
             {hostCard}
             {aboutSection}

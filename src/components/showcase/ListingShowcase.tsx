@@ -88,6 +88,7 @@ export function ListingShowcase({
   bookingHref = "#book",
   bookingOnPhone = false,
   bookTitle,
+  stickyBooking = false,
   children,
 }: {
   content: ShowcaseContent;
@@ -106,6 +107,12 @@ export function ListingShowcase({
   /** Show the booking panel on a phone too (a live listing's widget is the only place dates are chosen). */
   bookingOnPhone?: boolean;
   bookTitle?: string;
+  /**
+   * From lg, put the booking panel in a sticky column beside the page's
+   * content, so price and dates stay in view while a guest reads, instead of
+   * at the very foot. Below lg it is the same stacked page as before.
+   */
+  stickyBooking?: boolean;
   /** More of the page - description, host, map, reviews - between the facts and the booking panel. */
   children?: ReactNode;
 }) {
@@ -333,7 +340,71 @@ export function ListingShowcase({
         </section>
       )}
 
-      {children}
+      {stickyBooking ? (
+        // Content on the left, the booking panel sticky on the right from lg.
+        // The panel stays one element in the page (so its state is never
+        // duplicated); below lg the grid is one column and it sits after the
+        // content, as it always has.
+        <div className="mx-auto grid w-full max-w-6xl lg:grid-cols-12 lg:gap-x-12 lg:px-6">
+          <div className="min-w-0 lg:col-span-8">
+            {children}
+      {(content.amenities.length > 0 ||
+              content.goodToKnow.length > 0 ||
+              content.price.cancellation) && (
+              <section className="border-t border-border-subtle bg-surface-muted">
+                <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-8 sm:py-10 lg:grid-cols-2 lg:gap-16">
+                  <div>
+                    <h2 className="font-serif text-xl font-bold text-foreground sm:text-2xl">
+                      What&apos;s here
+                    </h2>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {content.amenities.map((item) => (
+                        <li
+                          key={item}
+                          className="rounded-full border border-border-subtle bg-surface px-3 py-1.5 text-sm text-stone-700"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h2 className="font-serif text-xl font-bold text-foreground sm:text-2xl">
+                      Good to know
+                    </h2>
+                    <ul className="mt-3 flex flex-col gap-2 text-sm text-stone-700 sm:text-base">
+                      {[...content.goodToKnow, price.cancellation].map((item) => (
+                        <li key={item} className="flex items-start gap-2.5">
+                          <ShieldCheck
+                            className="mt-0.5 h-4 w-4 shrink-0 text-brand-600"
+                            aria-hidden
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
+          <section id="book" className="scroll-mt-20 bg-brand-50 text-foreground lg:col-span-4 lg:bg-transparent">
+            <div className="px-6 py-10 sm:py-14 lg:sticky lg:top-24 lg:px-0 lg:py-2">
+              <div className="lg:hidden">
+                <h2 className="font-serif text-[1.7rem] font-bold leading-[1.1] sm:text-[2.2rem]">
+                  {bookTitle ?? `Book with the people who look after ${content.title}`}
+                </h2>
+                <p className="mt-3 text-stone-700">
+                  See the full price before you pay anything. Questions first? Ask the owners directly.
+                </p>
+              </div>
+              <div className={cn("mt-6 lg:mt-0", !bookingOnPhone && "hidden sm:block")}>{booking}</div>
+            </div>
+          </section>
+        </div>
+      ) : (
+        <>
+          {children}
 
       {(content.amenities.length > 0 ||
         content.goodToKnow.length > 0 ||
@@ -375,6 +446,7 @@ export function ListingShowcase({
         </section>
       )}
 
+
       {/* The way in. On a phone the card at the top is the booking; here, a bigger screen has the full panel. */}
       <section id="book" className="scroll-mt-20 bg-brand-50 text-foreground">
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 px-6 py-10 sm:py-14 lg:grid-cols-5 lg:gap-14">
@@ -407,16 +479,24 @@ export function ListingShowcase({
           </div>
         </div>
       </section>
+        </>
+      )}
 
-      <HeaderBookingPill
-        watchIds={["availability", "hero-cta"]}
-        pill={{
-          title: priceLabel,
-          subtitle: content.title,
-          cta: "Check dates",
-          href: bookingHref,
-        }}
-      />
+      {/* The header's "Check dates" pill stands in for a booking panel that is
+          off screen. With a sticky panel (stickyBooking) it is always on
+          screen from lg, which is the only size the pill shows at, so the
+          pill would only repeat it. */}
+      {!stickyBooking && (
+        <HeaderBookingPill
+          watchIds={["availability", "hero-cta"]}
+          pill={{
+            title: priceLabel,
+            subtitle: content.title,
+            cta: "Check dates",
+            href: bookingHref,
+          }}
+        />
+      )}
     </div>
   );
 }
